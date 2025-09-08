@@ -40,8 +40,8 @@ class CPG_Admin {
 	 */
 	public function add_admin_menu() {
 		add_menu_page(
-			__( 'Contributor Photo Gallery Settings', 'contributor-photo-gallery' ),
-			__( 'Contributor Photo Gallery', 'contributor-photo-gallery' ),
+			esc_html__( 'Contributor Photo Gallery Settings', 'contributor-photo-gallery' ),
+			esc_html__( 'Contributor Photo Gallery', 'contributor-photo-gallery' ),
 			'manage_options',
 			'contributor-photo-gallery',
 			array( $this, 'settings_page' ),
@@ -52,8 +52,8 @@ class CPG_Admin {
 		// Add settings submenu
 		add_submenu_page(
 			'contributor-photo-gallery',
-			__( 'Settings', 'contributor-photo-gallery' ),
-			__( 'Settings', 'contributor-photo-gallery' ),
+			esc_html__( 'Settings', 'contributor-photo-gallery' ),
+			esc_html__( 'Settings', 'contributor-photo-gallery' ),
 			'manage_options',
 			'contributor-photo-gallery',
 			array( $this, 'settings_page' )
@@ -67,7 +67,7 @@ class CPG_Admin {
 	 * Add plugin action links
 	 */
 	public function add_plugin_action_links( $links ) {
-		$settings_link = '<a href="' . admin_url( 'admin.php?page=contributor-photo-gallery' ) . '">' . __( 'Settings', 'contributor-photo-gallery' ) . '</a>';
+		$settings_link = '<a href="' . admin_url( 'admin.php?page=contributor-photo-gallery' ) . '">' . esc_html__( 'Settings', 'contributor-photo-gallery' ) . '</a>';
 		array_unshift( $links, $settings_link );
 		return $links;
 	}
@@ -78,9 +78,9 @@ class CPG_Admin {
 	public function admin_init() {
 		register_setting( 'cpg_settings', 'cpg_options', array( 'sanitize_callback' => array( $this, 'validate_options' ) ) );
 
-		add_settings_section( 'cpg_main', __( 'Essential Configuration', 'contributor-photo-gallery' ), array( $this, 'settings_section_callback' ), 'contributor-photo-gallery' );
-		add_settings_section( 'cpg_styling', __( 'Card Styling & Appearance', 'contributor-photo-gallery' ), array( $this, 'styling_settings_section_callback' ), 'contributor-photo-gallery' );
-		add_settings_section( 'cpg_advanced', __( 'Display & Performance', 'contributor-photo-gallery' ), array( $this, 'advanced_settings_section_callback' ), 'contributor-photo-gallery' );
+		add_settings_section( 'cpg_main', esc_html__( 'Essential Configuration', 'contributor-photo-gallery' ), array( $this, 'settings_section_callback' ), 'contributor-photo-gallery' );
+		add_settings_section( 'cpg_styling', esc_html__( 'Card Styling & Appearance', 'contributor-photo-gallery' ), array( $this, 'styling_settings_section_callback' ), 'contributor-photo-gallery' );
+		add_settings_section( 'cpg_advanced', esc_html__( 'Display & Performance', 'contributor-photo-gallery' ), array( $this, 'advanced_settings_section_callback' ), 'contributor-photo-gallery' );
 
 		$this->add_settings_fields();
 	}
@@ -212,17 +212,17 @@ class CPG_Admin {
 	private function add_settings_fields() {
 		$fields = array(
 			'default_user_id'     => array(
-				'title'    => __( 'User ID', 'contributor-photo-gallery' ),
+				'title'    => esc_html__( 'User ID', 'contributor-photo-gallery' ),
 				'callback' => array( $this, 'user_id_field_callback' ),
 				'section'  => 'cpg_main',
 			),
 			'default_per_page'    => array(
-				'title'    => __( 'Photos Per Page', 'contributor-photo-gallery' ),
+				'title'    => esc_html__( 'Photos Per Page', 'contributor-photo-gallery' ),
 				'callback' => array( $this, 'per_page_field_callback' ),
 				'section'  => 'cpg_main',
 			),
 			'default_columns'     => array(
-				'title'    => __( 'Grid Layout', 'contributor-photo-gallery' ),
+				'title'    => esc_html__( 'Grid Layout', 'contributor-photo-gallery' ),
 				'callback' => array( $this, 'columns_field_callback' ),
 				'section'  => 'cpg_main',
 			),
@@ -257,17 +257,17 @@ class CPG_Admin {
 				'section'  => 'cpg_styling',
 			),
 			'cache_time'          => array(
-				'title'    => __( 'Cache Duration', 'contributor-photo-gallery' ),
+				'title'    => esc_html__( 'Cache Duration', 'contributor-photo-gallery' ),
 				'callback' => array( $this, 'cache_time_field_callback' ),
 				'section'  => 'cpg_advanced',
 			),
 			'open_in_new_tab'     => array(
-				'title'    => __( 'Link Behavior', 'contributor-photo-gallery' ),
+				'title'    => esc_html__( 'Link Behavior', 'contributor-photo-gallery' ),
 				'callback' => array( $this, 'new_tab_field_callback' ),
 				'section'  => 'cpg_advanced',
 			),
 			'enable_lazy_loading' => array(
-				'title'    => __( 'Lazy Loading', 'contributor-photo-gallery' ),
+				'title'    => esc_html__( 'Lazy Loading', 'contributor-photo-gallery' ),
 				'callback' => array( $this, 'lazy_loading_field_callback' ),
 				'section'  => 'cpg_advanced',
 			),
@@ -338,28 +338,28 @@ class CPG_Admin {
 		$columns        = isset( $this->options['default_columns'] ) ? $this->options['default_columns'] : 4;
 		$column_options = array(
 			1 => array(
-				'label' => __( 'Single', 'contributor-photo-gallery' ),
-				'desc'  => __( 'One column', 'contributor-photo-gallery' ),
+				'label' => esc_html__( 'Single', 'contributor-photo-gallery' ),
+				'desc'  => esc_html__( 'One column', 'contributor-photo-gallery' ),
 			),
 			2 => array(
-				'label' => __( 'Two Columns', 'contributor-photo-gallery' ),
-				'desc'  => __( 'Compact grid', 'contributor-photo-gallery' ),
+				'label' => esc_html__( 'Two Columns', 'contributor-photo-gallery' ),
+				'desc'  => esc_html__( 'Compact grid', 'contributor-photo-gallery' ),
 			),
 			3 => array(
-				'label' => __( 'Three Columns', 'contributor-photo-gallery' ),
-				'desc'  => __( 'Portfolio layout', 'contributor-photo-gallery' ),
+				'label' => esc_html__( 'Three Columns', 'contributor-photo-gallery' ),
+				'desc'  => esc_html__( 'Portfolio layout', 'contributor-photo-gallery' ),
 			),
 			4 => array(
-				'label' => __( 'Four Columns', 'contributor-photo-gallery' ),
-				'desc'  => __( 'Balanced grid', 'contributor-photo-gallery' ),
+				'label' => esc_html__( 'Four Columns', 'contributor-photo-gallery' ),
+				'desc'  => esc_html__( 'Balanced grid', 'contributor-photo-gallery' ),
 			),
 			5 => array(
-				'label' => __( 'Five Columns', 'contributor-photo-gallery' ),
-				'desc'  => __( 'Dense layout', 'contributor-photo-gallery' ),
+				'label' => esc_html__( 'Five Columns', 'contributor-photo-gallery' ),
+				'desc'  => esc_html__( 'Dense layout', 'contributor-photo-gallery' ),
 			),
 			6 => array(
-				'label' => __( 'Six Columns', 'contributor-photo-gallery' ),
-				'desc'  => __( 'Maximum width', 'contributor-photo-gallery' ),
+				'label' => esc_html__( 'Six Columns', 'contributor-photo-gallery' ),
+				'desc'  => esc_html__( 'Maximum width', 'contributor-photo-gallery' ),
 			),
 		);
 		?>
@@ -386,20 +386,20 @@ class CPG_Admin {
 		$card_style    = isset( $this->options['card_style'] ) ? $this->options['card_style'] : 'default';
 		$style_options = array(
 			'default'  => array(
-				'label' => __( 'Modern', 'contributor-photo-gallery' ),
-				'desc'  => __( 'Clean & minimal', 'contributor-photo-gallery' ),
+				'label' => esc_html__( 'Modern', 'contributor-photo-gallery' ),
+				'desc'  => esc_html__( 'Clean & minimal', 'contributor-photo-gallery' ),
 			),
 			'polaroid' => array(
-				'label' => __( 'Polaroid', 'contributor-photo-gallery' ),
-				'desc'  => __( 'Vintage style', 'contributor-photo-gallery' ),
+				'label' => esc_html__( 'Polaroid', 'contributor-photo-gallery' ),
+				'desc'  => esc_html__( 'Vintage style', 'contributor-photo-gallery' ),
 			),
 			'circle'   => array(
-				'label' => __( 'Circle', 'contributor-photo-gallery' ),
-				'desc'  => __( 'Rounded images', 'contributor-photo-gallery' ),
+				'label' => esc_html__( 'Circle', 'contributor-photo-gallery' ),
+				'desc'  => esc_html__( 'Rounded images', 'contributor-photo-gallery' ),
 			),
 			'fixed'    => array(
-				'label' => __( 'Fixed Height', 'contributor-photo-gallery' ),
-				'desc'  => __( 'Uniform cards', 'contributor-photo-gallery' ),
+				'label' => esc_html__( 'Fixed Height', 'contributor-photo-gallery' ),
+				'desc'  => esc_html__( 'Uniform cards', 'contributor-photo-gallery' ),
 			),
 		);
 		?>
@@ -480,20 +480,20 @@ class CPG_Admin {
 				<?php
 				$shadow_options = array(
 					'none'   => array(
-						'label' => __( 'None', 'contributor-photo-gallery' ),
-						'desc'  => __( 'No shadow', 'contributor-photo-gallery' ),
+						'label' => esc_html__( 'None', 'contributor-photo-gallery' ),
+						'desc'  => esc_html__( 'No shadow', 'contributor-photo-gallery' ),
 					),
 					'subtle' => array(
-						'label' => __( 'Light', 'contributor-photo-gallery' ),
-						'desc'  => __( 'Subtle depth', 'contributor-photo-gallery' ),
+						'label' => esc_html__( 'Light', 'contributor-photo-gallery' ),
+						'desc'  => esc_html__( 'Subtle depth', 'contributor-photo-gallery' ),
 					),
 					'medium' => array(
-						'label' => __( 'Medium', 'contributor-photo-gallery' ),
-						'desc'  => __( 'Balanced shadow', 'contributor-photo-gallery' ),
+						'label' => esc_html__( 'Medium', 'contributor-photo-gallery' ),
+						'desc'  => esc_html__( 'Balanced shadow', 'contributor-photo-gallery' ),
 					),
 					'strong' => array(
-						'label' => __( 'Strong', 'contributor-photo-gallery' ),
-						'desc'  => __( 'Deep shadow', 'contributor-photo-gallery' ),
+						'label' => esc_html__( 'Strong', 'contributor-photo-gallery' ),
+						'desc'  => esc_html__( 'Deep shadow', 'contributor-photo-gallery' ),
 					),
 				);
 
@@ -555,13 +555,13 @@ class CPG_Admin {
 	public function cache_time_field_callback() {
 		$cache_time = isset( $this->options['cache_time'] ) ? $this->options['cache_time'] : 3600;
 		$options    = array(
-			300   => __( '5 minutes', 'contributor-photo-gallery' ),
-			900   => __( '15 minutes', 'contributor-photo-gallery' ),
-			1800  => __( '30 minutes', 'contributor-photo-gallery' ),
-			3600  => __( '1 hour (recommended)', 'contributor-photo-gallery' ),
-			7200  => __( '2 hours', 'contributor-photo-gallery' ),
-			21600 => __( '6 hours', 'contributor-photo-gallery' ),
-			86400 => __( '24 hours', 'contributor-photo-gallery' ),
+			300   => esc_html__( '5 minutes', 'contributor-photo-gallery' ),
+			900   => esc_html__( '15 minutes', 'contributor-photo-gallery' ),
+			1800  => esc_html__( '30 minutes', 'contributor-photo-gallery' ),
+			3600  => esc_html__( '1 hour (recommended)', 'contributor-photo-gallery' ),
+			7200  => esc_html__( '2 hours', 'contributor-photo-gallery' ),
+			21600 => esc_html__( '6 hours', 'contributor-photo-gallery' ),
+			86400 => esc_html__( '24 hours', 'contributor-photo-gallery' ),
 		);
 		?>
 		<div class="cpg-field-container">
@@ -638,7 +638,7 @@ class CPG_Admin {
 		$validated['open_in_new_tab']     = ! empty( $input['open_in_new_tab'] ) ? 1 : 0;
 		$validated['enable_lazy_loading'] = ! empty( $input['enable_lazy_loading'] ) ? 1 : 0;
 
-		add_settings_error( 'cpg_options', 'settings_saved', __( 'Settings saved successfully!', 'contributor-photo-gallery' ), 'updated' );
+		add_settings_error( 'cpg_options', 'settings_saved', esc_html__( 'Settings saved successfully!', 'contributor-photo-gallery' ), 'updated' );
 
 		// update local copy so the page reflects changes immediately after save
 		$this->options = $validated;

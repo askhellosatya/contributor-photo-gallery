@@ -24,7 +24,7 @@ class CPG_API {
 		$body   = wp_remote_retrieve_body( $response );
 		$photos = json_decode( $body, true );
 		if ( json_last_error() !== JSON_ERROR_NONE ) {
-			return new WP_Error( 'json_error', __( 'Invalid response from API', 'contributor-photo-gallery' ) );
+			return new WP_Error( 'json_error', esc_html__( 'Invalid response from API', 'contributor-photo-gallery' ) );
 		}
 
 		set_transient( $cache_key, $photos, $cache_time );
