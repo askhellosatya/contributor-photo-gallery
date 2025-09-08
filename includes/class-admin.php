@@ -144,30 +144,6 @@ class CPG_Admin {
                 </div>
             </div>
         </div>
-
-        <script type="text/javascript">
-        (function(){
-            document.addEventListener('click', function (e) {
-                var el = e.target.closest('.cpg-setup-notice-dismiss');
-                if (!el) return;
-                e.preventDefault();
-                var notice = el.closest('.cpg-setup-notice');
-                if (!notice) return;
-                notice.style.opacity = '0';
-                notice.style.transform = 'translateY(-10px)';
-
-                var data = new FormData();
-                data.append('action', 'cpg_dismiss_setup_notice');
-                data.append('nonce',  notice.getAttribute('data-cpg-nonce') || '');
-
-                fetch("<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>", {
-                    method: 'POST',
-                    credentials: 'same-origin',
-                    body: data
-                }).catch(function(){});
-            }, true);
-        })();
-        </script>
         <?php
         // --- end pretty card ---
     else :
@@ -184,27 +160,6 @@ class CPG_Admin {
 </a>
             </p>
         </div>
-        <script type="text/javascript">
-        (function(){
-            // Persist dismissal when the user clicks the core "X"
-            document.addEventListener('click', function(e){
-                var close = e.target.closest('.notice-dismiss');
-                if (!close) return;
-                var wrap = close.closest('.cpg-setup-core');
-                if (!wrap) return;
-
-                var data = new FormData();
-                data.append('action', wrap.getAttribute('data-cpg-action') || 'cpg_dismiss_setup_notice');
-                data.append('nonce',  wrap.getAttribute('data-cpg-nonce')  || '');
-
-                fetch('<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>', {
-                    method: 'POST',
-                    credentials: 'same-origin',
-                    body: data
-                }).catch(function(){});
-            }, true);
-        })();
-        </script>
         <?php
         // --- end core notice ---
     endif;
