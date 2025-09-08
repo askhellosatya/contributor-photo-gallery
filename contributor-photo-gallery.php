@@ -183,7 +183,7 @@ add_action('wp_ajax_cpg_refresh_preview', function() {
 
     $css_vars[] = '--cpg-caption-color: ' . esc_attr($caption_color);
 
-    $style_attr = !empty($css_vars) ? ' style="' . implode('; ', $css_vars) . '"' : '';
+    $style_attr = !empty($css_vars) ? implode( '; ', $css_vars ) : '';
     $card_style = $options['card_style'] ?? 'default';
     $caption_class = !$show_captions ? ' cpg-no-captions' : '';
 
@@ -196,7 +196,7 @@ add_action('wp_ajax_cpg_refresh_preview', function() {
     }
 
     if ($image_url) {
-        echo '<div class="cpg-gallery-grid cpg-preview-grid columns-1' . esc_attr( $caption_class ) . '"' . $style_attr . '>'; // phpcs:ignore
+        echo '<div class="cpg-gallery-grid cpg-preview-grid columns-1' . esc_attr( $caption_class ) . '" style="' . esc_attr( $style_attr ) . '">';
         echo '<div class="cpg-photo-card cpg-style-' . esc_attr( $card_style ) . '">';
         echo '<a href="javascript:void(0);">';
         echo '<div class="cpg-photo-image"><img src="' . esc_url( $image_url ) . '" alt="' . esc_attr($title) . '" loading="lazy"></div>';
