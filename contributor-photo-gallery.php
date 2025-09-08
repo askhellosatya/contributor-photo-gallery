@@ -125,7 +125,8 @@ add_action('wp_ajax_cpg_refresh_preview', function() {
         return;
     }
 
-    parse_str($_POST['settings'], $form_data); // phpcs:ignore
+    $setting = sanitize_url( wp_unslash( $_POST['settings'] ) );
+    parse_str( $setting, $form_data );
     $options = $form_data['cpg_options'] ?? [];
 
     if (empty($options['default_user_id'])) {
