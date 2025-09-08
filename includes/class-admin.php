@@ -1,4 +1,10 @@
 <?php
+/**
+ * Admin class for Contributor Photo Gallery.
+ *
+ * @package ContributorPhotoGallery
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -60,7 +66,7 @@ class CPG_Admin {
 		);
 
 		// Add plugin action links
-		add_filter( 'plugin_action_links_' . plugin_basename( CPG_PLUGIN_PATH . 'contributor-photo-gallery.php' ), array( $this, 'add_plugin_action_links' ) );
+		add_filter( 'plugin_action_links_' . plugin_basename( CPGLRY_PLUGIN_PATH . 'contributor-photo-gallery.php' ), array( $this, 'add_plugin_action_links' ) );
 	}
 
 	/**
@@ -95,8 +101,8 @@ class CPG_Admin {
 			return;
 		}
 
-		wp_enqueue_style( 'cpg-admin', CPG_PLUGIN_URL . 'assets/css/admin.css', array(), CPG_VERSION );
-		wp_enqueue_script( 'cpg-admin', CPG_PLUGIN_URL . 'assets/js/admin.js', array( 'jquery' ), CPG_VERSION, true );
+		wp_enqueue_style( 'cpg-admin', CPGLRY_PLUGIN_URL . 'assets/css/admin.css', array(), CPGLRY_VERSION );
+		wp_enqueue_script( 'cpg-admin', CPGLRY_PLUGIN_URL . 'assets/js/admin.js', array( 'jquery' ), CPGLRY_VERSION, true );
 
 		wp_localize_script(
 			'cpg-admin',
@@ -652,7 +658,7 @@ class CPG_Admin {
 	public function settings_page() {
 		// Provide the notice flag to the template
 		$notice_shown = get_option( 'cpg_new_shortcode_notice_shown', 0 );
-		include CPG_PLUGIN_PATH . 'templates/admin/settings-page.php';
+		include CPGLRY_PLUGIN_PATH . 'templates/admin/settings-page.php';
 	}
 
 	/**

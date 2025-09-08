@@ -1,36 +1,39 @@
 <?php
-/*
-Plugin Name: Contributor Photo Gallery
-Plugin URI: https://wordpress.org/plugins/contributor-photo-gallery/
-Description: Showcase your contributions to WordPress.org/photos with elegant and responsive photo galleries.
-Version: 2.5.0
-Requires at least: 5.8
-Tested up to: 6.8
-Requires PHP: 7.4
-Author: Satyam Vishwakarma
-Author URI: https://satyamvishwakarma.com
-License: GPL v2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Text Domain: contributor-photo-gallery
-Domain Path: /languages
-*/
+/**
+ * Plugin Name: Contributor Photo Gallery
+ * Plugin URI: https://wordpress.org/plugins/contributor-photo-gallery/
+ * Description: Showcase your contributions to WordPress.org/photos with elegant and responsive photo galleries.
+ * Description: Showcase your contributions to WordPress.org/photos with elegant and responsive photo galleries.
+ * Version: 2.5.0
+ * Requires at least: 5.8
+ * Tested up to: 6.8
+ * Requires PHP: 7.4
+ * Author: Satyam Vishwakarma
+ * Author URI: https://satyamvishwakarma.com
+ * License: GPL v2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain: contributor-photo-gallery
+ * Domain Path: /languages
+ *
+ * @package ContributorPhotoGallery
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CPG_VERSION', '2.5.0' );
-define( 'CPG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'CPG_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+define( 'CPGLRY_VERSION', '2.5.0' );
+define( 'CPGLRY_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'CPGLRY_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
 /*
  * Includes
  */
-require_once CPG_PLUGIN_PATH . 'includes/helpers.php';
-require_once CPG_PLUGIN_PATH . 'includes/class-frontend.php';
-require_once CPG_PLUGIN_PATH . 'includes/class-admin.php';
-require_once CPG_PLUGIN_PATH . 'includes/class-cache.php';
-require_once CPG_PLUGIN_PATH . 'includes/class-api.php';
+require_once CPGLRY_PLUGIN_PATH . 'includes/helpers.php';
+require_once CPGLRY_PLUGIN_PATH . 'includes/class-frontend.php';
+require_once CPGLRY_PLUGIN_PATH . 'includes/class-admin.php';
+require_once CPGLRY_PLUGIN_PATH . 'includes/class-cache.php';
+require_once CPGLRY_PLUGIN_PATH . 'includes/class-api.php';
 
 /*
  * Init

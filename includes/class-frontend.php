@@ -10,7 +10,7 @@ class CPG_Frontend {
 
 	public function enqueue_frontend_assets() {
 		// Enqueue the main frontend stylesheet
-		wp_enqueue_style( 'cpg-frontend', CPG_PLUGIN_URL . 'assets/css/frontend.css', array(), CPG_VERSION );
+		wp_enqueue_style( 'cpg-frontend', CPGLRY_PLUGIN_URL . 'assets/css/frontend.css', array(), CPGLRY_VERSION );
 
 		// Add small, critical inline CSS to guarantee columns behavior.
 		// This ensures .cpg-gallery-grid.columns-N becomes a grid even if a theme
@@ -86,7 +86,7 @@ class CPG_Frontend {
 
 		// Load the grid template - it uses $photos, $options and $atts
 		ob_start();
-		include CPG_PLUGIN_PATH . 'templates/grid.php';
+		include CPGLRY_PLUGIN_PATH . 'templates/grid.php';
 		return ob_get_clean();
 	}
 }
