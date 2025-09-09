@@ -1,10 +1,10 @@
 # Contributor Photo Gallery
-[![WordPress Plugin](https://img.shields.io/badge/WordPress-Plugin-blue.svg)](https://wordpress.org) [![Version](https://img.shields.io/badge/Version-2.5.0-green.svg)](https://github.com/askhellosatya/contributor-photo-gallery/releases)  [![License](https://img.shields.io/badge/License-GPL%20v2%2B-red.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
+[![WordPress Plugin](https://img.shields.io/badge/WordPress-Plugin-blue.svg)](https://wordpress.org) [![Version](https://img.shields.io/badge/Version-2.5.1-green.svg)](https://github.com/askhellosatya/contributor-photo-gallery/releases)  [![License](https://img.shields.io/badge/License-GPL%20v2%2B-red.svg)](https://www.gnu.org/licenses/gpl-2.0.html)
 
 Tags: gallery, photography, portfolio, shortcode, responsive  
 Requires at least: 5.8  
 Tested up to: 6.8  
-Stable tag: 2.5.0  
+Stable tag: 2.5.1  
 
 Showcase your [WordPress.org/photos](https://wordpress.org/photos/) contributions in beautiful, responsive, and SEO-friendly galleries.  
 Built for photographers, agencies, and community contributors who want polished photo portfolios with minimal setup and full styling control.  
@@ -148,6 +148,14 @@ The plugin outputs easy-to-target CSS classes so you can theme the gallery from 
 ---
 
 ## 📋 Changelog
+
+### 2.5.1 - 
+- Fixed: Review notice styling inconsistencies (spacing, alignment, and typography).
+- Fixed: Uneven photo card layouts by standardizing aspect ratios and ensuring images scale correctly. [#17](https://github.com/askhellosatya/contributor-photo-gallery/issues/17)
+- Fixed: Overlapping and stacking issues where images or pseudo elements could break alignment.
+- Changed: Replaced `cpg_` function prefix with `cpglry_` for better clarity and to avoid conflicts.
+- Improved: Cross-browser and cross-device reliability of all card styles.
+- Improved: Polaroid-style font for vintage feel.
 
 ### 2.5.0 —
 - New primary shortcode: `[cp_gallery]`.  
