@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class CPG_Frontend {
+class CPGLRY_Frontend {
 	public function __construct() {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_assets' ) );
 	}
@@ -53,7 +53,7 @@ class CPG_Frontend {
 	 * Renders the gallery using templates/grid.php which expects $photos and $options.
 	 */
 	public static function render_shortcode( $atts = array() ) {
-		$options = cpg_get_plugin_options();
+		$options = cpglry_get_plugin_options();
 
 		// shortcode attrs override options
 		$atts = shortcode_atts(
@@ -75,7 +75,7 @@ class CPG_Frontend {
 			return '<div class="cpg-shortcode-error">Please configure a User ID in the plugin settings.</div>';
 		}
 
-		$photos = CPG_API::get_photos( $user_id, $per_page, $options['cache_time'] );
+		$photos = CPGLRY_API::get_photos( $user_id, $per_page, $options['cache_time'] );
 
 		if ( is_wp_error( $photos ) ) {
 			return '<div class="cpg-shortcode-error">' . esc_html( $photos->get_error_message() ) . '</div>';
