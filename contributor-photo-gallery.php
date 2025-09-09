@@ -3,7 +3,7 @@
  * Plugin Name: Contributor Photo Gallery
  * Plugin URI: https://wordpress.org/plugins/contributor-photo-gallery/  
  * Description: Showcase your contributions to WordPress.org/photos with elegant and responsive photo galleries.
- * Version: 2.5.0
+ * Version: 2.5.1
  * Requires at least: 5.8
  * Tested up to: 6.8
  * Requires PHP: 7.4
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CPGLRY_VERSION', '2.5.0' );
+define( 'CPGLRY_VERSION', '2.5.1' );
 define( 'CPGLRY_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'CPGLRY_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
