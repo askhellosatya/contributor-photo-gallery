@@ -12,6 +12,7 @@
     initUserIdValidation();
     initSaveSettingsFeedback();
     initNoticeDismissal();
+    dismissSetupNotice();
 
     setTimeout(initializeSelectedStates, 300);
   });
@@ -553,4 +554,49 @@
       if ($radio.is(":checked")) $(this).addClass("selected");
     });
   }
+
+  // Dismiss setup notice
+  function dismissSetupNotice() {
+    $(document).on('click', '.cpg-setup-notice-dismiss', function (e) {
+        e.preventDefault();
+
+        var $el = $(this);
+        var $notice = $el.closest('.cpg-setup-notice');
+
+        if (!$notice.length) return;
+
+        $notice.css({
+            opacity: 0,
+            transform: 'translateY(-10px)'
+        });
+
+        $.ajax({
+            url: "<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>",
+            type: "POST",
+            data: {
+                action: "cpg_dismiss_setup_notice",
+                nonce: $notice.data('cpg-nonce') || ""
+            }
+        });
+    });
+
+    $(document).on('click', '.notice-dismiss', function (e) {
+        var $close = $(this);
+        var $wrap = $close.closest('.cpg-setup-core');
+
+        if (!$wrap.length) return;
+
+        $.ajax({
+            url: "<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>",
+            type: "POST",
+            data: {
+                action: $wrap.data('cpg-action') || 'cpg_dismiss_setup_notice',
+                nonce: $wrap.data('cpg-nonce') || ''
+            }
+        });
+    });
+
+
+  }
+
 })(jQuery);
