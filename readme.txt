@@ -1,10 +1,10 @@
 === Contributor Photo Gallery ===
-Contributors: hellosatya, bhargavbhandari90  
+Contributors: hellosatya, bhargavbhandari90, sajidansari65  
 Tags: gallery, photography, portfolio, shortcode, responsive
 Donate link: https://paypal.me/hellosatya
 Requires at least: 5.8  
 Tested up to: 6.8  
-Stable tag: 2.5.0  
+Stable tag: 2.5.1  
 Requires PHP: 7.4  
 License: GPLv2 or later  
 License URI: https://www.gnu.org/licenses/gpl-2.0.html  
@@ -110,6 +110,14 @@ No. Contributor Photo Gallery is performance-optimized with:
 
 == Changelog ==
 
+= 2.5.1 - 2025-09-10 =
+* * Fixed: Review notice styling inconsistencies (spacing, alignment, and typography).
+* Fixed: Uneven photo card layouts by standardizing aspect ratios and ensuring images scale correctly. [#17](https://github.com/askhellosatya/contributor-photo-gallery/issues/17)
+* Fixed: Overlapping and stacking issues where images or pseudo-elements could break alignment.
+* Changed: Function prefix updated from `cpg_` to `cpglry_` for better clarity and to avoid potential conflicts.
+* Improved: Cross-browser and cross-device reliability of all card styles.
+* Improved: Polaroid-style font updated for a more authentic vintage feel.
+
 = 2.5.0 - 2025-08-16 =  
 * New shortcode: `[cp_gallery]`.  
 * Legacy shortcode `[wpcontrib_photos]` preserved.  
@@ -131,6 +139,11 @@ No. Contributor Photo Gallery is performance-optimized with:
 * Initial release with gallery fetch from WordPress.org/photos.  
 
 == Upgrade Notice ==
+
+= 2.5.1 =
+This update fixes visual inconsistencies in notices and photo cards. 
+⚠️ Developers: The shortcode handler function prefix has been changed from `cpg_` to `cpglry_`. 
+If you used the old prefix in custom code, please update your references.
 
 = 2.5.0 =  
 New `[cp_gallery]` shortcode with fresh styling and customization options. Legacy `[wpcontrib_photos]` still works — all your settings are safe.  
