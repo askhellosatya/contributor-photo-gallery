@@ -18,9 +18,9 @@
   });
 
   // Debug toggle (false in production)
-  var CPG_DEBUG = false;
+  var cpglry_DEBUG = false;
   function cpgLog() {
-    if (CPG_DEBUG && window.console) console.log.apply(console, arguments);
+    if (cpglry_DEBUG && window.console) console.log.apply(console, arguments);
   }
 
   // Debounce helper for preview requests
@@ -113,7 +113,7 @@
       });
 
       $.post(wpcpgAdmin.ajaxurl, {
-        action: "cpg_dismiss_new_shortcode_notice",
+        action: "cpglry_dismiss_new_shortcode_notice",
         nonce: wpcpgAdmin.nonce,
       });
     });
@@ -262,7 +262,7 @@
       $.post(
         wpcpgAdmin.ajaxurl,
         {
-          action: "wpcpg_clear_cache",
+          action: "wpcpglry_clear_cache",
           nonce: wpcpgAdmin.nonce,
         },
         function (resp) {
@@ -319,7 +319,7 @@
         $target.text(value);
         $hiddenInput.val(value);
         // Trigger preview update for photos per page changes
-        if ($(this).attr("id") === "cpg_per_page") {
+        if ($(this).attr("id") === "cpglry_per_page") {
           requestPreview();
         }
       });
@@ -454,7 +454,7 @@
     $.post(
       wpcpgAdmin.ajaxurl,
       {
-        action: "cpg_refresh_preview",
+        action: "cpglry_refresh_preview",
         settings: formData,
         nonce: wpcpgAdmin.nonce,
       },
@@ -495,7 +495,7 @@
           $(this).remove();
         });
         $.post(wpcpgAdmin.ajaxurl, {
-          action: "cpg_dismiss_shortcode_notice",
+          action: "cpglry_dismiss_shortcode_notice",
           nonce: wpcpgAdmin.nonce,
         });
       }
@@ -574,7 +574,7 @@
             url: "<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>",
             type: "POST",
             data: {
-                action: "cpg_dismiss_setup_notice",
+                action: "cpglry_dismiss_setup_notice",
                 nonce: $notice.data('cpg-nonce') || ""
             }
         });
@@ -590,7 +590,7 @@
             url: "<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>",
             type: "POST",
             data: {
-                action: $wrap.data('cpg-action') || 'cpg_dismiss_setup_notice',
+                action: $wrap.data('cpg-action') || 'cpglry_dismiss_setup_notice',
                 nonce: $wrap.data('cpg-nonce') || ''
             }
         });
