@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Default plugin options
  */
-function cpg_get_default_options() {
+function cpglry_get_default_options() {
 	return array(
 		'default_user_id'     => '',
 		'default_per_page'    => 12,
@@ -30,9 +30,9 @@ function cpg_get_default_options() {
 /**
  * Get current saved options (merges with defaults)
  */
-function cpg_get_plugin_options() {
-	$defaults = cpg_get_default_options();
-	$opts     = get_option( 'cpg_options', array() );
+function cpglry_get_plugin_options() {
+	$defaults = cpglry_get_default_options();
+	$opts     = get_option( 'cpglry_options', array() );
 	if ( ! is_array( $opts ) ) {
 		$opts = array();
 	}
