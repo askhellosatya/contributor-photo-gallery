@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * - Shows a one-time settings-page "new shortcode" notice
  * - Provides AJAX handlers to persist dismissals
  */
-class cpglry_Admin {
+class CPGLRY_Admin {
 
 	private $options;
 
