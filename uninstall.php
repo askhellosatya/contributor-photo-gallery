@@ -2,4 +2,4 @@
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
-delete_option( 'cpg_options' );
+delete_option( 'cpglry_options' );
