@@ -1,3 +1,8 @@
+/* Contributor Photo Gallery — frontend.css
+   Adjustments: refined circle/card visuals and caption typography for a cleaner, modern look.
+   Only circle-related rules and caption text styles were updated; other styles preserved.
+*/
+
 /* ====== BASE GALLERY GRID ====== */
 .cpg-gallery-grid {
     display: grid;
@@ -49,11 +54,15 @@
 }
 
 .cpg-photo-card.cpg-style-polaroid .cpg-photo-content p {
-    /* keep playful look but avoid Comic Sans fallback — use a neutral sans-serif */
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    font-size: 12px;
-    color: #333;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 13px;
+    color: #222;
     margin: 0;
+    line-height: 1.4;
+    letter-spacing: 0.4px;
+    text-align: left; /* typewriter vibe feels more natural left aligned */
+	 text-shadow: 0.5px 0.8px 0 rgba(0,0,0,0.05);
+    opacity: 0.96;
 }
 
 /* ====== ENHANCED CIRCLE STYLE (REFINED) ====== */
