@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-$options             = cpg_get_plugin_options();
+$options             = cpglry_get_plugin_options();
 $user_id             = isset( $options['default_user_id'] ) ? $options['default_user_id'] : '';
 $per_page            = isset( $options['default_per_page'] ) ? $options['default_per_page'] : 12;
 $columns             = isset( $options['default_columns'] ) ? $options['default_columns'] : 4;
@@ -26,7 +26,7 @@ $enable_lazy_loading = ! empty( $options['enable_lazy_loading'] );
 		<!-- LEFT PANEL: Settings -->
 		<div class="cpg-settings-panel">
 			<form method="post" action="options.php" class="cpg-form">
-				<?php settings_fields( 'cpg_settings' ); ?>
+				<?php settings_fields( 'cpglry_settings' ); ?>
 
 				<!-- Essential Configuration Card -->
 				<div class="cpg-card">
@@ -36,7 +36,7 @@ $enable_lazy_loading = ! empty( $options['enable_lazy_loading'] );
 					</div>
 					<div class="cpg-card-content">
 						<?php
-						do_settings_fields( 'contributor-photo-gallery', 'cpg_main' );
+						do_settings_fields( 'contributor-photo-gallery', 'cpglry_main' );
 						?>
 					</div>
 				</div>
@@ -48,7 +48,7 @@ $enable_lazy_loading = ! empty( $options['enable_lazy_loading'] );
 						<p>Customize the appearance and styling of your photo cards.</p>
 					</div>
 					<div class="cpg-card-content">
-						<?php do_settings_fields( 'contributor-photo-gallery', 'cpg_styling' ); ?>
+						<?php do_settings_fields( 'contributor-photo-gallery', 'cpglry_styling' ); ?>
 					</div>
 				</div>
 
@@ -59,7 +59,7 @@ $enable_lazy_loading = ! empty( $options['enable_lazy_loading'] );
 						<p>Fine-tune performance and display preferences.</p>
 					</div>
 					<div class="cpg-card-content">
-						<?php do_settings_fields( 'contributor-photo-gallery', 'cpg_advanced' ); ?>
+						<?php do_settings_fields( 'contributor-photo-gallery', 'cpglry_advanced' ); ?>
 					</div>
 				</div>
 

@@ -54,11 +54,15 @@
 }
 
 .cpg-photo-card.cpg-style-polaroid .cpg-photo-content p {
-    /* keep playful look but avoid Comic Sans fallback — use a neutral sans-serif */
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    font-size: 12px;
-    color: #333;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 13px;
+    color: #222;
     margin: 0;
+    line-height: 1.4;
+    letter-spacing: 0.4px;
+    text-align: left; /* typewriter vibe feels more natural left aligned */
+	 text-shadow: 0.5px 0.8px 0 rgba(0,0,0,0.05);
+    opacity: 0.96;
 }
 
 /* ====== ENHANCED CIRCLE STYLE (REFINED) ====== */
@@ -409,4 +413,70 @@
     .cpg-range-value {
         align-self: flex-end;
     }
+}
+
+/* ===== FIX: lock image frames for all NON-circle cards, keep current look ===== */
+
+/* 1) Make the wrapper define the frame (so every upload crops consistently) */
+.cpg-photo-card:not(.cpg-style-circle) .cpg-photo-image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 3;          /* matches your current ratio comment */
+    overflow: hidden;              /* ensures rounded corners actually clip */
+  }
+  
+  /* 2) Make the image fill that frame without distortion */
+  .cpg-photo-card:not(.cpg-style-circle) .cpg-photo-image img {
+    position: absolute;
+    inset: 0;                      /* top/right/bottom/left: 0 */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  
+  /* 3) Polaroid-specific: keep your rounded image corners while using the wrapper frame */
+  .cpg-photo-card.cpg-style-polaroid .cpg-photo-image {
+    aspect-ratio: 3 / 3;           /* same visual as before */
+    margin-bottom: 8px;            /* keep your spacing */
+  }
+  .cpg-photo-card.cpg-style-polaroid .cpg-photo-image img {
+  }
+  
+  /* 4) Circle guard: ensure nothing above affects circles */
+  .cpg-photo-card.cpg-style-circle .cpg-photo-image {
+    aspect-ratio: 1 / 1 !important;
+    overflow: hidden;
+  }
+
+/* Base: make "fixed" style fluid */
+.cpg-photo-card.cpg-style-fixed .cpg-photo-image {
+  width: 100%;
+  aspect-ratio: var(--cpg-fixed-ratio, 4 / 3);
+  height: auto !important;
+  position: relative;
+  overflow: hidden;
+}
+.cpg-photo-card.cpg-style-fixed .cpg-photo-image img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Tune the ratio by column density */
+.cpg-gallery-grid.columns-1 .cpg-photo-card.cpg-style-fixed .cpg-photo-image { --cpg-fixed-ratio: 16 / 9; }
+.cpg-gallery-grid.columns-2 .cpg-photo-card.cpg-style-fixed .cpg-photo-image { --cpg-fixed-ratio: 4 / 3; }
+.cpg-gallery-grid.columns-3 .cpg-photo-card.cpg-style-fixed .cpg-photo-image { --cpg-fixed-ratio: 4 / 3; }
+.cpg-gallery-grid.columns-4 .cpg-photo-card.cpg-style-fixed .cpg-photo-image { --cpg-fixed-ratio: 3 / 2; }
+.cpg-gallery-grid.columns-6 .cpg-photo-card.cpg-style-fixed .cpg-photo-image { --cpg-fixed-ratio: 1 / 1; }
+
+/* Safety: remove legacy small-screen heights */
+@media (max-width: 768px),
+       (max-width: 480px) {
+  .cpg-photo-card.cpg-style-fixed .cpg-photo-image { 
+	  height: auto !important; 
+		   }
 }

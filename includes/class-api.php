@@ -1,8 +1,8 @@
 <?php
-class CPG_API {
+class CPGLRY_API {
 
 	public static function get_photos( $user_id, $per_page, $cache_time ) {
-		$cache_key = 'cpg_photos_' . md5( $user_id . '_' . $per_page );
+		$cache_key = 'cpglry_photos_' . md5( $user_id . '_' . $per_page );
 		$photos    = get_transient( $cache_key );
 		if ( false !== $photos ) {
 			return $photos;

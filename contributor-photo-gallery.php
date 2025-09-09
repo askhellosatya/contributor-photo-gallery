@@ -1,8 +1,7 @@
 <?php
 /**
  * Plugin Name: Contributor Photo Gallery
- * Plugin URI: https://wordpress.org/plugins/contributor-photo-gallery/
- * Description: Showcase your contributions to WordPress.org/photos with elegant and responsive photo galleries.
+ * Plugin URI: https://wordpress.org/plugins/contributor-photo-gallery/  
  * Description: Showcase your contributions to WordPress.org/photos with elegant and responsive photo galleries.
  * Version: 2.5.0
  * Requires at least: 5.8
@@ -38,18 +37,18 @@ require_once CPGLRY_PLUGIN_PATH . 'includes/class-api.php';
 /*
  * Init
  */
-new CPG_Frontend();
-new CPG_Admin();
+new CPGLRY_Frontend();
+new CPGLRY_Admin();
 
 /*
  * Preserve legacy options on upgrade (safe migration)
- * Example: if older installs stored options under 'wpcontrib_options' we'll copy into 'cpg_options'
+ * Example: if older installs stored options under 'wpcontrib_options' we'll copy into 'cpglry_options'
  */
 register_activation_hook(
 	__FILE__,
 	function () {
 		// If new option already exists, nothing to do
-		if ( get_option( 'cpg_options' ) !== false ) {
+		if ( get_option( 'cpglry_options' ) !== false ) {
 			return;
 		}
 
@@ -59,33 +58,33 @@ register_activation_hook(
 			$legacy = get_option( $lk );
 			if ( ! empty( $legacy ) && is_array( $legacy ) ) {
 				// merge with defaults to be safe
-				$defaults = cpg_get_default_options();
+				$defaults = cpglry_get_default_options();
 				$merged   = array_merge( $defaults, $legacy );
-				update_option( 'cpg_options', $merged );
+				update_option( 'cpglry_options', $merged );
 				// keep the legacy option in place (do not delete automatically)
 				return;
 			}
 		}
 
 		add_action(
-			'update_option_cpg_options',
+			'update_option_cpglry_options',
 			function ( $old_value, $value, $option_name ) {
 				// Only clear if values actually changed
 				if ( $old_value === $value ) {
 					return;
 				}
 
-				// If CPG_Cache exists, call its clear method; otherwise, try to delete a known transient
-				if ( class_exists( 'CPG_Cache' ) && method_exists( 'CPG_Cache', 'clear' ) ) {
-					CPG_Cache::clear();
+				// If cpglry_Cache exists, call its clear method; otherwise, try to delete a known transient
+				if ( class_exists( 'CPGLRY_Cache' ) && method_exists( 'CPGLRY_Cache', 'clear' ) ) {
+					CPGLRY_Cache::clear();
 				} else {
 					// Fallback: remove a known plugin transient prefix if used
 					global $wpdb;
-					// Example: clear any transient beginning with 'cpg_photos_'
+					// Example: clear any transient beginning with 'cpglry_photos_'
                     $wpdb->query( // phpcs:ignore
 						$wpdb->prepare(
 							"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
-							'_transient_cpg_photos_%'
+							'_transient_cpglry_photos_%'
 						)
 					);
 				}
@@ -95,7 +94,7 @@ register_activation_hook(
 		);
 
 		// If nothing to migrate, ensure defaults exist
-		add_option( 'cpg_options', cpg_get_default_options() );
+		add_option( 'cpglry_options', cpglry_get_default_options() );
 	}
 );
 
@@ -105,17 +104,17 @@ register_activation_hook(
  */
 
 add_action(
-	'wp_ajax_wpcpg_clear_cache',
+	'wp_ajax_wpcpglry_clear_cache',
 	function () {
-		check_ajax_referer( 'wpcpg_admin_nonce', 'nonce' );
+		check_ajax_referer( 'wpcpglry_admin_nonce', 'nonce' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( array( 'message' => 'Insufficient permissions' ), 403 );
 		}
 
-		if ( function_exists( 'cpg_clear_photo_cache' ) ) {
+		if ( function_exists( 'cpglry_clear_photo_cache' ) ) {
 			try {
-				cpg_clear_photo_cache();
+				cpglry_clear_photo_cache();
 				wp_send_json_success( array( 'message' => 'Cache cleared' ) );
 			} catch ( Exception $e ) {
 				wp_send_json_error( array( 'message' => 'Error clearing cache: ' . $e->getMessage() ), 500 );
@@ -127,10 +126,10 @@ add_action(
 );
 
 add_action(
-	'wp_ajax_cpg_refresh_preview',
+	'wp_ajax_cpglry_refresh_preview',
 	function () {
 
-		check_ajax_referer( 'wpcpg_admin_nonce', 'nonce' );
+		check_ajax_referer( 'wpcpglry_admin_nonce', 'nonce' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( array( 'message' => 'Insufficient permissions' ), 403 );
@@ -143,7 +142,7 @@ add_action(
 
 		$setting = sanitize_url( wp_unslash( $_POST['settings'] ) );
 		parse_str( $setting, $form_data );
-		$options = $form_data['cpg_options'] ?? array();
+		$options = $form_data['cpglry_options'] ?? array();
 
 		if ( empty( $options['default_user_id'] ) ) {
 			wp_send_json_error( '<div class="cpg-preview-error">Please set a User ID first.</div>' );
@@ -151,7 +150,7 @@ add_action(
 		}
 
 		// Normalize settings with defaults
-		$defaults = cpg_get_default_options();
+		$defaults = cpglry_get_default_options();
 		$options  = wp_parse_args( $options, $defaults );
 
 		// sanitize a couple values we will use
@@ -160,7 +159,7 @@ add_action(
 		$caption_color = sanitize_hex_color( $options['caption_text_color'] ?? $defaults['caption_text_color'] ) ?: $defaults['caption_text_color'];
 
 		// Get one photo for preview
-		$photos = CPG_API::get_photos( $user_id, 1, 3600 );
+		$photos = cpglry_API::get_photos( $user_id, 1, 3600 );
 
 		if ( is_wp_error( $photos ) ) {
 			wp_send_json_error( '<div class="cpg-preview-error">' . esc_html( $photos->get_error_message() ) . '</div>' );
@@ -231,16 +230,16 @@ add_action(
  * Shortcode compatibility:
  * - New shortcode: [cp_gallery]
  * - Legacy shortcode preserved: [wpcontrib_photos] (calls the same handler)
- * Implementation: handler lives in CPG_Frontend class for clean separation.
+ * Implementation: handler lives in CPGLRY_Frontend class for clean separation.
  */
-if ( ! function_exists( 'cpg_shortcode_handler' ) ) {
-	function cpg_shortcode_handler( $atts = array() ) {
+if ( ! function_exists( 'cpglry_shortcode_handler' ) ) {
+	function cpglry_shortcode_handler( $atts = array() ) {
 		// Delegate to class frontend static helper
-		if ( class_exists( 'CPG_Frontend' ) && method_exists( 'CPG_Frontend', 'render_shortcode' ) ) {
-			return CPG_Frontend::render_shortcode( $atts );
+		if ( class_exists( 'CPGLRY_Frontend' ) && method_exists( 'CPGLRY_Frontend', 'render_shortcode' ) ) {
+			return CPGLRY_Frontend::render_shortcode( $atts );
 		}
 		return '';
 	}
 }
-add_shortcode( 'cp_gallery', 'cpg_shortcode_handler' );
-add_shortcode( 'wpcontrib_photos', 'cpg_shortcode_handler' );
+add_shortcode( 'cp_gallery', 'cpglry_shortcode_handler' );
+add_shortcode( 'wpcontrib_photos', 'cpglry_shortcode_handler' );

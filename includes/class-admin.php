@@ -16,12 +16,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * - Shows a one-time settings-page "new shortcode" notice
  * - Provides AJAX handlers to persist dismissals
  */
-class CPG_Admin {
+class CPGLRY_Admin {
 
 	private $options;
 
 	public function __construct() {
-		$this->options = cpg_get_plugin_options();
+		$this->options = cpglry_get_plugin_options();
 
 		add_action( 'admin_menu', array( $this, 'add_admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'admin_init' ) );
@@ -36,9 +36,9 @@ class CPG_Admin {
 		add_action( 'admin_notices', array( $this, 'maybe_show_shortcode_notice' ) );
 
 		// AJAX handlers for dismissible notices
-		add_action( 'wp_ajax_cpg_dismiss_new_shortcode_notice', array( $this, 'ajax_dismiss_new_shortcode_notice' ) );
-		add_action( 'wp_ajax_cpg_dismiss_setup_notice', array( $this, 'ajax_dismiss_setup_notice' ) );
-		add_action( 'wp_ajax_cpg_dismiss_shortcode_notice', array( $this, 'ajax_dismiss_shortcode_notice' ) );
+		add_action( 'wp_ajax_cpglry_dismiss_new_shortcode_notice', array( $this, 'ajax_dismiss_new_shortcode_notice' ) );
+		add_action( 'wp_ajax_cpglry_dismiss_setup_notice', array( $this, 'ajax_dismiss_setup_notice' ) );
+		add_action( 'wp_ajax_cpglry_dismiss_shortcode_notice', array( $this, 'ajax_dismiss_shortcode_notice' ) );
 	}
 
 	/**
@@ -82,11 +82,11 @@ class CPG_Admin {
 	 * Register settings, sections and fields
 	 */
 	public function admin_init() {
-		register_setting( 'cpg_settings', 'cpg_options', array( 'sanitize_callback' => array( $this, 'validate_options' ) ) );
+		register_setting( 'cpglry_settings', 'cpglry_options', array( 'sanitize_callback' => array( $this, 'validate_options' ) ) );
 
-		add_settings_section( 'cpg_main', esc_html__( 'Essential Configuration', 'contributor-photo-gallery' ), array( $this, 'settings_section_callback' ), 'contributor-photo-gallery' );
-		add_settings_section( 'cpg_styling', esc_html__( 'Card Styling & Appearance', 'contributor-photo-gallery' ), array( $this, 'styling_settings_section_callback' ), 'contributor-photo-gallery' );
-		add_settings_section( 'cpg_advanced', esc_html__( 'Display & Performance', 'contributor-photo-gallery' ), array( $this, 'advanced_settings_section_callback' ), 'contributor-photo-gallery' );
+		add_settings_section( 'cpglry_main', esc_html__( 'Essential Configuration', 'contributor-photo-gallery' ), array( $this, 'settings_section_callback' ), 'contributor-photo-gallery' );
+		add_settings_section( 'cpglry_styling', esc_html__( 'Card Styling & Appearance', 'contributor-photo-gallery' ), array( $this, 'styling_settings_section_callback' ), 'contributor-photo-gallery' );
+		add_settings_section( 'cpglry_advanced', esc_html__( 'Display & Performance', 'contributor-photo-gallery' ), array( $this, 'advanced_settings_section_callback' ), 'contributor-photo-gallery' );
 
 		$this->add_settings_fields();
 	}
@@ -109,7 +109,7 @@ class CPG_Admin {
 			'wpcpgAdmin',
 			array(
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
-				'nonce'   => wp_create_nonce( 'wpcpg_admin_nonce' ),
+				'nonce'   => wp_create_nonce( 'wpcpglry_admin_nonce' ),
 			)
 		);
 	}
@@ -118,9 +118,9 @@ class CPG_Admin {
 	 * Show setup notice if user ID is not configured
 	 */
 	public function maybe_show_setup_notice() {
-		$options   = cpg_get_plugin_options();
+		$options   = cpglry_get_plugin_options();
 		$user_id   = isset( $options['default_user_id'] ) ? $options['default_user_id'] : '';
-		$dismissed = get_option( 'cpg_setup_notice_dismissed', 0 );
+		$dismissed = get_option( 'cpglry_setup_notice_dismissed', 0 );
 
 		// Already configured or dismissed → don't show
 		if ( ! empty( $user_id ) || $dismissed ) {
@@ -129,13 +129,13 @@ class CPG_Admin {
 
     $is_settings_page = isset( $_GET['page'] ) && $_GET['page'] === 'contributor-photo-gallery'; // phpcs:ignore
 		$settings_url = esc_url( admin_url( 'admin.php?page=contributor-photo-gallery' ) );
-		$nonce        = wp_create_nonce( 'cpg_setup_nonce' );
+		$nonce        = wp_create_nonce( 'cpglry_setup_nonce' );
 
 		if ( $is_settings_page ) :
 			// --- Your original pretty card (unchanged) — only on Settings page ---
 			?>
 		<div class="cpg-setup-notice-wrapper">
-			<div class="cpg-setup-notice" data-cpg-nonce="<?php echo esc_attr( $nonce ); ?>" data-cpg-action="cpg_dismiss_setup_notice">
+			<div class="cpg-setup-notice" data-cpg-nonce="<?php echo esc_attr( $nonce ); ?>" data-cpg-action="cpglry_dismiss_setup_notice">
 				<div class="cpg-setup-notice-content">
 					<div class="cpg-setup-notice-icon">
 						<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -159,7 +159,7 @@ class CPG_Admin {
 		// --- Core WP notice everywhere else (Dashboard, Plugins, etc.) ---
 		?>
 		<div class="notice notice-info is-dismissible cpg-setup-core"
-			data-cpg-action="cpg_dismiss_setup_notice"
+			data-cpg-action="cpglry_dismiss_setup_notice"
 			data-cpg-nonce="<?php echo esc_attr( $nonce ); ?>">
 			<p>
 				<strong><?php esc_html_e( 'Contributor Photo Gallery', 'contributor-photo-gallery' ); ?>:</strong>
@@ -184,14 +184,14 @@ class CPG_Admin {
 		}
 
 		// Check if user has dismissed this notice
-		$dismissed = get_option( 'cpg_shortcode_notice_dismissed', 0 );
+		$dismissed = get_option( 'cpglry_shortcode_notice_dismissed', 0 );
 		if ( $dismissed ) {
 			return;
 		}
 
 		?>
 		<div class="cpg-shortcode-notice-wrapper">
-			<div class="cpg-shortcode-notice" data-cpg-action="cpg_dismiss_shortcode_notice">
+			<div class="cpg-shortcode-notice" data-cpg-action="cpglry_dismiss_shortcode_notice">
 				<div class="cpg-shortcode-notice-content">
 					<div class="cpg-shortcode-notice-icon">
 						<span class="dashicons dashicons-shortcode"></span>
@@ -220,62 +220,62 @@ class CPG_Admin {
 			'default_user_id'     => array(
 				'title'    => esc_html__( 'User ID', 'contributor-photo-gallery' ),
 				'callback' => array( $this, 'user_id_field_callback' ),
-				'section'  => 'cpg_main',
+				'section'  => 'cpglry_main',
 			),
 			'default_per_page'    => array(
 				'title'    => esc_html__( 'Photos Per Page', 'contributor-photo-gallery' ),
 				'callback' => array( $this, 'per_page_field_callback' ),
-				'section'  => 'cpg_main',
+				'section'  => 'cpglry_main',
 			),
 			'default_columns'     => array(
 				'title'    => esc_html__( 'Grid Layout', 'contributor-photo-gallery' ),
 				'callback' => array( $this, 'columns_field_callback' ),
-				'section'  => 'cpg_main',
+				'section'  => 'cpglry_main',
 			),
 			'card_style'          => array(
 				'title'    => '',
 				'callback' => array( $this, 'card_style_field_callback' ),
-				'section'  => 'cpg_styling',
+				'section'  => 'cpglry_styling',
 			),
 			'card_bg_color'       => array(
 				'title'    => '',
 				'callback' => array( $this, 'card_bg_color_field_callback' ),
-				'section'  => 'cpg_styling',
+				'section'  => 'cpglry_styling',
 			),
 			'card_border_style'   => array(
 				'title'    => '',
 				'callback' => array( $this, 'card_border_style_field_callback' ),
-				'section'  => 'cpg_styling',
+				'section'  => 'cpglry_styling',
 			),
 			'card_shadow_style'   => array(
 				'title'    => '',
 				'callback' => array( $this, 'card_shadow_style_field_callback' ),
-				'section'  => 'cpg_styling',
+				'section'  => 'cpglry_styling',
 			),
 			'show_captions'       => array(
 				'title'    => '',
 				'callback' => array( $this, 'show_captions_field_callback' ),
-				'section'  => 'cpg_styling',
+				'section'  => 'cpglry_styling',
 			),
 			'caption_text_color'  => array(
 				'title'    => '',
 				'callback' => array( $this, 'caption_text_color_field_callback' ),
-				'section'  => 'cpg_styling',
+				'section'  => 'cpglry_styling',
 			),
 			'cache_time'          => array(
 				'title'    => esc_html__( 'Cache Duration', 'contributor-photo-gallery' ),
 				'callback' => array( $this, 'cache_time_field_callback' ),
-				'section'  => 'cpg_advanced',
+				'section'  => 'cpglry_advanced',
 			),
 			'open_in_new_tab'     => array(
 				'title'    => esc_html__( 'Link Behavior', 'contributor-photo-gallery' ),
 				'callback' => array( $this, 'new_tab_field_callback' ),
-				'section'  => 'cpg_advanced',
+				'section'  => 'cpglry_advanced',
 			),
 			'enable_lazy_loading' => array(
 				'title'    => esc_html__( 'Lazy Loading', 'contributor-photo-gallery' ),
 				'callback' => array( $this, 'lazy_loading_field_callback' ),
-				'section'  => 'cpg_advanced',
+				'section'  => 'cpglry_advanced',
 			),
 		);
 
@@ -310,7 +310,7 @@ class CPG_Admin {
 		?>
 		<div class="cpg-field-container">
 			<div class="cpg-input-group">
-				<input type="text" id="default_user_id" name="cpg_options[default_user_id]" value="<?php echo esc_attr( $user_id ); ?>" class="cpg-input-field" placeholder="<?php esc_attr_e( 'e.g., 21053005', 'contributor-photo-gallery' ); ?>" />
+				<input type="text" id="default_user_id" name="cpglry_options[default_user_id]" value="<?php echo esc_attr( $user_id ); ?>" class="cpg-input-field" placeholder="<?php esc_attr_e( 'e.g., 21053005', 'contributor-photo-gallery' ); ?>" />
 				<button type="button" id="user-id-help-btn" class="cpg-help-btn" title="<?php esc_attr_e( 'How to find your User ID', 'contributor-photo-gallery' ); ?>">?</button>
 			</div>
 			<div id="user-id-status" class="cpg-field-status"></div>
@@ -332,7 +332,7 @@ class CPG_Admin {
 					<span id="per_page_display"><?php echo esc_html( $per_page ); ?></span> <?php esc_html_e( 'photos', 'contributor-photo-gallery' ); ?>
 				</div>
 			</div>
-			<input type="hidden" id="default_per_page" name="cpg_options[default_per_page]" value="<?php echo esc_attr( $per_page ); ?>" />
+			<input type="hidden" id="default_per_page" name="cpglry_options[default_per_page]" value="<?php echo esc_attr( $per_page ); ?>" />
 			<p class="cpg-field-desc">
 				<?php esc_html_e( 'Number of photos to display per gallery page.', 'contributor-photo-gallery' ); ?>
 			</p>
@@ -373,7 +373,7 @@ class CPG_Admin {
 			<div class="cpg-columns-grid">
 				<?php foreach ( $column_options as $value => $option ) : ?>
 					<label class="cpg-column-option <?php echo $columns == $value ? 'selected' : ''; ?>" data-value="<?php echo esc_attr( $value ); ?>">
-						<input type="radio" name="cpg_options[default_columns]" value="<?php echo esc_attr( $value ); ?>" <?php checked( $columns, $value ); ?> class="cpg-column-radio" />
+						<input type="radio" name="cpglry_options[default_columns]" value="<?php echo esc_attr( $value ); ?>" <?php checked( $columns, $value ); ?> class="cpg-column-radio" />
 						<div class="cpg-column-card">
 							<div class="cpg-column-label"><?php echo esc_html( $option['label'] ); ?></div>
 							<div class="cpg-column-desc"><?php echo esc_html( $option['desc'] ); ?></div>
@@ -414,7 +414,7 @@ class CPG_Admin {
 			<div class="cpg-style-grid">
 				<?php foreach ( $style_options as $value => $option ) : ?>
 					<label class="cpg-style-option <?php echo $card_style == $value ? 'selected' : ''; ?>">
-						<input type="radio" name="cpg_options[card_style]" value="<?php echo esc_attr( $value ); ?>" <?php checked( $card_style, $value ); ?> />
+						<input type="radio" name="cpglry_options[card_style]" value="<?php echo esc_attr( $value ); ?>" <?php checked( $card_style, $value ); ?> />
 						<div class="cpg-style-card cpg-style-<?php echo esc_attr( $value ); ?>">
 							<div class="cpg-style-preview"></div>
 							<div class="cpg-style-label"><?php echo esc_html( $option['label'] ); ?></div>
@@ -434,7 +434,7 @@ class CPG_Admin {
 		<label class="cpg-label"><?php esc_html_e( 'Background Color', 'contributor-photo-gallery' ); ?></label>
 		<div class="cpg-field-container">
 			<div class="cpg-color-group">
-				<input type="color" id="card_bg_color" name="cpg_options[card_bg_color]" value="<?php echo esc_attr( $bg_color ); ?>" class="cpg-color-picker" />
+				<input type="color" id="card_bg_color" name="cpglry_options[card_bg_color]" value="<?php echo esc_attr( $bg_color ); ?>" class="cpg-color-picker" />
 				<input type="text" id="card_bg_color_text" value="<?php echo esc_attr( $bg_color ); ?>" class="cpg-color-text" placeholder="#ffffff" />
 				<button type="button" class="cpg-color-reset" data-default="#ffffff"><?php esc_html_e( 'Reset', 'contributor-photo-gallery' ); ?></button>
 			</div>
@@ -453,7 +453,7 @@ class CPG_Admin {
 			<div class="cpg-border-controls">
 				<div class="cpg-border-row">
 					<label class="cpg-control-label"><?php esc_html_e( 'Style', 'contributor-photo-gallery' ); ?></label>
-					<select name="cpg_options[card_border_style]" class="cpg-select-field">
+					<select name="cpglry_options[card_border_style]" class="cpg-select-field">
 						<option value="none" <?php selected( $border_style, 'none' ); ?>><?php esc_html_e( 'None', 'contributor-photo-gallery' ); ?></option>
 						<option value="solid" <?php selected( $border_style, 'solid' ); ?>><?php esc_html_e( 'Solid', 'contributor-photo-gallery' ); ?></option>
 						<option value="dashed" <?php selected( $border_style, 'dashed' ); ?>><?php esc_html_e( 'Dashed', 'contributor-photo-gallery' ); ?></option>
@@ -463,13 +463,13 @@ class CPG_Admin {
 				<div class="cpg-border-row">
 					<label class="cpg-control-label"><?php esc_html_e( 'Width', 'contributor-photo-gallery' ); ?></label>
 					<div class="cpg-number-input-group">
-						<input type="number" name="cpg_options[card_border_width]" min="0" max="10" value="<?php echo esc_attr( $border_width ); ?>" class="cpg-number-input" />
+						<input type="number" name="cpglry_options[card_border_width]" min="0" max="10" value="<?php echo esc_attr( $border_width ); ?>" class="cpg-number-input" />
 						<span class="cpg-input-suffix">px</span>
 					</div>
 				</div>
 				<div class="cpg-border-row">
 					<label class="cpg-control-label"><?php esc_html_e( 'Color', 'contributor-photo-gallery' ); ?></label>
-					<input type="color" name="cpg_options[card_border_color]" value="<?php echo esc_attr( $border_color ); ?>" class="cpg-color-picker cpg-border-color-picker" />
+					<input type="color" name="cpglry_options[card_border_color]" value="<?php echo esc_attr( $border_color ); ?>" class="cpg-color-picker cpg-border-color-picker" />
 				</div>
 			</div>
 			<p class="cpg-field-desc"><?php esc_html_e( 'Customize border appearance of cards.', 'contributor-photo-gallery' ); ?></p>
@@ -506,7 +506,7 @@ class CPG_Admin {
 				foreach ( $shadow_options as $value => $option ) :
 					?>
 					<label class="cpg-shadow-option cpg-shadow-<?php echo esc_attr( $value ); ?> <?php echo $shadow_style === $value ? 'selected' : ''; ?>">
-						<input type="radio" name="cpg_options[card_shadow_style]" value="<?php echo esc_attr( $value ); ?>" <?php checked( $shadow_style, $value ); ?> />
+						<input type="radio" name="cpglry_options[card_shadow_style]" value="<?php echo esc_attr( $value ); ?>" <?php checked( $shadow_style, $value ); ?> />
 						<div class="cpg-shadow-chip"></div>
 						<div class="cpg-shadow-info">
 							<span class="cpg-shadow-label"><?php echo esc_html( $option['label'] ); ?></span>
@@ -533,9 +533,9 @@ class CPG_Admin {
 		?>
 		<label class="cpg-label"><?php esc_html_e( 'Photo Captions', 'contributor-photo-gallery' ); ?></label>
 		<div class="cpg-field-container">
-			<input type="hidden" name="cpg_options[show_captions]" value="0" />
+			<input type="hidden" name="cpglry_options[show_captions]" value="0" />
 			<label class="cpg-toggle-container">
-				<input type="checkbox" id="show_captions" name="cpg_options[show_captions]" value="1" <?php checked( $show_captions, 1 ); ?> />
+				<input type="checkbox" id="show_captions" name="cpglry_options[show_captions]" value="1" <?php checked( $show_captions, 1 ); ?> />
 				<span class="cpg-toggle-slider"></span>
 				<span class="cpg-toggle-label"><?php esc_html_e( 'Display captions on cards', 'contributor-photo-gallery' ); ?></span>
 			</label>
@@ -550,7 +550,7 @@ class CPG_Admin {
 		<label class="cpg-label"><?php esc_html_e( 'Caption Text Color', 'contributor-photo-gallery' ); ?></label>
 		<div class="cpg-field-container">
 			<div class="cpg-color-group">
-				<input type="color" id="caption_text_color" name="cpg_options[caption_text_color]" value="<?php echo esc_attr( $color ); ?>" class="cpg-color-picker" />
+				<input type="color" id="caption_text_color" name="cpglry_options[caption_text_color]" value="<?php echo esc_attr( $color ); ?>" class="cpg-color-picker" />
 				<input type="text" id="caption_text_color_text" value="<?php echo esc_attr( $color ); ?>" class="cpg-color-text" />
 			</div>
 			<p class="cpg-field-desc"><?php esc_html_e( 'Customize caption font color for better contrast or branding.', 'contributor-photo-gallery' ); ?></p>
@@ -571,7 +571,7 @@ class CPG_Admin {
 		);
 		?>
 		<div class="cpg-field-container">
-			<select id="cache_time" name="cpg_options[cache_time]" class="cpg-select-field">
+			<select id="cache_time" name="cpglry_options[cache_time]" class="cpg-select-field">
 				<?php foreach ( $options as $value => $label ) : ?>
 					<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $cache_time, $value ); ?>><?php echo esc_html( $label ); ?></option>
 				<?php endforeach; ?>
@@ -585,9 +585,9 @@ class CPG_Admin {
 		$checked = isset( $this->options['open_in_new_tab'] ) ? $this->options['open_in_new_tab'] : 1;
 		?>
 		<div class="cpg-field-container">
-			<input type="hidden" name="cpg_options[open_in_new_tab]" value="0" />
+			<input type="hidden" name="cpglry_options[open_in_new_tab]" value="0" />
 			<label class="cpg-toggle-container">
-				<input type="checkbox" id="open_in_new_tab" name="cpg_options[open_in_new_tab]" value="1" <?php checked( $checked, 1 ); ?> />
+				<input type="checkbox" id="open_in_new_tab" name="cpglry_options[open_in_new_tab]" value="1" <?php checked( $checked, 1 ); ?> />
 				<span class="cpg-toggle-slider"></span>
 				<span class="cpg-toggle-label"><?php esc_html_e( 'Open links in new tab', 'contributor-photo-gallery' ); ?></span>
 			</label>
@@ -600,9 +600,9 @@ class CPG_Admin {
 		$checked = isset( $this->options['enable_lazy_loading'] ) ? $this->options['enable_lazy_loading'] : 1;
 		?>
 		<div class="cpg-field-container">
-			<input type="hidden" name="cpg_options[enable_lazy_loading]" value="0" />
+			<input type="hidden" name="cpglry_options[enable_lazy_loading]" value="0" />
 			<label class="cpg-toggle-container">
-				<input type="checkbox" id="enable_lazy_loading" name="cpg_options[enable_lazy_loading]" value="1" <?php checked( $checked, 1 ); ?> />
+				<input type="checkbox" id="enable_lazy_loading" name="cpglry_options[enable_lazy_loading]" value="1" <?php checked( $checked, 1 ); ?> />
 				<span class="cpg-toggle-slider"></span>
 				<span class="cpg-toggle-label"><?php esc_html_e( 'Enable performance optimization', 'contributor-photo-gallery' ); ?></span>
 			</label>
@@ -617,7 +617,7 @@ class CPG_Admin {
 		------------------------- */
 	public function validate_options( $input ) {
 		if ( ! is_array( $input ) ) {
-			return cpg_get_default_options();
+			return cpglry_get_default_options();
 		}
 
 		$validated = array();
@@ -644,7 +644,7 @@ class CPG_Admin {
 		$validated['open_in_new_tab']     = ! empty( $input['open_in_new_tab'] ) ? 1 : 0;
 		$validated['enable_lazy_loading'] = ! empty( $input['enable_lazy_loading'] ) ? 1 : 0;
 
-		add_settings_error( 'cpg_options', 'settings_saved', esc_html__( 'Settings saved successfully!', 'contributor-photo-gallery' ), 'updated' );
+		add_settings_error( 'cpglry_options', 'settings_saved', esc_html__( 'Settings saved successfully!', 'contributor-photo-gallery' ), 'updated' );
 
 		// update local copy so the page reflects changes immediately after save
 		$this->options = $validated;
@@ -657,7 +657,7 @@ class CPG_Admin {
 	 */
 	public function settings_page() {
 		// Provide the notice flag to the template
-		$notice_shown = get_option( 'cpg_new_shortcode_notice_shown', 0 );
+		$notice_shown = get_option( 'cpglry_new_shortcode_notice_shown', 0 );
 		include CPGLRY_PLUGIN_PATH . 'templates/admin/settings-page.php';
 	}
 
@@ -665,13 +665,13 @@ class CPG_Admin {
 	 * AJAX: dismiss the one-time new-shortcode notice (settings-page notice)
 	 */
 	public function ajax_dismiss_new_shortcode_notice() {
-		check_ajax_referer( 'wpcpg_admin_nonce', 'nonce' );
+		check_ajax_referer( 'wpcpglry_admin_nonce', 'nonce' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( array( 'message' => 'Permission denied' ), 403 );
 		}
 
-		update_option( 'cpg_new_shortcode_notice_shown', 1 );
+		update_option( 'cpglry_new_shortcode_notice_shown', 1 );
 		wp_send_json_success( array( 'message' => 'Notice dismissed' ) );
 	}
 
@@ -679,14 +679,14 @@ class CPG_Admin {
 	 * AJAX: dismiss the site-wide setup notice
 	 */
 	public function ajax_dismiss_setup_notice() {
-		check_ajax_referer( 'cpg_setup_nonce', 'nonce' );
+		check_ajax_referer( 'cpglry_setup_nonce', 'nonce' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( array( 'message' => 'Permission denied' ), 403 );
 		}
 
 		// Persist dismissal globally (use update_user_meta if you prefer per-user)
-		update_option( 'cpg_setup_notice_dismissed', 1 );
+		update_option( 'cpglry_setup_notice_dismissed', 1 );
 		wp_send_json_success( array( 'message' => 'Setup notice dismissed' ) );
 	}
 
@@ -694,13 +694,13 @@ class CPG_Admin {
 	 * AJAX: dismiss the shortcode update notice
 	 */
 	public function ajax_dismiss_shortcode_notice() {
-		check_ajax_referer( 'wpcpg_admin_nonce', 'nonce' );
+		check_ajax_referer( 'wpcpglry_admin_nonce', 'nonce' );
 
 		if ( ! current_user_can( 'manage_options' ) ) {
 			wp_send_json_error( array( 'message' => 'Permission denied' ), 403 );
 		}
 
-		update_option( 'cpg_shortcode_notice_dismissed', 1 );
+		update_option( 'cpglry_shortcode_notice_dismissed', 1 );
 		wp_send_json_success( array( 'message' => 'Shortcode notice dismissed' ) );
 	}
 }

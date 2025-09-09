@@ -3,9 +3,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-// expects $photos, $options (fallback cpg_get_plugin_options), and $atts passed from renderer
+// expects $photos, $options (fallback cpglry_get_plugin_options), and $atts passed from renderer
 if ( ! isset( $options ) ) {
-	$options = cpg_get_plugin_options();
+	$options = cpglry_get_plugin_options();
 }
 if ( ! isset( $photos ) || ! is_array( $photos ) ) {
 	$photos = array();

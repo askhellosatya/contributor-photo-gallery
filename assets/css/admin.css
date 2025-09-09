@@ -855,7 +855,7 @@
 /* Enhanced Preview Image */
 .cpg-preview-wrapper img {
   max-width: 100%;
-  max-height: 280px;
+  max-height: 200px;
   width: auto;
   height: auto;
   object-fit: cover;
@@ -2132,11 +2132,8 @@ body.wpcpg-modal-open {
 
 /* ====== SETUP NOTICE STYLING ====== */
 .cpg-setup-notice-wrapper {
-    margin-top: 40px;
-    margin-right: 20px;
-    /* padding: 0 20px;
-    position: relative;
-    z-index: 999999; */
+    margin: 5px 15px 2px;
+    padding: 1px 0;
 }
 
 .cpg-setup-notice {
@@ -2156,13 +2153,6 @@ body.wpcpg-modal-open {
     visibility: visible !important;
 }
 
-/* Debug: Force notice to be visible */
-/* .cpg-setup-notice-wrapper {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-} */
-
 /* Ensure notices appear in the right location */
 .wp-header-end + .cpg-setup-notice-wrapper,
 .wp-header-end + .cpg-shortcode-notice-wrapper {
@@ -2178,8 +2168,8 @@ body.wpcpg-modal-open {
 .cpg-setup-notice-content {
     display: flex;
     align-items: center;
-    padding: 12px 16px;
-    gap: 16px;
+    padding: 12px;
+    gap: 14px;
 }
 
 .cpg-setup-notice-icon {
@@ -2262,8 +2252,8 @@ body.wpcpg-modal-open {
 
 /* ====== SHORTCODE NOTICE STYLING ====== */
 .cpg-shortcode-notice-wrapper {
-    margin: 20px 0;
-    padding: 0 20px;
+    margin: 5px 15px 2px;
+    padding: 1px 0;
 }
 
 .cpg-shortcode-notice {
@@ -2283,8 +2273,8 @@ body.wpcpg-modal-open {
 .cpg-shortcode-notice-content {
     display: flex;
     align-items: center;
-    padding: 12px 16px;
-    gap: 16px;
+    padding: 12px;
+    gap: 14px;
 }
 
 .cpg-shortcode-notice-icon {
