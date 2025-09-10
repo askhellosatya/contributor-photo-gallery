@@ -18,9 +18,9 @@
   });
 
   // Debug toggle (false in production)
-  var cpglry_DEBUG = false;
+  var CPGLRY_DEBUG = false;
   function cpgLog() {
-    if (cpglry_DEBUG && window.console) console.log.apply(console, arguments);
+    if (CPGLRY_DEBUG && window.console) console.log.apply(console, arguments);
   }
 
   // Debounce helper for preview requests
