@@ -159,7 +159,7 @@ add_action(
 		$caption_color = sanitize_hex_color( $options['caption_text_color'] ?? $defaults['caption_text_color'] ) ?: $defaults['caption_text_color'];
 
 		// Get one photo for preview
-		$photos = cpglry_API::get_photos( $user_id, 1, 3600 );
+		$photos = CPGLRY_API::get_photos( $user_id, 1, 3600 );
 
 		if ( is_wp_error( $photos ) ) {
 			wp_send_json_error( '<div class="cpg-preview-error">' . esc_html( $photos->get_error_message() ) . '</div>' );
