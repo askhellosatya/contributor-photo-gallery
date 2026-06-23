@@ -25,6 +25,7 @@ Built for photographers, agencies, and community contributors who want polished 
 - [📋 Changelog](#-changelog)
 - [🤝 Contributors](#-contributors)
 - [💡 Contributing & Support](#-contributing--support)
+- [🛠️ Development Setup](#-development-setup)
 - [📄 License](#-license)
 - [💝 Show Your Appreciation](#-show-your-appreciation)
 
@@ -197,7 +198,7 @@ Maintainer: [Satyam Vishwakarma](https://satyamvishwakarma.com)
 
 ---
 
-## Development Setup
+## 🛠️ Development Setup
 
 This repository includes a Docker-based local development environment for contributors.
 
