@@ -310,13 +310,17 @@ class CPGLRY_Admin {
 		?>
 		<div class="cpg-field-container">
 			<div class="cpg-input-group">
-				<input type="text" id="default_user_id" name="cpglry_options[default_user_id]" value="<?php echo esc_attr( $user_id ); ?>" class="cpg-input-field" placeholder="<?php esc_attr_e( 'e.g., 21053005', 'contributor-photo-gallery' ); ?>" />
+				<input type="text" id="default_user_id" name="cpglry_options[default_user_id]" value="<?php echo esc_attr( $user_id ); ?>" class="cpg-input-field" placeholder="<?php esc_attr_e( 'e.g., hellosatya OR 21053005', 'contributor-photo-gallery' ); ?>" />
 				<button type="button" id="user-id-help-btn" class="cpg-help-btn" title="<?php esc_attr_e( 'How to find your User ID', 'contributor-photo-gallery' ); ?>">?</button>
 			</div>
 			<div id="user-id-status" class="cpg-field-status"></div>
 			<p class="cpg-field-desc">
-				<?php esc_html_e( 'Your unique contributor numeric ID from WordPress.org profile.', 'contributor-photo-gallery' ); ?>
+				<?php esc_html_e( 'Enter your WordPress.org username or contributor User ID.', 'contributor-photo-gallery' ); ?>
 				<a href="#" id="user-id-guide-toggle" class="cpg-help-link"><?php esc_html_e( 'Need help? →', 'contributor-photo-gallery' ); ?></a>
+				<br>
+				<small>
+					<?php esc_html_e( 'If you enter a WordPress.org username, it will be automatically converted to the corresponding User ID when saved.', 'contributor-photo-gallery' ); ?>
+				</small>
 			</p>
 		</div>
 		<?php
@@ -623,7 +627,19 @@ class CPGLRY_Admin {
 		$validated = array();
 
 		// Essential
-		$validated['default_user_id']  = sanitize_text_field( $input['default_user_id'] ?? '' );
+		$value = sanitize_text_field( $input['default_user_id'] ?? '' );
+
+		if ( is_numeric( $value ) ) {
+			$validated['default_user_id'] = absint( $value );
+		} else {
+			$user_id = CPGLRY_API::get_photo_directory_user_id( $value );
+			if ( $user_id ) {
+				$validated['default_user_id'] = $user_id;
+			} else {
+				$validated['default_user_id'] = '';
+			}
+		}
+
 		$validated['default_per_page'] = max( 1, min( 50, absint( $input['default_per_page'] ?? 12 ) ) );
 		$validated['default_columns']  = max( 1, min( 6, absint( $input['default_columns'] ?? 4 ) ) );
 

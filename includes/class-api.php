@@ -30,4 +30,50 @@ class CPGLRY_API {
 		set_transient( $cache_key, $photos, $cache_time );
 		return $photos;
 	}
+
+	/**
+	 * Get WordPress.org photo directory user ID.
+	 *
+	 * @param string $username Username.
+	 * @return int|false
+	 */
+	public static function get_photo_directory_user_id( $username ) {
+
+        $transient_key = 'cpglry_author_id_' . $username;
+
+        $user_id = get_transient( $transient_key );
+
+        if ( false !== $user_id ) {
+            return $user_id;
+        }
+
+        $response = wp_remote_get(
+            'https://wordpress.org/photos/author/' . $username . '/'
+        );
+
+        if ( is_wp_error( $response ) ) {
+            return false;
+        }
+
+        $content = wp_remote_retrieve_body( $response );
+
+        preg_match(
+            '/<body.*class=".*author-(\d+).*">/i',
+            $content,
+            $matches
+        );
+
+        if ( ! empty( $matches[1] ) ) {
+            set_transient(
+                $transient_key,
+                $matches[1],
+                WEEK_IN_SECONDS
+            );
+
+            return absint( $matches[1] );
+        }
+
+        return false;
+    }
+
 }
