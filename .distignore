@@ -18,3 +18,21 @@ phpunit.xml.dist
 
 composer.lock
 package-lock.json
+
+vendor/bin
+
+.editorconfig
+.eslintrc
+.prettierrc
+.stylelintrc
+phpcs.xml
+phpcs.xml.dist
+phpstan.neon
+phpstan.neon.dist
+
+.DS_Store
+Thumbs.db
+
+*.log
+*.sql
+*.sqlite
