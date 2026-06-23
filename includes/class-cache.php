@@ -1,4 +1,10 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+
 class CPGLRY_Cache {
 
 	public static function clear() {

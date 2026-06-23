@@ -396,9 +396,20 @@
     var $previewCard = $(".cpg-preview-card");
     if ($userIdField.length === 0) return;
 
-    function validateUserId(userId) {
-      var numericRegex = /^[1-9]\d{0,9}$/;
-      return numericRegex.test(userId);
+    function validateUserId(value) {
+        value = value.trim();
+
+        // Numeric User ID
+        if (/^[1-9]\d{0,9}$/.test(value)) {
+            return true;
+        }
+
+        // WordPress.org username
+        if (/^[a-z0-9]+$/.test(value)) {
+            return true;
+        }
+
+        return false;
     }
 
     function updateValidationStatus(isValid, message, type) {
@@ -426,11 +437,15 @@
         return;
       }
       if (validateUserId(userId)) {
-        updateValidationStatus(true, "Valid User ID format", "valid");
+        updateValidationStatus(
+          true,
+          "Valid WordPress.org username or User ID",
+          "valid"
+        );
       } else {
         updateValidationStatus(
           false,
-          "User ID must be numeric, greater than 0, and up to 10 digits",
+          "Enter a valid WordPress.org username or User ID (must be numeric, greater than 0, and up to 10 digits).",
           "invalid"
         );
       }

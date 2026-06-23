@@ -25,6 +25,7 @@ Built for photographers, agencies, and community contributors who want polished 
 - [📋 Changelog](#-changelog)
 - [🤝 Contributors](#-contributors)
 - [💡 Contributing & Support](#-contributing--support)
+- [🤝 Development Setup](#-development-setup)
 - [📄 License](#-license)
 - [💝 Show Your Appreciation](#-show-your-appreciation)
 
@@ -194,6 +195,31 @@ Thanks to all contributors, testers, and reviewers:
 - Discussions: https://github.com/askhellosatya/contributor-photo-gallery/discussions  
 
 Maintainer: [Satyam Vishwakarma](https://satyamvishwakarma.com) 
+
+---
+
+## 🤝 Development Setup
+
+This repository includes a Docker-based local development environment for contributors.
+
+### Start the development environment
+
+```bash
+docker compose up -d
+```
+
+After the containers start:
+
+* WordPress: http://localhost:8000
+* phpMyAdmin: http://localhost:8080
+
+### Need help with Docker?
+
+If you're new to Docker or need help installing Docker Desktop, please refer to the official Docker documentation:
+
+https://docs.docker.com/get-started/
+
+For WordPress plugin contributors, Docker provides a quick way to run a clean WordPress installation with this plugin already mounted and ready for development.
 
 ---
 
