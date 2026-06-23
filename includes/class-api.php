@@ -1,4 +1,9 @@
 <?php
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class CPGLRY_API {
 
 	public static function get_photos( $user_id, $per_page, $cache_time ) {
