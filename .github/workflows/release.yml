@@ -1,0 +1,44 @@
+name: Build Plugin Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Determine Plugin Slug
+        id: plugin
+        run: |
+          SLUG=$(basename $GITHUB_REPOSITORY)
+          echo "slug=$SLUG" >> $GITHUB_OUTPUT
+
+      - name: Build Release Package
+        run: |
+          SLUG=${{ steps.plugin.outputs.slug }}
+
+          mkdir -p release/$SLUG
+
+          rsync -av . release/$SLUG/ \
+            --exclude-from='.distignore' \
+            --exclude='.git/' \
+            --exclude='release' \
+            --exclude='*.zip'
+
+          cd release
+          zip -r ../${SLUG}.zip $SLUG
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.plugin.outputs.slug }}.zip
+          generate_release_notes: true
