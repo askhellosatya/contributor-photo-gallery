@@ -197,6 +197,31 @@ Maintainer: [Satyam Vishwakarma](https://satyamvishwakarma.com)
 
 ---
 
+## Development Setup
+
+This repository includes a Docker-based local development environment for contributors.
+
+### Start the development environment
+
+```bash
+docker compose up -d
+```
+
+After the containers start:
+
+* WordPress: http://localhost:8000
+* phpMyAdmin: http://localhost:8080
+
+### Need help with Docker?
+
+If you're new to Docker or need help installing Docker Desktop, please refer to the official Docker documentation:
+
+https://docs.docker.com/get-started/
+
+For WordPress plugin contributors, Docker provides a quick way to run a clean WordPress installation with this plugin already mounted and ready for development.
+
+---
+
 ## 📄 License
 
 Contributor Photo Gallery is licensed under the **GPL v2 or later** — see [LICENSE](LICENSE).  
