@@ -50,41 +50,41 @@ class CPGLRY_Frontend {
 
 	/**
 	 * Static helper used by the global shortcode handler in the main plugin file.
-	 * Renders the gallery using templates/grid.php which expects $photos and $options.
+	 * Renders the gallery using templates/grid.php which expects $cpglry_photos and $cpglry_options.
 	 */
 	public static function render_shortcode( $atts = array() ) {
-		$options = cpglry_get_plugin_options();
+		$cpglry_options = cpglry_get_plugin_options();
 
 		// shortcode attrs override options
 		$atts = shortcode_atts(
 			array(
-				'per_page' => $options['default_per_page'],
-				'columns'  => $options['default_columns'],
-				'user_id'  => $options['default_user_id'],
+				'per_page' => $cpglry_options['default_per_page'],
+				'columns'  => $cpglry_options['default_columns'],
+				'user_id'  => $cpglry_options['default_user_id'],
 			),
 			$atts,
 			'cp_gallery'
 		);
 
-		$user_id  = sanitize_text_field( $atts['user_id'] ?: $options['default_user_id'] );
+		$user_id  = sanitize_text_field( $atts['user_id'] ?: $cpglry_options['default_user_id'] );
 		$per_page = max( 1, min( 50, intval( $atts['per_page'] ) ) );
 		// Ensure columns is a proper integer and in allowed range
-		$columns = max( 1, min( 6, intval( $atts['columns'] ?? $options['default_columns'] ) ) );
+		$columns = max( 1, min( 6, intval( $atts['columns'] ?? $cpglry_options['default_columns'] ) ) );
 
 		if ( empty( $user_id ) ) {
 			return '<div class="cpg-shortcode-error">Please configure a User ID in the plugin settings.</div>';
 		}
 
-		$photos = CPGLRY_API::get_photos( $user_id, $per_page, $options['cache_time'] );
+		$cpglry_photos = CPGLRY_API::get_photos( $user_id, $per_page, $cpglry_options['cache_time'] );
 
-		if ( is_wp_error( $photos ) ) {
-			return '<div class="cpg-shortcode-error">' . esc_html( $photos->get_error_message() ) . '</div>';
+		if ( is_wp_error( $cpglry_photos ) ) {
+			return '<div class="cpg-shortcode-error">' . esc_html( $cpglry_photos->get_error_message() ) . '</div>';
 		}
 
 		// Ensure template receives the resolved $atts['columns'] as integer
 		$atts['columns'] = $columns;
 
-		// Load the grid template - it uses $photos, $options and $atts
+		// Load the grid template - it uses $cpglry_photos, $cpglry_options and $atts
 		ob_start();
 		include CPGLRY_PLUGIN_PATH . 'templates/grid.php';
 		return ob_get_clean();

@@ -3,7 +3,7 @@
 
 Tags: gallery, photography, portfolio, shortcode, responsive  
 Requires at least: 5.8  
-Tested up to: 6.8  
+Tested up to: 7.0  
 Stable tag: 2.5.1  
 
 Showcase your [WordPress.org/photos](https://wordpress.org/photos/) contributions in beautiful, responsive, and SEO-friendly galleries.  
