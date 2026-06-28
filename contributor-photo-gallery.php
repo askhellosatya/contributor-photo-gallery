@@ -5,7 +5,7 @@
  * Description: Showcase your contributions to WordPress.org/photos with elegant and responsive photo galleries.
  * Version: 2.5.1
  * Requires at least: 5.8
- * Tested up to: 6.8
+ * Tested up to: 7.0
  * Requires PHP: 7.4
  * Author: Satyam Vishwakarma
  * Author URI: https://satyamvishwakarma.com

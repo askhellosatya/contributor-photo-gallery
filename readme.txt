@@ -3,7 +3,7 @@ Contributors: hellosatya, bhargavbhandari90, sajidansari65, phantomcluster
 Tags: gallery, photography, portfolio, shortcode, responsive
 Donate link: https://paypal.me/hellosatya
 Requires at least: 5.8  
-Tested up to: 6.8  
+Tested up to: 7.0  
 Stable tag: 2.5.1  
 Requires PHP: 7.4  
 License: GPLv2 or later  

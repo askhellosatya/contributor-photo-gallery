@@ -3,13 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-$options             = cpglry_get_plugin_options();
-$user_id             = isset( $options['default_user_id'] ) ? $options['default_user_id'] : '';
-$per_page            = isset( $options['default_per_page'] ) ? $options['default_per_page'] : 12;
-$columns             = isset( $options['default_columns'] ) ? $options['default_columns'] : 4;
-$cache_time          = isset( $options['cache_time'] ) ? $options['cache_time'] : 3600;
-$open_in_new_tab     = ! empty( $options['open_in_new_tab'] );
-$enable_lazy_loading = ! empty( $options['enable_lazy_loading'] );
+$cpglry_options = cpglry_get_plugin_options();
 ?>
 <div class="cpg-admin-container">
 	<div class="cpg-header">
@@ -72,7 +66,7 @@ $enable_lazy_loading = ! empty( $options['enable_lazy_loading'] );
 		<!-- RIGHT PANEL: Sidebar (preview, examples, tools) -->
 		<div class="cpg-sidebar">
 			<!-- Gallery Preview Card -->
-			<?php if ( ! empty( $options['default_user_id'] ) ) : ?>
+			<?php if ( ! empty( $cpglry_options['default_user_id'] ) ) : ?>
 				<div class="cpg-card cpg-preview-card">
 					<div class="cpg-card-header">
 						<h3>Gallery Preview</h3>
@@ -99,23 +93,23 @@ $enable_lazy_loading = ! empty( $options['enable_lazy_loading'] );
 				</div>
 				<div class="cpg-card-content">
 					<?php
-					$examples = array(
+					$cpglry_examples = array(
 						array( 'Portfolio Showcase', 'Professional portfolios', '[cp_gallery per_page="20" columns="4"]' ),
 						array( 'About Page Integration', 'Personal branding', '[cp_gallery per_page="12" columns="3"]' ),
 						array( 'Blog Enhancement', 'Content creation', '[cp_gallery per_page="6" columns="2"]' ),
 						array( 'Sidebar Widget', 'Ongoing showcase', '[cp_gallery per_page="4" columns="1"]' ),
 						array( 'Default Settings', 'Uses configured settings', '[cp_gallery]' ),
 					);
-					foreach ( $examples as $ex ) :
+					foreach ( $cpglry_examples as $cpglry_example ) :
 						?>
 						<div class="cpg-example-item">
 							<div class="cpg-example-header">
-								<strong><?php echo esc_html( $ex[0] ); ?></strong>
-								<small><?php echo esc_html( $ex[1] ); ?></small>
+								<strong><?php echo esc_html( $cpglry_example[0] ); ?></strong>
+								<small><?php echo esc_html( $cpglry_example[1] ); ?></small>
 							</div>
 							<div class="cpg-code-block">
-								<code><?php echo esc_html( $ex[2] ); ?></code>
-								<button type="button" class="cpg-copy-btn" data-code="<?php echo esc_attr( $ex[2] ); ?>" aria-label="Copy shortcode to clipboard">Copy</button>
+								<code><?php echo esc_html( $cpglry_example[2] ); ?></code>
+								<button type="button" class="cpg-copy-btn" data-code="<?php echo esc_attr( $cpglry_example[2] ); ?>" aria-label="Copy shortcode to clipboard">Copy</button>
 							</div>
 						</div>
 					<?php endforeach; ?>

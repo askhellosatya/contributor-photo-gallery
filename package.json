@@ -1,0 +1,8 @@
+{
+  "name": "contributor-photo-gallery",
+  "private": true,
+  "description": "Showcase your contributions to WordPress.org/photos with elegant and responsive photo galleries.",
+  "scripts": {
+    "plugin-zip": "cd .. && rm -f contributor-photo-gallery.zip && zip -r contributor-photo-gallery.zip contributor-photo-gallery -x '*node_modules*' '*.git*' '*.docker*' '*docker-compose.yml*' '*.env*' '*package*.json*' '*.md' '*phpcs.xml*' '*.distignore*'"
+  }
+}
