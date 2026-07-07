@@ -59,7 +59,7 @@ Built for photographers, agencies, and community contributors who want polished 
 3. Adjust styling: card type, captions, borders, shadows, colors.  
 4. Save changes and preview instantly in the admin.  
 
-![Settings Page](https://github.com/user-attachments/assets/cfa8267f-d50a-45b8-a4a5-8842cf6d454a)
+![Settings Page](https://github.com/user-attachments/assets/7ec490a0-94a2-48b5-ae32-55616c380168)
 
 ---
 
