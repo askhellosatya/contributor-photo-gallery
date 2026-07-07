@@ -3,14 +3,14 @@
  * Plugin Name: Contributor Photo Gallery
  * Plugin URI: https://wordpress.org/plugins/contributor-photo-gallery/  
  * Description: Showcase your contributions to WordPress.org/photos with elegant and responsive photo galleries.
- * Version: 2.5.1
+ * Version: 2.6.1
  * Requires at least: 5.8
  * Tested up to: 7.0
- * Requires PHP: 7.4
+ * Requires PHP: 8.0
  * Author: Satyam Vishwakarma
  * Author URI: https://satyamvishwakarma.com
- * License: GPL v2 or later
- * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * License: GPL v3
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain: contributor-photo-gallery
  * Domain Path: /languages
  *
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'CPGLRY_VERSION', '2.5.1' );
+define( 'CPGLRY_VERSION', '2.6.1' );
 define( 'CPGLRY_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'CPGLRY_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
