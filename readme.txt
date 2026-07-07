@@ -109,7 +109,7 @@ No. It is optimized with:
 
 == Screenshots ==
 
-1. Plugin settings page with live preview and style controls
+1. Plugin settings page with username/user ID field
 2. Modern card style display on the frontend
 3. Polaroid card style display on the frontend
 4. Circle card style display on the frontend
