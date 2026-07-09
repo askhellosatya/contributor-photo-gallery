@@ -13,90 +13,84 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
-class LogicalOperatorSpacingSniff implements Sniff
-{
-
-    /**
-     * A list of tokenizers this sniff supports.
-     *
-     * @var array
-     */
-    public $supportedTokenizers = [
-        'PHP',
-        'JS',
-    ];
+class LogicalOperatorSpacingSniff implements Sniff {
 
 
-    /**
-     * Returns an array of tokens this test wants to listen for.
-     *
-     * @return array<int|string>
-     */
-    public function register()
-    {
-        return Tokens::$booleanOperators;
-
-    }//end register()
-
-
-    /**
-     * Processes this sniff, when one of its tokens is encountered.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The current file being checked.
-     * @param int                         $stackPtr  The position of the current token
-     *                                               in the stack passed in $tokens.
-     *
-     * @return void
-     */
-    public function process(File $phpcsFile, $stackPtr)
-    {
-        $tokens = $phpcsFile->getTokens();
-
-        // Check there is one space before the operator.
-        if ($tokens[($stackPtr - 1)]['code'] !== T_WHITESPACE) {
-            $error = 'Expected 1 space before logical operator; 0 found';
-            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NoSpaceBefore');
-            if ($fix === true) {
-                $phpcsFile->fixer->addContentBefore($stackPtr, ' ');
-            }
-        } else {
-            $prev = $phpcsFile->findPrevious(T_WHITESPACE, ($stackPtr - 1), null, true);
-            if ($tokens[$stackPtr]['line'] === $tokens[$prev]['line']
-                && $tokens[($stackPtr - 1)]['length'] !== 1
-            ) {
-                $found = $tokens[($stackPtr - 1)]['length'];
-                $error = 'Expected 1 space before logical operator; %s found';
-                $data  = [$found];
-                $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'TooMuchSpaceBefore', $data);
-                if ($fix === true) {
-                    $phpcsFile->fixer->replaceToken(($stackPtr - 1), ' ');
-                }
-            }
-        }
-
-        // Check there is one space after the operator.
-        if ($tokens[($stackPtr + 1)]['code'] !== T_WHITESPACE) {
-            $error = 'Expected 1 space after logical operator; 0 found';
-            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NoSpaceAfter');
-            if ($fix === true) {
-                $phpcsFile->fixer->addContent($stackPtr, ' ');
-            }
-        } else {
-            $next = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
-            if ($tokens[$stackPtr]['line'] === $tokens[$next]['line']
-                && $tokens[($stackPtr + 1)]['length'] !== 1
-            ) {
-                $found = $tokens[($stackPtr + 1)]['length'];
-                $error = 'Expected 1 space after logical operator; %s found';
-                $data  = [$found];
-                $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'TooMuchSpaceAfter', $data);
-                if ($fix === true) {
-                    $phpcsFile->fixer->replaceToken(($stackPtr + 1), ' ');
-                }
-            }
-        }
-
-    }//end process()
+	/**
+	 * A list of tokenizers this sniff supports.
+	 *
+	 * @var array
+	 */
+	public $supportedTokenizers = array(
+		'PHP',
+		'JS',
+	);
 
 
+	/**
+	 * Returns an array of tokens this test wants to listen for.
+	 *
+	 * @return array<int|string>
+	 */
+	public function register() {
+		return Tokens::$booleanOperators;
+	}//end register()
+
+
+	/**
+	 * Processes this sniff, when one of its tokens is encountered.
+	 *
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The current file being checked.
+	 * @param int                         $stackPtr  The position of the current token
+	 *                                               in the stack passed in $tokens.
+	 *
+	 * @return void
+	 */
+	public function process( File $phpcsFile, $stackPtr ) {
+		$tokens = $phpcsFile->getTokens();
+
+		// Check there is one space before the operator.
+		if ( $tokens[ ( $stackPtr - 1 ) ]['code'] !== T_WHITESPACE ) {
+			$error = 'Expected 1 space before logical operator; 0 found';
+			$fix   = $phpcsFile->addFixableError( $error, $stackPtr, 'NoSpaceBefore' );
+			if ( $fix === true ) {
+				$phpcsFile->fixer->addContentBefore( $stackPtr, ' ' );
+			}
+		} else {
+			$prev = $phpcsFile->findPrevious( T_WHITESPACE, ( $stackPtr - 1 ), null, true );
+			if ( $tokens[ $stackPtr ]['line'] === $tokens[ $prev ]['line']
+				&& $tokens[ ( $stackPtr - 1 ) ]['length'] !== 1
+			) {
+				$found = $tokens[ ( $stackPtr - 1 ) ]['length'];
+				$error = 'Expected 1 space before logical operator; %s found';
+				$data  = array( $found );
+				$fix   = $phpcsFile->addFixableError( $error, $stackPtr, 'TooMuchSpaceBefore', $data );
+				if ( $fix === true ) {
+					$phpcsFile->fixer->replaceToken( ( $stackPtr - 1 ), ' ' );
+				}
+			}
+		}
+
+		// Check there is one space after the operator.
+		if ( $tokens[ ( $stackPtr + 1 ) ]['code'] !== T_WHITESPACE ) {
+			$error = 'Expected 1 space after logical operator; 0 found';
+			$fix   = $phpcsFile->addFixableError( $error, $stackPtr, 'NoSpaceAfter' );
+			if ( $fix === true ) {
+				$phpcsFile->fixer->addContent( $stackPtr, ' ' );
+			}
+		} else {
+			$next = $phpcsFile->findNext( T_WHITESPACE, ( $stackPtr + 1 ), null, true );
+			if ( $tokens[ $stackPtr ]['line'] === $tokens[ $next ]['line']
+				&& $tokens[ ( $stackPtr + 1 ) ]['length'] !== 1
+			) {
+				$found = $tokens[ ( $stackPtr + 1 ) ]['length'];
+				$error = 'Expected 1 space after logical operator; %s found';
+				$data  = array( $found );
+				$fix   = $phpcsFile->addFixableError( $error, $stackPtr, 'TooMuchSpaceAfter', $data );
+				if ( $fix === true ) {
+					$phpcsFile->fixer->replaceToken( ( $stackPtr + 1 ), ' ' );
+				}
+			}
+		}
+	}//end process()
 }//end class

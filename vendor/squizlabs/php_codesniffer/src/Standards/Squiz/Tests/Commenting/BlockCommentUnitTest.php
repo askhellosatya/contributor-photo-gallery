@@ -16,94 +16,86 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\Commenting\BlockCommentSniff
  */
-final class BlockCommentUnitTest extends AbstractSniffUnitTest
-{
+final class BlockCommentUnitTest extends AbstractSniffUnitTest {
 
 
-    /**
-     * Get a list of CLI values to set before the file is tested.
-     *
-     * @param string                  $testFile The name of the file being tested.
-     * @param \PHP_CodeSniffer\Config $config   The config data for the test run.
-     *
-     * @return void
-     */
-    public function setCliValues($testFile, $config)
-    {
-        $config->tabWidth = 4;
 
-    }//end setCliValues()
-
-
-    /**
-     * Returns the lines where errors should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of errors that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getErrorList()
-    {
-        $errors = [
-            3   => 1,
-            8   => 1,
-            20  => 1,
-            24  => 1,
-            30  => 1,
-            31  => 1,
-            34  => 1,
-            40  => 1,
-            45  => 1,
-            49  => 1,
-            51  => 1,
-            53  => 1,
-            57  => 1,
-            60  => 1,
-            61  => 1,
-            63  => 1,
-            65  => 1,
-            68  => 1,
-            70  => 1,
-            72  => 1,
-            75  => 1,
-            84  => 1,
-            87  => 1,
-            89  => 1,
-            92  => 1,
-            111 => 1,
-            159 => 1,
-            181 => 1,
-            188 => 1,
-            208 => 1,
-            214 => 1,
-            226 => 1,
-            227 => 1,
-            232 => 1,
-            233 => 1,
-            256 => 1,
-            271 => 1,
-            273 => 1,
-        ];
-
-        return $errors;
-
-    }//end getErrorList()
+	/**
+	 * Get a list of CLI values to set before the file is tested.
+	 *
+	 * @param string                  $testFile The name of the file being tested.
+	 * @param \PHP_CodeSniffer\Config $config   The config data for the test run.
+	 *
+	 * @return void
+	 */
+	public function setCliValues( $testFile, $config ) {
+		$config->tabWidth = 4;
+	}//end setCliValues()
 
 
-    /**
-     * Returns the lines where warnings should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of warnings that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getWarningList()
-    {
-        return [];
+	/**
+	 * Returns the lines where errors should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of errors that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getErrorList() {
+		$errors = array(
+			3   => 1,
+			8   => 1,
+			20  => 1,
+			24  => 1,
+			30  => 1,
+			31  => 1,
+			34  => 1,
+			40  => 1,
+			45  => 1,
+			49  => 1,
+			51  => 1,
+			53  => 1,
+			57  => 1,
+			60  => 1,
+			61  => 1,
+			63  => 1,
+			65  => 1,
+			68  => 1,
+			70  => 1,
+			72  => 1,
+			75  => 1,
+			84  => 1,
+			87  => 1,
+			89  => 1,
+			92  => 1,
+			111 => 1,
+			159 => 1,
+			181 => 1,
+			188 => 1,
+			208 => 1,
+			214 => 1,
+			226 => 1,
+			227 => 1,
+			232 => 1,
+			233 => 1,
+			256 => 1,
+			271 => 1,
+			273 => 1,
+		);
 
-    }//end getWarningList()
+		return $errors;
+	}//end getErrorList()
 
 
+	/**
+	 * Returns the lines where warnings should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of warnings that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getWarningList() {
+		return array();
+	}//end getWarningList()
 }//end class

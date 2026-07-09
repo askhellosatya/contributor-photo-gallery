@@ -20,316 +20,300 @@ use PHPUnit\Framework\TestCase;
  * @covers \PHP_CodeSniffer\Ruleset::processRule
  * @covers \PHP_CodeSniffer\Ruleset::setSniffProperty
  */
-final class PropertyTypeHandlingTest extends TestCase
-{
-
-    /**
-     * Sniff code for the sniff used in these tests.
-     *
-     * @var string
-     */
-    const SNIFF_CODE = 'TestStandard.SetProperty.PropertyTypeHandling';
-
-    /**
-     * Class name of the sniff used in these tests.
-     *
-     * @var string
-     */
-    const SNIFF_CLASS = 'Fixtures\\TestStandard\\Sniffs\\SetProperty\\PropertyTypeHandlingSniff';
+final class PropertyTypeHandlingTest extends TestCase {
 
 
-    /**
-     * Verify a deprecation notice is shown when an array property is set from the ruleset using a comma-separated string.
-     *
-     * Support for this format was (soft) deprecated in PHPCS 3.3.0.
-     *
-     * @return void
-     */
-    public function testUsingOldSchoolArrayFormatShowsDeprecationNotice()
-    {
-        $regex  = '`^(';
-        $regex .= 'DEPRECATED: Passing an array of values to a property using a comma-separated string\R';
-        $regex .= 'was deprecated in PHP_CodeSniffer 3\.3\.0\. Support will be removed in PHPCS 4\.0\.0\.\R';
-        $regex .= 'The deprecated syntax was used for property "expectsOldSchool(?:EmptyArray|ArrayWith(?:Extended|Only)?(?:KeysAnd)?Values)"\R';
-        $regex .= 'for sniff "';
-        $regex .= '(?:\./tests/Core/Ruleset/Fixtures/TestStandard/Sniffs/SetProperty/PropertyTypeHandlingSniff\.php|TestStandard\.SetProperty\.PropertyTypeHandling)';
-        $regex .= '"\.\R';
-        $regex .= 'Pass array values via <element \[key="\.\.\." \]value="\.\.\."> nodes instead\.\R';
-        $regex .= '){14}\R$`';
+	/**
+	 * Sniff code for the sniff used in these tests.
+	 *
+	 * @var string
+	 */
+	const SNIFF_CODE = 'TestStandard.SetProperty.PropertyTypeHandling';
 
-        $this->expectOutputRegex($regex);
-
-        // Set up the ruleset.
-        $standard = __DIR__.'/PropertyTypeHandlingTest.xml';
-        $config   = new ConfigDouble(["--standard=$standard"]);
-        new Ruleset($config);
-
-    }//end testUsingOldSchoolArrayFormatShowsDeprecationNotice()
+	/**
+	 * Class name of the sniff used in these tests.
+	 *
+	 * @var string
+	 */
+	const SNIFF_CLASS = 'Fixtures\\TestStandard\\Sniffs\\SetProperty\\PropertyTypeHandlingSniff';
 
 
-    /**
-     * Test the value type handling for properties set via a ruleset.
-     *
-     * @param string $propertyName Property name.
-     * @param mixed  $expected     Expected property value.
-     *
-     * @dataProvider dataTypeHandling
-     * @dataProvider dataArrayPropertyExtending
-     *
-     * @return void
-     */
-    public function testTypeHandlingWhenSetViaRuleset($propertyName, $expected)
-    {
-        $sniffObject = $this->getSniffObjectForRuleset();
+	/**
+	 * Verify a deprecation notice is shown when an array property is set from the ruleset using a comma-separated string.
+	 *
+	 * Support for this format was (soft) deprecated in PHPCS 3.3.0.
+	 *
+	 * @return void
+	 */
+	public function testUsingOldSchoolArrayFormatShowsDeprecationNotice() {
+		$regex  = '`^(';
+		$regex .= 'DEPRECATED: Passing an array of values to a property using a comma-separated string\R';
+		$regex .= 'was deprecated in PHP_CodeSniffer 3\.3\.0\. Support will be removed in PHPCS 4\.0\.0\.\R';
+		$regex .= 'The deprecated syntax was used for property "expectsOldSchool(?:EmptyArray|ArrayWith(?:Extended|Only)?(?:KeysAnd)?Values)"\R';
+		$regex .= 'for sniff "';
+		$regex .= '(?:\./tests/Core/Ruleset/Fixtures/TestStandard/Sniffs/SetProperty/PropertyTypeHandlingSniff\.php|TestStandard\.SetProperty\.PropertyTypeHandling)';
+		$regex .= '"\.\R';
+		$regex .= 'Pass array values via <element \[key="\.\.\." \]value="\.\.\."> nodes instead\.\R';
+		$regex .= '){14}\R$`';
 
-        $this->assertSame($expected, $sniffObject->$propertyName);
+		$this->expectOutputRegex( $regex );
 
-    }//end testTypeHandlingWhenSetViaRuleset()
-
-
-    /**
-     * Test the value type handling for properties set inline in a test case file.
-     *
-     * @param string $propertyName Property name.
-     * @param mixed  $expected     Expected property value.
-     *
-     * @dataProvider dataTypeHandling
-     *
-     * @return void
-     */
-    public function testTypeHandlingWhenSetInline($propertyName, $expected)
-    {
-        $sniffObject = $this->getSniffObjectAfterProcessingFile();
-
-        $this->assertSame($expected, $sniffObject->$propertyName);
-
-    }//end testTypeHandlingWhenSetInline()
+		// Set up the ruleset.
+		$standard = __DIR__ . '/PropertyTypeHandlingTest.xml';
+		$config   = new ConfigDouble( array( "--standard=$standard" ) );
+		new Ruleset( $config );
+	}//end testUsingOldSchoolArrayFormatShowsDeprecationNotice()
 
 
-    /**
-     * Data provider.
-     *
-     * @see self::testTypeHandlingWhenSetViaRuleset()
-     * @see self::testTypeHandlingWhenSetInline()
-     *
-     * @return array<string, array<string, mixed>>
-     */
-    public static function dataTypeHandling()
-    {
-        $expectedArrayOnlyValues    = [
-            'string',
-            '10',
-            '1.5',
-            '',
-            'null',
-            'true',
-            'false',
-        ];
-        $expectedArrayKeysAndValues = [
-            'string' => 'string',
-            10       => '10',
-            'float'  => '1.5',
-            11       => '',
-            'null'   => 'null',
-            'true'   => 'true',
-            'false'  => 'false',
-        ];
+	/**
+	 * Test the value type handling for properties set via a ruleset.
+	 *
+	 * @param string $propertyName Property name.
+	 * @param mixed  $expected     Expected property value.
+	 *
+	 * @dataProvider dataTypeHandling
+	 * @dataProvider dataArrayPropertyExtending
+	 *
+	 * @return void
+	 */
+	public function testTypeHandlingWhenSetViaRuleset( $propertyName, $expected ) {
+		$sniffObject = $this->getSniffObjectForRuleset();
 
-        return [
-            'String value (default)'                         => [
-                'propertyName' => 'expectsString',
-                'expected'     => 'arbitraryvalue',
-            ],
-            'String value with whitespace gets trimmed'      => [
-                'propertyName' => 'expectsTrimmedString',
-                'expected'     => 'some value',
-            ],
-            'String with whitespace only value becomes null' => [
-                'propertyName' => 'emptyStringBecomesNull',
-                'expected'     => null,
-            ],
-            'Integer value gets set as string'               => [
-                'propertyName' => 'expectsIntButAcceptsString',
-                'expected'     => '12345',
-            ],
-            'Float value gets set as string'                 => [
-                'propertyName' => 'expectsFloatButAcceptsString',
-                'expected'     => '12.345',
-            ],
-            'Null value gets set as string'                  => [
-                'propertyName' => 'expectsNull',
-                'expected'     => 'null',
-            ],
-            'Null (uppercase) value gets set as string'      => [
-                'propertyName' => 'expectsNullCase',
-                'expected'     => 'NULL',
-            ],
-            'True value gets set as boolean'                 => [
-                'propertyName' => 'expectsBooleanTrue',
-                'expected'     => true,
-            ],
-            'True (mixed case) value gets set as string'     => [
-                'propertyName' => 'expectsBooleanTrueCase',
-                'expected'     => 'True',
-            ],
-            'True (with spaces) value gets set as boolean'   => [
-                'propertyName' => 'expectsBooleanTrueTrimmed',
-                'expected'     => true,
-            ],
-            'False value gets set as boolean'                => [
-                'propertyName' => 'expectsBooleanFalse',
-                'expected'     => false,
-            ],
-            'False (mixed case) value gets set as string'    => [
-                'propertyName' => 'expectsBooleanFalseCase',
-                'expected'     => 'fALSe',
-            ],
-            'False (with spaces) value gets set as boolean'  => [
-                'propertyName' => 'expectsBooleanFalseTrimmed',
-                'expected'     => false,
-            ],
-            'Array with only values (new style)'             => [
-                'propertyName' => 'expectsArrayWithOnlyValues',
-                'expected'     => $expectedArrayOnlyValues,
-            ],
-            'Array with keys and values (new style)'         => [
-                'propertyName' => 'expectsArrayWithKeysAndValues',
-                'expected'     => $expectedArrayKeysAndValues,
-            ],
-            'Empty array (new style)'                        => [
-                'propertyName' => 'expectsEmptyArray',
-                'expected'     => [],
-            ],
-            'Array with only values (old style)'             => [
-                'propertyName' => 'expectsOldSchoolArrayWithOnlyValues',
-                'expected'     => $expectedArrayOnlyValues,
-            ],
-            'Array with keys and values (old style)'         => [
-                'propertyName' => 'expectsOldSchoolArrayWithKeysAndValues',
-                'expected'     => $expectedArrayKeysAndValues,
-            ],
-            'Empty array (old style)'                        => [
-                'propertyName' => 'expectsOldSchoolEmptyArray',
-                'expected'     => [],
-            ],
-        ];
-
-    }//end dataTypeHandling()
+		$this->assertSame( $expected, $sniffObject->$propertyName );
+	}//end testTypeHandlingWhenSetViaRuleset()
 
 
-    /**
-     * Data provider.
-     *
-     * Array property extending is a feature which is only supported from a ruleset, not for inline property setting.
-     *
-     * @see self::testTypeHandlingWhenSetViaRuleset()
-     *
-     * @return array<string, array<string, mixed>>
-     */
-    public static function dataArrayPropertyExtending()
-    {
-        $expectedArrayOnlyValuesExtended    = [
-            'string',
-            '15',
-            'another string',
-        ];
-        $expectedArrayKeysAndValuesExtended = [
-            10               => '10',
-            'string'         => 'string',
-            15               => '15',
-            'another string' => 'another string',
-        ];
+	/**
+	 * Test the value type handling for properties set inline in a test case file.
+	 *
+	 * @param string $propertyName Property name.
+	 * @param mixed  $expected     Expected property value.
+	 *
+	 * @dataProvider dataTypeHandling
+	 *
+	 * @return void
+	 */
+	public function testTypeHandlingWhenSetInline( $propertyName, $expected ) {
+		$sniffObject = $this->getSniffObjectAfterProcessingFile();
 
-        return [
-            'Array with only values extended (new style)'     => [
-                'propertyName' => 'expectsArrayWithExtendedValues',
-                'expected'     => $expectedArrayOnlyValuesExtended,
-            ],
-            'Array with keys and values extended (new style)' => [
-                'propertyName' => 'expectsArrayWithExtendedKeysAndValues',
-                'expected'     => $expectedArrayKeysAndValuesExtended,
-            ],
-            'Array with only values extended (old style)'     => [
-                'propertyName' => 'expectsOldSchoolArrayWithExtendedValues',
-                'expected'     => $expectedArrayOnlyValuesExtended,
-            ],
-            'Array with keys and values extended (old style)' => [
-                'propertyName' => 'expectsOldSchoolArrayWithExtendedKeysAndValues',
-                'expected'     => $expectedArrayKeysAndValuesExtended,
-            ],
-        ];
-
-    }//end dataArrayPropertyExtending()
+		$this->assertSame( $expected, $sniffObject->$propertyName );
+	}//end testTypeHandlingWhenSetInline()
 
 
-    /**
-     * Test Helper.
-     *
-     * Note: the deprecations for using comma-separated string to pass an array, are silenced in this helper
-     * as that's not what's being tested here.
-     *
-     * @see self::testTypeHandlingWhenSetViaRuleset()
-     *
-     * @return \PHP_CodeSniffer\Sniffs\Sniff
-     */
-    private function getSniffObjectForRuleset()
-    {
-        static $sniffObject;
+	/**
+	 * Data provider.
+	 *
+	 * @see self::testTypeHandlingWhenSetViaRuleset()
+	 * @see self::testTypeHandlingWhenSetInline()
+	 *
+	 * @return array<string, array<string, mixed>>
+	 */
+	public static function dataTypeHandling() {
+		$expectedArrayOnlyValues    = array(
+			'string',
+			'10',
+			'1.5',
+			'',
+			'null',
+			'true',
+			'false',
+		);
+		$expectedArrayKeysAndValues = array(
+			'string' => 'string',
+			10       => '10',
+			'float'  => '1.5',
+			11       => '',
+			'null'   => 'null',
+			'true'   => 'true',
+			'false'  => 'false',
+		);
 
-        if (isset($sniffObject) === false) {
-            // Set up the ruleset.
-            $standard = __DIR__.'/PropertyTypeHandlingTest.xml';
-            $config   = new ConfigDouble(["--standard=$standard", '-q']);
-            $ruleset  = new Ruleset($config);
+		return array(
+			'String value (default)'                       => array(
+				'propertyName' => 'expectsString',
+				'expected'     => 'arbitraryvalue',
+			),
+			'String value with whitespace gets trimmed'    => array(
+				'propertyName' => 'expectsTrimmedString',
+				'expected'     => 'some value',
+			),
+			'String with whitespace only value becomes null' => array(
+				'propertyName' => 'emptyStringBecomesNull',
+				'expected'     => null,
+			),
+			'Integer value gets set as string'             => array(
+				'propertyName' => 'expectsIntButAcceptsString',
+				'expected'     => '12345',
+			),
+			'Float value gets set as string'               => array(
+				'propertyName' => 'expectsFloatButAcceptsString',
+				'expected'     => '12.345',
+			),
+			'Null value gets set as string'                => array(
+				'propertyName' => 'expectsNull',
+				'expected'     => 'null',
+			),
+			'Null (uppercase) value gets set as string'    => array(
+				'propertyName' => 'expectsNullCase',
+				'expected'     => 'NULL',
+			),
+			'True value gets set as boolean'               => array(
+				'propertyName' => 'expectsBooleanTrue',
+				'expected'     => true,
+			),
+			'True (mixed case) value gets set as string'   => array(
+				'propertyName' => 'expectsBooleanTrueCase',
+				'expected'     => 'True',
+			),
+			'True (with spaces) value gets set as boolean' => array(
+				'propertyName' => 'expectsBooleanTrueTrimmed',
+				'expected'     => true,
+			),
+			'False value gets set as boolean'              => array(
+				'propertyName' => 'expectsBooleanFalse',
+				'expected'     => false,
+			),
+			'False (mixed case) value gets set as string'  => array(
+				'propertyName' => 'expectsBooleanFalseCase',
+				'expected'     => 'fALSe',
+			),
+			'False (with spaces) value gets set as boolean' => array(
+				'propertyName' => 'expectsBooleanFalseTrimmed',
+				'expected'     => false,
+			),
+			'Array with only values (new style)'           => array(
+				'propertyName' => 'expectsArrayWithOnlyValues',
+				'expected'     => $expectedArrayOnlyValues,
+			),
+			'Array with keys and values (new style)'       => array(
+				'propertyName' => 'expectsArrayWithKeysAndValues',
+				'expected'     => $expectedArrayKeysAndValues,
+			),
+			'Empty array (new style)'                      => array(
+				'propertyName' => 'expectsEmptyArray',
+				'expected'     => array(),
+			),
+			'Array with only values (old style)'           => array(
+				'propertyName' => 'expectsOldSchoolArrayWithOnlyValues',
+				'expected'     => $expectedArrayOnlyValues,
+			),
+			'Array with keys and values (old style)'       => array(
+				'propertyName' => 'expectsOldSchoolArrayWithKeysAndValues',
+				'expected'     => $expectedArrayKeysAndValues,
+			),
+			'Empty array (old style)'                      => array(
+				'propertyName' => 'expectsOldSchoolEmptyArray',
+				'expected'     => array(),
+			),
+		);
+	}//end dataTypeHandling()
 
-            // Verify that our target sniff has been registered.
-            $this->assertArrayHasKey(self::SNIFF_CODE, $ruleset->sniffCodes, 'Target sniff not registered');
-            $this->assertSame(self::SNIFF_CLASS, $ruleset->sniffCodes[self::SNIFF_CODE], 'Target sniff not registered with the correct class');
-            $this->assertArrayHasKey(self::SNIFF_CLASS, $ruleset->sniffs, 'Sniff class not listed in registered sniffs');
 
-            $sniffObject = $ruleset->sniffs[self::SNIFF_CLASS];
-        }
+	/**
+	 * Data provider.
+	 *
+	 * Array property extending is a feature which is only supported from a ruleset, not for inline property setting.
+	 *
+	 * @see self::testTypeHandlingWhenSetViaRuleset()
+	 *
+	 * @return array<string, array<string, mixed>>
+	 */
+	public static function dataArrayPropertyExtending() {
+		$expectedArrayOnlyValuesExtended    = array(
+			'string',
+			'15',
+			'another string',
+		);
+		$expectedArrayKeysAndValuesExtended = array(
+			10               => '10',
+			'string'         => 'string',
+			15               => '15',
+			'another string' => 'another string',
+		);
 
-        return $sniffObject;
-
-    }//end getSniffObjectForRuleset()
-
-
-    /**
-     * Test Helper
-     *
-     * @see self::testTypeHandlingWhenSetInline()
-     *
-     * @return \PHP_CodeSniffer\Sniffs\Sniff
-     */
-    private function getSniffObjectAfterProcessingFile()
-    {
-        static $sniffObject;
-
-        if (isset($sniffObject) === false) {
-            // Set up the ruleset.
-            $standard = __DIR__.'/PropertyTypeHandlingInlineTest.xml';
-            $config   = new ConfigDouble(["--standard=$standard"]);
-            $ruleset  = new Ruleset($config);
-
-            // Verify that our target sniff has been registered.
-            $this->assertArrayHasKey(self::SNIFF_CODE, $ruleset->sniffCodes, 'Target sniff not registered');
-            $this->assertSame(self::SNIFF_CLASS, $ruleset->sniffCodes[self::SNIFF_CODE], 'Target sniff not registered with the correct class');
-            $this->assertArrayHasKey(self::SNIFF_CLASS, $ruleset->sniffs, 'Sniff class not listed in registered sniffs');
-
-            $sniffObject = $ruleset->sniffs[self::SNIFF_CLASS];
-
-            // Process the file with inline phpcs:set annotations.
-            $testFile = realpath(__DIR__.'/Fixtures/PropertyTypeHandlingInline.inc');
-            $this->assertNotFalse($testFile);
-
-            $phpcsFile = new LocalFile($testFile, $ruleset, $config);
-            $phpcsFile->process();
-        }
-
-        return $sniffObject;
-
-    }//end getSniffObjectAfterProcessingFile()
+		return array(
+			'Array with only values extended (new style)' => array(
+				'propertyName' => 'expectsArrayWithExtendedValues',
+				'expected'     => $expectedArrayOnlyValuesExtended,
+			),
+			'Array with keys and values extended (new style)' => array(
+				'propertyName' => 'expectsArrayWithExtendedKeysAndValues',
+				'expected'     => $expectedArrayKeysAndValuesExtended,
+			),
+			'Array with only values extended (old style)' => array(
+				'propertyName' => 'expectsOldSchoolArrayWithExtendedValues',
+				'expected'     => $expectedArrayOnlyValuesExtended,
+			),
+			'Array with keys and values extended (old style)' => array(
+				'propertyName' => 'expectsOldSchoolArrayWithExtendedKeysAndValues',
+				'expected'     => $expectedArrayKeysAndValuesExtended,
+			),
+		);
+	}//end dataArrayPropertyExtending()
 
 
+	/**
+	 * Test Helper.
+	 *
+	 * Note: the deprecations for using comma-separated string to pass an array, are silenced in this helper
+	 * as that's not what's being tested here.
+	 *
+	 * @see self::testTypeHandlingWhenSetViaRuleset()
+	 *
+	 * @return \PHP_CodeSniffer\Sniffs\Sniff
+	 */
+	private function getSniffObjectForRuleset() {
+		static $sniffObject;
+
+		if ( isset( $sniffObject ) === false ) {
+			// Set up the ruleset.
+			$standard = __DIR__ . '/PropertyTypeHandlingTest.xml';
+			$config   = new ConfigDouble( array( "--standard=$standard", '-q' ) );
+			$ruleset  = new Ruleset( $config );
+
+			// Verify that our target sniff has been registered.
+			$this->assertArrayHasKey( self::SNIFF_CODE, $ruleset->sniffCodes, 'Target sniff not registered' );
+			$this->assertSame( self::SNIFF_CLASS, $ruleset->sniffCodes[ self::SNIFF_CODE ], 'Target sniff not registered with the correct class' );
+			$this->assertArrayHasKey( self::SNIFF_CLASS, $ruleset->sniffs, 'Sniff class not listed in registered sniffs' );
+
+			$sniffObject = $ruleset->sniffs[ self::SNIFF_CLASS ];
+		}
+
+		return $sniffObject;
+	}//end getSniffObjectForRuleset()
+
+
+	/**
+	 * Test Helper
+	 *
+	 * @see self::testTypeHandlingWhenSetInline()
+	 *
+	 * @return \PHP_CodeSniffer\Sniffs\Sniff
+	 */
+	private function getSniffObjectAfterProcessingFile() {
+		static $sniffObject;
+
+		if ( isset( $sniffObject ) === false ) {
+			// Set up the ruleset.
+			$standard = __DIR__ . '/PropertyTypeHandlingInlineTest.xml';
+			$config   = new ConfigDouble( array( "--standard=$standard" ) );
+			$ruleset  = new Ruleset( $config );
+
+			// Verify that our target sniff has been registered.
+			$this->assertArrayHasKey( self::SNIFF_CODE, $ruleset->sniffCodes, 'Target sniff not registered' );
+			$this->assertSame( self::SNIFF_CLASS, $ruleset->sniffCodes[ self::SNIFF_CODE ], 'Target sniff not registered with the correct class' );
+			$this->assertArrayHasKey( self::SNIFF_CLASS, $ruleset->sniffs, 'Sniff class not listed in registered sniffs' );
+
+			$sniffObject = $ruleset->sniffs[ self::SNIFF_CLASS ];
+
+			// Process the file with inline phpcs:set annotations.
+			$testFile = realpath( __DIR__ . '/Fixtures/PropertyTypeHandlingInline.inc' );
+			$this->assertNotFalse( $testFile );
+
+			$phpcsFile = new LocalFile( $testFile, $ruleset, $config );
+			$phpcsFile->process();
+		}
+
+		return $sniffObject;
+	}//end getSniffObjectAfterProcessingFile()
 }//end class

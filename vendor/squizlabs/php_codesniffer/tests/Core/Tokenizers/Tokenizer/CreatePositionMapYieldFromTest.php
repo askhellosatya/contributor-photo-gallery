@@ -16,85 +16,79 @@ use PHP_CodeSniffer\Tests\Core\Tokenizers\AbstractTokenizerTestCase;
  *
  * @covers PHP_CodeSniffer\Tokenizers\Tokenizer::createPositionMap
  */
-final class CreatePositionMapYieldFromTest extends AbstractTokenizerTestCase
-{
+final class CreatePositionMapYieldFromTest extends AbstractTokenizerTestCase {
 
 
-    /**
-     * Verify that spaces/tabs in "yield from" tokens get the tab replacement treatment.
-     *
-     * @param string                         $testMarker The comment prefacing the target token.
-     * @param array<string, int|string|null> $expected   Expectations for the token array.
-     * @param string                         $content    Optional. The test token content to search for.
-     *                                                   Defaults to null.
-     *
-     * @dataProvider dataYieldFromTabReplacement
-     *
-     * @return void
-     */
-    public function testYieldFromTabReplacement($testMarker, $expected, $content=null)
-    {
-        $tokens = $this->phpcsFile->getTokens();
-        $target = $this->getTargetToken($testMarker, [T_YIELD_FROM], $content);
 
-        foreach ($expected as $key => $value) {
-            if ($key === 'orig_content' && $value === null) {
-                $this->assertArrayNotHasKey($key, $tokens[$target], "Unexpected 'orig_content' key found in the token array.");
-                continue;
-            }
+	/**
+	 * Verify that spaces/tabs in "yield from" tokens get the tab replacement treatment.
+	 *
+	 * @param string                         $testMarker The comment prefacing the target token.
+	 * @param array<string, int|string|null> $expected   Expectations for the token array.
+	 * @param string                         $content    Optional. The test token content to search for.
+	 *                                                   Defaults to null.
+	 *
+	 * @dataProvider dataYieldFromTabReplacement
+	 *
+	 * @return void
+	 */
+	public function testYieldFromTabReplacement( $testMarker, $expected, $content = null ) {
+		$tokens = $this->phpcsFile->getTokens();
+		$target = $this->getTargetToken( $testMarker, array( T_YIELD_FROM ), $content );
 
-            $this->assertArrayHasKey($key, $tokens[$target], "Key $key not found in the token array.");
-            $this->assertSame($value, $tokens[$target][$key], "Value for key $key does not match expectation.");
-        }
+		foreach ( $expected as $key => $value ) {
+			if ( $key === 'orig_content' && $value === null ) {
+				$this->assertArrayNotHasKey( $key, $tokens[ $target ], "Unexpected 'orig_content' key found in the token array." );
+				continue;
+			}
 
-    }//end testYieldFromTabReplacement()
-
-
-    /**
-     * Data provider.
-     *
-     * @see testYieldFromTabReplacement()
-     *
-     * @return array<string, array<string, string|array<string, int|string|null>>>
-     */
-    public static function dataYieldFromTabReplacement()
-    {
-        return [
-            'Yield from, single line, single space'           => [
-                'testMarker' => '/* testYieldFromHasSingleSpace */',
-                'expected'   => [
-                    'length'       => 10,
-                    'content'      => 'yield from',
-                    'orig_content' => null,
-                ],
-            ],
-            'Yield from, single line, multiple spaces'        => [
-                'testMarker' => '/* testYieldFromHasMultiSpace */',
-                'expected'   => [
-                    'length'       => 14,
-                    'content'      => 'yield     from',
-                    'orig_content' => null,
-                ],
-            ],
-            'Yield from, single line, has tabs'               => [
-                'testMarker' => '/* testYieldFromHasTabs */',
-                'expected'   => [
-                    'length'       => 16,
-                    'content'      => 'yield       from',
-                    'orig_content' => 'yield		from',
-                ],
-            ],
-            'Yield from, single line, mix of tabs and spaces' => [
-                'testMarker' => '/* testYieldFromMixedTabsSpaces */',
-                'expected'   => [
-                    'length'       => 20,
-                    'content'      => 'Yield           From',
-                    'orig_content' => 'Yield	   	 	From',
-                ],
-            ],
-        ];
-
-    }//end dataYieldFromTabReplacement()
+			$this->assertArrayHasKey( $key, $tokens[ $target ], "Key $key not found in the token array." );
+			$this->assertSame( $value, $tokens[ $target ][ $key ], "Value for key $key does not match expectation." );
+		}
+	}//end testYieldFromTabReplacement()
 
 
+	/**
+	 * Data provider.
+	 *
+	 * @see testYieldFromTabReplacement()
+	 *
+	 * @return array<string, array<string, string|array<string, int|string|null>>>
+	 */
+	public static function dataYieldFromTabReplacement() {
+		return array(
+			'Yield from, single line, single space'    => array(
+				'testMarker' => '/* testYieldFromHasSingleSpace */',
+				'expected'   => array(
+					'length'       => 10,
+					'content'      => 'yield from',
+					'orig_content' => null,
+				),
+			),
+			'Yield from, single line, multiple spaces' => array(
+				'testMarker' => '/* testYieldFromHasMultiSpace */',
+				'expected'   => array(
+					'length'       => 14,
+					'content'      => 'yield     from',
+					'orig_content' => null,
+				),
+			),
+			'Yield from, single line, has tabs'        => array(
+				'testMarker' => '/* testYieldFromHasTabs */',
+				'expected'   => array(
+					'length'       => 16,
+					'content'      => 'yield       from',
+					'orig_content' => 'yield		from',
+				),
+			),
+			'Yield from, single line, mix of tabs and spaces' => array(
+				'testMarker' => '/* testYieldFromMixedTabsSpaces */',
+				'expected'   => array(
+					'length'       => 20,
+					'content'      => 'Yield           From',
+					'orig_content' => 'Yield	   	 	From',
+				),
+			),
+		);
+	}//end dataYieldFromTabReplacement()
 }//end class

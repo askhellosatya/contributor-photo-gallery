@@ -15,336 +15,310 @@ use DOMElement;
 use DOMNode;
 use PHP_CodeSniffer\Config;
 
-class Markdown extends Generator
-{
+class Markdown extends Generator {
 
 
-    /**
-     * Generates the documentation for a standard.
-     *
-     * @return void
-     * @see    processSniff()
-     */
-    public function generate()
-    {
-        if (empty($this->docFiles) === true) {
-            return;
-        }
 
-        ob_start();
-        parent::generate();
+	/**
+	 * Generates the documentation for a standard.
+	 *
+	 * @return void
+	 * @see    processSniff()
+	 */
+	public function generate() {
+		if ( empty( $this->docFiles ) === true ) {
+			return;
+		}
 
-        $content = ob_get_contents();
-        ob_end_clean();
+		ob_start();
+		parent::generate();
 
-        if (trim($content) !== '') {
-            echo $this->getFormattedHeader();
-            echo $content;
-            echo $this->getFormattedFooter();
-        }
+		$content = ob_get_contents();
+		ob_end_clean();
 
-    }//end generate()
-
-
-    /**
-     * Print the markdown header.
-     *
-     * @deprecated 3.12.0 Use Markdown::getFormattedHeader() instead.
-     *
-     * @codeCoverageIgnore
-     *
-     * @return void
-     */
-    protected function printHeader()
-    {
-        trigger_error(
-            'The '.__METHOD__.'() method is deprecated. Use "echo '.__CLASS__.'::getFormattedHeader()" instead.',
-            E_USER_DEPRECATED
-        );
-
-        echo $this->getFormattedHeader();
-
-    }//end printHeader()
+		if ( trim( $content ) !== '' ) {
+			echo $this->getFormattedHeader();
+			echo $content;
+			echo $this->getFormattedFooter();
+		}
+	}//end generate()
 
 
-    /**
-     * Format the markdown header.
-     *
-     * @since 3.12.0 Replaces the deprecated Markdown::printHeader() method.
-     *
-     * @return string
-     */
-    protected function getFormattedHeader()
-    {
-        $standard = $this->ruleset->name;
+	/**
+	 * Print the markdown header.
+	 *
+	 * @deprecated 3.12.0 Use Markdown::getFormattedHeader() instead.
+	 *
+	 * @codeCoverageIgnore
+	 *
+	 * @return void
+	 */
+	protected function printHeader() {
+		trigger_error(
+			'The ' . __METHOD__ . '() method is deprecated. Use "echo ' . __CLASS__ . '::getFormattedHeader()" instead.',
+			E_USER_DEPRECATED
+		);
 
-        return "# $standard Coding Standard".PHP_EOL;
-
-    }//end getFormattedHeader()
-
-
-    /**
-     * Print the markdown footer.
-     *
-     * @deprecated 3.12.0 Use Markdown::getFormattedFooter() instead.
-     *
-     * @codeCoverageIgnore
-     *
-     * @return void
-     */
-    protected function printFooter()
-    {
-        trigger_error(
-            'The '.__METHOD__.'() method is deprecated. Use "echo '.__CLASS__.'::getFormattedFooter()" instead.',
-            E_USER_DEPRECATED
-        );
-
-        echo $this->getFormattedFooter();
-
-    }//end printFooter()
+		echo $this->getFormattedHeader();
+	}//end printHeader()
 
 
-    /**
-     * Format the markdown footer.
-     *
-     * @since 3.12.0 Replaces the deprecated Markdown::printFooter() method.
-     *
-     * @return string
-     */
-    protected function getFormattedFooter()
-    {
-        // Turn off errors so we don't get timezone warnings if people
-        // don't have their timezone set.
-        $errorLevel = error_reporting(0);
-        $output     = PHP_EOL.'Documentation generated on '.date('r');
-        $output    .= ' by [PHP_CodeSniffer '.Config::VERSION.'](https://github.com/PHPCSStandards/PHP_CodeSniffer)'.PHP_EOL;
-        error_reporting($errorLevel);
+	/**
+	 * Format the markdown header.
+	 *
+	 * @since 3.12.0 Replaces the deprecated Markdown::printHeader() method.
+	 *
+	 * @return string
+	 */
+	protected function getFormattedHeader() {
+		$standard = $this->ruleset->name;
 
-        return $output;
-
-    }//end getFormattedFooter()
+		return "# $standard Coding Standard" . PHP_EOL;
+	}//end getFormattedHeader()
 
 
-    /**
-     * Process the documentation for a single sniff.
-     *
-     * @param \DOMNode $doc The DOMNode object for the sniff.
-     *                      It represents the "documentation" tag in the XML
-     *                      standard file.
-     *
-     * @return void
-     */
-    protected function processSniff(DOMNode $doc)
-    {
-        $content = '';
-        foreach ($doc->childNodes as $node) {
-            if ($node->nodeName === 'standard') {
-                $content .= $this->getFormattedTextBlock($node);
-            } else if ($node->nodeName === 'code_comparison') {
-                $content .= $this->getFormattedCodeComparisonBlock($node);
-            }
-        }
+	/**
+	 * Print the markdown footer.
+	 *
+	 * @deprecated 3.12.0 Use Markdown::getFormattedFooter() instead.
+	 *
+	 * @codeCoverageIgnore
+	 *
+	 * @return void
+	 */
+	protected function printFooter() {
+		trigger_error(
+			'The ' . __METHOD__ . '() method is deprecated. Use "echo ' . __CLASS__ . '::getFormattedFooter()" instead.',
+			E_USER_DEPRECATED
+		);
 
-        if (trim($content) !== '') {
-            $title = $this->getTitle($doc);
-            echo PHP_EOL."## $title".PHP_EOL.PHP_EOL;
-            echo $content;
-        }
-
-    }//end processSniff()
+		echo $this->getFormattedFooter();
+	}//end printFooter()
 
 
-    /**
-     * Print a text block found in a standard.
-     *
-     * @param \DOMNode $node The DOMNode object for the text block.
-     *
-     * @deprecated 3.12.0 Use Markdown::getFormattedTextBlock() instead.
-     *
-     * @codeCoverageIgnore
-     *
-     * @return void
-     */
-    protected function printTextBlock(DOMNode $node)
-    {
-        trigger_error(
-            'The '.__METHOD__.'() method is deprecated. Use "echo '.__CLASS__.'::getFormattedTextBlock()" instead.',
-            E_USER_DEPRECATED
-        );
+	/**
+	 * Format the markdown footer.
+	 *
+	 * @since 3.12.0 Replaces the deprecated Markdown::printFooter() method.
+	 *
+	 * @return string
+	 */
+	protected function getFormattedFooter() {
+		// Turn off errors so we don't get timezone warnings if people
+		// don't have their timezone set.
+		$errorLevel = error_reporting( 0 );
+		$output     = PHP_EOL . 'Documentation generated on ' . date( 'r' );
+		$output    .= ' by [PHP_CodeSniffer ' . Config::VERSION . '](https://github.com/PHPCSStandards/PHP_CodeSniffer)' . PHP_EOL;
+		error_reporting( $errorLevel );
 
-        echo $this->getFormattedTextBlock($node);
-
-    }//end printTextBlock()
+		return $output;
+	}//end getFormattedFooter()
 
 
-    /**
-     * Format a text block found in a standard.
-     *
-     * @param \DOMNode $node The DOMNode object for the text block.
-     *
-     * @since 3.12.0 Replaces the deprecated Markdown::printTextBlock() method.
-     *
-     * @return string
-     */
-    protected function getFormattedTextBlock(DOMNode $node)
-    {
-        $content = $node->nodeValue;
-        if (empty($content) === true) {
-            return '';
-        }
+	/**
+	 * Process the documentation for a single sniff.
+	 *
+	 * @param \DOMNode $doc The DOMNode object for the sniff.
+	 *                      It represents the "documentation" tag in the XML
+	 *                      standard file.
+	 *
+	 * @return void
+	 */
+	protected function processSniff( DOMNode $doc ) {
+		$content = '';
+		foreach ( $doc->childNodes as $node ) {
+			if ( $node->nodeName === 'standard' ) {
+				$content .= $this->getFormattedTextBlock( $node );
+			} elseif ( $node->nodeName === 'code_comparison' ) {
+				$content .= $this->getFormattedCodeComparisonBlock( $node );
+			}
+		}
 
-        $content = trim($content);
-        $content = htmlspecialchars($content, (ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401));
-        $content = str_replace('&lt;em&gt;', '*', $content);
-        $content = str_replace('&lt;/em&gt;', '*', $content);
-
-        $nodeLines = explode("\n", $content);
-        $lineCount = count($nodeLines);
-        $lines     = [];
-
-        for ($i = 0; $i < $lineCount; $i++) {
-            $currentLine = trim($nodeLines[$i]);
-            if ($currentLine === '') {
-                // The text contained a blank line. Respect this.
-                $lines[] = '';
-                continue;
-            }
-
-            // Check if the _next_ line is blank.
-            if (isset($nodeLines[($i + 1)]) === false
-                || trim($nodeLines[($i + 1)]) === ''
-            ) {
-                // Next line is blank, just add the line.
-                $lines[] = $currentLine;
-            } else {
-                // Ensure that line breaks are respected in markdown.
-                $lines[] = $currentLine.'  ';
-            }
-        }
-
-        return implode(PHP_EOL, $lines).PHP_EOL;
-
-    }//end getFormattedTextBlock()
+		if ( trim( $content ) !== '' ) {
+			$title = $this->getTitle( $doc );
+			echo PHP_EOL . "## $title" . PHP_EOL . PHP_EOL;
+			echo $content;
+		}
+	}//end processSniff()
 
 
-    /**
-     * Print a code comparison block found in a standard.
-     *
-     * @param \DOMNode $node The DOMNode object for the code comparison block.
-     *
-     * @deprecated 3.12.0 Use Markdown::getFormattedCodeComparisonBlock() instead.
-     *
-     * @codeCoverageIgnore
-     *
-     * @return void
-     */
-    protected function printCodeComparisonBlock(DOMNode $node)
-    {
-        trigger_error(
-            'The '.__METHOD__.'() method is deprecated. Use "echo '.__CLASS__.'::getFormattedCodeComparisonBlock()" instead.',
-            E_USER_DEPRECATED
-        );
+	/**
+	 * Print a text block found in a standard.
+	 *
+	 * @param \DOMNode $node The DOMNode object for the text block.
+	 *
+	 * @deprecated 3.12.0 Use Markdown::getFormattedTextBlock() instead.
+	 *
+	 * @codeCoverageIgnore
+	 *
+	 * @return void
+	 */
+	protected function printTextBlock( DOMNode $node ) {
+		trigger_error(
+			'The ' . __METHOD__ . '() method is deprecated. Use "echo ' . __CLASS__ . '::getFormattedTextBlock()" instead.',
+			E_USER_DEPRECATED
+		);
 
-        echo $this->getFormattedCodeComparisonBlock($node);
-
-    }//end printCodeComparisonBlock()
+		echo $this->getFormattedTextBlock( $node );
+	}//end printTextBlock()
 
 
-    /**
-     * Format a code comparison block found in a standard.
-     *
-     * @param \DOMNode $node The DOMNode object for the code comparison block.
-     *
-     * @since 3.12.0 Replaces the deprecated Markdown::printCodeComparisonBlock() method.
-     *
-     * @return string
-     */
-    protected function getFormattedCodeComparisonBlock(DOMNode $node)
-    {
-        $codeBlocks    = $node->getElementsByTagName('code');
-        $firstCodeElm  = $codeBlocks->item(0);
-        $secondCodeElm = $codeBlocks->item(1);
+	/**
+	 * Format a text block found in a standard.
+	 *
+	 * @param \DOMNode $node The DOMNode object for the text block.
+	 *
+	 * @since 3.12.0 Replaces the deprecated Markdown::printTextBlock() method.
+	 *
+	 * @return string
+	 */
+	protected function getFormattedTextBlock( DOMNode $node ) {
+		$content = $node->nodeValue;
+		if ( empty( $content ) === true ) {
+			return '';
+		}
 
-        if (isset($firstCodeElm, $secondCodeElm) === false) {
-            // Missing at least one code block.
-            return '';
-        }
+		$content = trim( $content );
+		$content = htmlspecialchars( $content, ( ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401 ) );
+		$content = str_replace( '&lt;em&gt;', '*', $content );
+		$content = str_replace( '&lt;/em&gt;', '*', $content );
 
-        $firstTitle = $this->formatCodeTitle($firstCodeElm);
-        $first      = $this->formatCodeSample($firstCodeElm);
+		$nodeLines = explode( "\n", $content );
+		$lineCount = count( $nodeLines );
+		$lines     = array();
 
-        $secondTitle = $this->formatCodeTitle($secondCodeElm);
-        $second      = $this->formatCodeSample($secondCodeElm);
+		for ( $i = 0; $i < $lineCount; $i++ ) {
+			$currentLine = trim( $nodeLines[ $i ] );
+			if ( $currentLine === '' ) {
+				// The text contained a blank line. Respect this.
+				$lines[] = '';
+				continue;
+			}
 
-        $titleRow = '';
-        if ($firstTitle !== '' || $secondTitle !== '') {
-            $titleRow .= '   <tr>'.PHP_EOL;
-            $titleRow .= "    <th>$firstTitle</th>".PHP_EOL;
-            $titleRow .= "    <th>$secondTitle</th>".PHP_EOL;
-            $titleRow .= '   </tr>'.PHP_EOL;
-        }
+			// Check if the _next_ line is blank.
+			if ( isset( $nodeLines[ ( $i + 1 ) ] ) === false
+				|| trim( $nodeLines[ ( $i + 1 ) ] ) === ''
+			) {
+				// Next line is blank, just add the line.
+				$lines[] = $currentLine;
+			} else {
+				// Ensure that line breaks are respected in markdown.
+				$lines[] = $currentLine . '  ';
+			}
+		}
 
-        $codeRow = '';
-        if ($first !== '' || $second !== '') {
-            $codeRow .= '   <tr>'.PHP_EOL;
-            $codeRow .= '<td>'.PHP_EOL.PHP_EOL;
-            $codeRow .= "    $first".PHP_EOL.PHP_EOL;
-            $codeRow .= '</td>'.PHP_EOL;
-            $codeRow .= '<td>'.PHP_EOL.PHP_EOL;
-            $codeRow .= "    $second".PHP_EOL.PHP_EOL;
-            $codeRow .= '</td>'.PHP_EOL;
-            $codeRow .= '   </tr>'.PHP_EOL;
-        }
-
-        $output = '';
-        if ($titleRow !== '' || $codeRow !== '') {
-            $output .= '  <table>'.PHP_EOL;
-            $output .= $titleRow;
-            $output .= $codeRow;
-            $output .= '  </table>'.PHP_EOL;
-        }
-
-        return $output;
-
-    }//end getFormattedCodeComparisonBlock()
+		return implode( PHP_EOL, $lines ) . PHP_EOL;
+	}//end getFormattedTextBlock()
 
 
-    /**
-     * Retrieve a code block title and prepare it for output as HTML.
-     *
-     * @param \DOMElement $codeElm The DOMElement object for a code block.
-     *
-     * @since 3.12.0
-     *
-     * @return string
-     */
-    private function formatCodeTitle(DOMElement $codeElm)
-    {
-        $title = trim($codeElm->getAttribute('title'));
-        return str_replace('  ', '&nbsp;&nbsp;', $title);
+	/**
+	 * Print a code comparison block found in a standard.
+	 *
+	 * @param \DOMNode $node The DOMNode object for the code comparison block.
+	 *
+	 * @deprecated 3.12.0 Use Markdown::getFormattedCodeComparisonBlock() instead.
+	 *
+	 * @codeCoverageIgnore
+	 *
+	 * @return void
+	 */
+	protected function printCodeComparisonBlock( DOMNode $node ) {
+		trigger_error(
+			'The ' . __METHOD__ . '() method is deprecated. Use "echo ' . __CLASS__ . '::getFormattedCodeComparisonBlock()" instead.',
+			E_USER_DEPRECATED
+		);
 
-    }//end formatCodeTitle()
-
-
-    /**
-     * Retrieve a code block contents and prepare it for output as HTML.
-     *
-     * @param \DOMElement $codeElm The DOMElement object for a code block.
-     *
-     * @since 3.12.0
-     *
-     * @return string
-     */
-    private function formatCodeSample(DOMElement $codeElm)
-    {
-        $code = (string) $codeElm->nodeValue;
-        $code = trim($code);
-        $code = str_replace("\n", PHP_EOL.'    ', $code);
-        $code = str_replace(['<em>', '</em>'], '', $code);
-
-        return $code;
-
-    }//end formatCodeSample()
+		echo $this->getFormattedCodeComparisonBlock( $node );
+	}//end printCodeComparisonBlock()
 
 
+	/**
+	 * Format a code comparison block found in a standard.
+	 *
+	 * @param \DOMNode $node The DOMNode object for the code comparison block.
+	 *
+	 * @since 3.12.0 Replaces the deprecated Markdown::printCodeComparisonBlock() method.
+	 *
+	 * @return string
+	 */
+	protected function getFormattedCodeComparisonBlock( DOMNode $node ) {
+		$codeBlocks    = $node->getElementsByTagName( 'code' );
+		$firstCodeElm  = $codeBlocks->item( 0 );
+		$secondCodeElm = $codeBlocks->item( 1 );
+
+		if ( isset( $firstCodeElm, $secondCodeElm ) === false ) {
+			// Missing at least one code block.
+			return '';
+		}
+
+		$firstTitle = $this->formatCodeTitle( $firstCodeElm );
+		$first      = $this->formatCodeSample( $firstCodeElm );
+
+		$secondTitle = $this->formatCodeTitle( $secondCodeElm );
+		$second      = $this->formatCodeSample( $secondCodeElm );
+
+		$titleRow = '';
+		if ( $firstTitle !== '' || $secondTitle !== '' ) {
+			$titleRow .= '   <tr>' . PHP_EOL;
+			$titleRow .= "    <th>$firstTitle</th>" . PHP_EOL;
+			$titleRow .= "    <th>$secondTitle</th>" . PHP_EOL;
+			$titleRow .= '   </tr>' . PHP_EOL;
+		}
+
+		$codeRow = '';
+		if ( $first !== '' || $second !== '' ) {
+			$codeRow .= '   <tr>' . PHP_EOL;
+			$codeRow .= '<td>' . PHP_EOL . PHP_EOL;
+			$codeRow .= "    $first" . PHP_EOL . PHP_EOL;
+			$codeRow .= '</td>' . PHP_EOL;
+			$codeRow .= '<td>' . PHP_EOL . PHP_EOL;
+			$codeRow .= "    $second" . PHP_EOL . PHP_EOL;
+			$codeRow .= '</td>' . PHP_EOL;
+			$codeRow .= '   </tr>' . PHP_EOL;
+		}
+
+		$output = '';
+		if ( $titleRow !== '' || $codeRow !== '' ) {
+			$output .= '  <table>' . PHP_EOL;
+			$output .= $titleRow;
+			$output .= $codeRow;
+			$output .= '  </table>' . PHP_EOL;
+		}
+
+		return $output;
+	}//end getFormattedCodeComparisonBlock()
+
+
+	/**
+	 * Retrieve a code block title and prepare it for output as HTML.
+	 *
+	 * @param \DOMElement $codeElm The DOMElement object for a code block.
+	 *
+	 * @since 3.12.0
+	 *
+	 * @return string
+	 */
+	private function formatCodeTitle( DOMElement $codeElm ) {
+		$title = trim( $codeElm->getAttribute( 'title' ) );
+		return str_replace( '  ', '&nbsp;&nbsp;', $title );
+	}//end formatCodeTitle()
+
+
+	/**
+	 * Retrieve a code block contents and prepare it for output as HTML.
+	 *
+	 * @param \DOMElement $codeElm The DOMElement object for a code block.
+	 *
+	 * @since 3.12.0
+	 *
+	 * @return string
+	 */
+	private function formatCodeSample( DOMElement $codeElm ) {
+		$code = (string) $codeElm->nodeValue;
+		$code = trim( $code );
+		$code = str_replace( "\n", PHP_EOL . '    ', $code );
+		$code = str_replace( array( '<em>', '</em>' ), '', $code );
+
+		return $code;
+	}//end formatCodeSample()
 }//end class

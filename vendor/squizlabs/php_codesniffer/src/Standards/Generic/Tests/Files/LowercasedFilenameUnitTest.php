@@ -19,88 +19,78 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LowercasedFilenameSniff
  */
-final class LowercasedFilenameUnitTest extends AbstractSniffUnitTest
-{
+final class LowercasedFilenameUnitTest extends AbstractSniffUnitTest {
 
 
-    /**
-     * Get a list of all test files to check.
-     *
-     * @param string $testFileBase The base path that the unit tests files will have.
-     *
-     * @return string[]
-     */
-    protected function getTestFiles($testFileBase)
-    {
-        $testFileDir = dirname($testFileBase);
-        $testFiles   = parent::getTestFiles($testFileBase);
-        $testFiles[] = $testFileDir.DIRECTORY_SEPARATOR.'lowercased_filename_unit_test.inc';
 
-        return $testFiles;
+	/**
+	 * Get a list of all test files to check.
+	 *
+	 * @param string $testFileBase The base path that the unit tests files will have.
+	 *
+	 * @return string[]
+	 */
+	protected function getTestFiles( $testFileBase ) {
+		$testFileDir = dirname( $testFileBase );
+		$testFiles   = parent::getTestFiles( $testFileBase );
+		$testFiles[] = $testFileDir . DIRECTORY_SEPARATOR . 'lowercased_filename_unit_test.inc';
 
-    }//end getTestFiles()
-
-
-    /**
-     * Returns the lines where errors should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of errors that should occur on that line.
-     *
-     * @param string $testFile The name of the file being tested.
-     *
-     * @return array<int, int>
-     */
-    public function getErrorList($testFile='')
-    {
-        switch ($testFile) {
-        case 'LowercasedFilenameUnitTest.1.inc':
-        case 'LowercasedFilenameUnitTest.2.inc':
-            return [1 => 1];
-        default:
-            return [];
-        }
-
-    }//end getErrorList()
+		return $testFiles;
+	}//end getTestFiles()
 
 
-    /**
-     * Returns the lines where warnings should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of warnings that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getWarningList()
-    {
-        return [];
-
-    }//end getWarningList()
-
-
-    /**
-     * Test the sniff bails early when handling STDIN.
-     *
-     * @return void
-     */
-    public function testStdIn()
-    {
-        $config            = new ConfigDouble();
-        $config->standards = ['Generic'];
-        $config->sniffs    = ['Generic.Files.LowercasedFilename'];
-
-        $ruleset = new Ruleset($config);
-
-        $content = '<?php ';
-        $file    = new DummyFile($content, $ruleset, $config);
-        $file->process();
-
-        $this->assertSame(0, $file->getErrorCount());
-        $this->assertSame(0, $file->getWarningCount());
-        $this->assertCount(0, $file->getErrors());
-
-    }//end testStdIn()
+	/**
+	 * Returns the lines where errors should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of errors that should occur on that line.
+	 *
+	 * @param string $testFile The name of the file being tested.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getErrorList( $testFile = '' ) {
+		switch ( $testFile ) {
+			case 'LowercasedFilenameUnitTest.1.inc':
+			case 'LowercasedFilenameUnitTest.2.inc':
+				return array( 1 => 1 );
+			default:
+				return array();
+		}
+	}//end getErrorList()
 
 
+	/**
+	 * Returns the lines where warnings should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of warnings that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getWarningList() {
+		return array();
+	}//end getWarningList()
+
+
+	/**
+	 * Test the sniff bails early when handling STDIN.
+	 *
+	 * @return void
+	 */
+	public function testStdIn() {
+		$config            = new ConfigDouble();
+		$config->standards = array( 'Generic' );
+		$config->sniffs    = array( 'Generic.Files.LowercasedFilename' );
+
+		$ruleset = new Ruleset( $config );
+
+		$content = '<?php ';
+		$file    = new DummyFile( $content, $ruleset, $config );
+		$file->process();
+
+		$this->assertSame( 0, $file->getErrorCount() );
+		$this->assertSame( 0, $file->getWarningCount() );
+		$this->assertCount( 0, $file->getErrors() );
+	}//end testStdIn()
 }//end class

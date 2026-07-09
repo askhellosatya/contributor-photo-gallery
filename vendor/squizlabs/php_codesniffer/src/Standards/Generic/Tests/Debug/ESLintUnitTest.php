@@ -17,15 +17,15 @@ use PHP_CodeSniffer\Config;
  *
  * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Debug\ESLintSniff
  */
-final class ESLintUnitTest extends AbstractSniffUnitTest
-{
+final class ESLintUnitTest extends AbstractSniffUnitTest {
 
-    /**
-     * Basic ESLint config to use for testing the sniff.
-     *
-     * @var string
-     */
-    const ESLINT_CONFIG = '{
+
+	/**
+	 * Basic ESLint config to use for testing the sniff.
+	 *
+	 * @var string
+	 */
+	const ESLINT_CONFIG = '{
     "parserOptions": {
         "ecmaVersion": 5,
         "sourceType": "script",
@@ -38,85 +38,73 @@ final class ESLintUnitTest extends AbstractSniffUnitTest
 }';
 
 
-    /**
-     * Sets up this unit test.
-     *
-     * @before
-     *
-     * @return void
-     */
-    protected function setUpPrerequisites()
-    {
-        parent::setUpPrerequisites();
+	/**
+	 * Sets up this unit test.
+	 *
+	 * @before
+	 *
+	 * @return void
+	 */
+	protected function setUpPrerequisites() {
+		parent::setUpPrerequisites();
 
-        $cwd = getcwd();
-        file_put_contents($cwd.'/.eslintrc.json', self::ESLINT_CONFIG);
+		$cwd = getcwd();
+		file_put_contents( $cwd . '/.eslintrc.json', self::ESLINT_CONFIG );
 
-        putenv('ESLINT_USE_FLAT_CONFIG=false');
-
-    }//end setUpPrerequisites()
+		putenv( 'ESLINT_USE_FLAT_CONFIG=false' );
+	}//end setUpPrerequisites()
 
 
-    /**
-     * Remove artifact.
-     *
-     * @after
-     *
-     * @return void
-     */
-    protected function resetProperties()
-    {
-        $cwd = getcwd();
-        unlink($cwd.'/.eslintrc.json');
-
-    }//end resetProperties()
+	/**
+	 * Remove artifact.
+	 *
+	 * @after
+	 *
+	 * @return void
+	 */
+	protected function resetProperties() {
+		$cwd = getcwd();
+		unlink( $cwd . '/.eslintrc.json' );
+	}//end resetProperties()
 
 
-    /**
-     * Should this test be skipped for some reason.
-     *
-     * @return bool
-     */
-    protected function shouldSkipTest()
-    {
-        $eslintPath = Config::getExecutablePath('eslint');
-        if ($eslintPath === null) {
-            return true;
-        }
+	/**
+	 * Should this test be skipped for some reason.
+	 *
+	 * @return bool
+	 */
+	protected function shouldSkipTest() {
+		$eslintPath = Config::getExecutablePath( 'eslint' );
+		if ( $eslintPath === null ) {
+			return true;
+		}
 
-        return false;
-
-    }//end shouldSkipTest()
+		return false;
+	}//end shouldSkipTest()
 
 
-    /**
-     * Returns the lines where errors should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of errors that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getErrorList()
-    {
-        return [1 => 2];
-
-    }//end getErrorList()
+	/**
+	 * Returns the lines where errors should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of errors that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getErrorList() {
+		return array( 1 => 2 );
+	}//end getErrorList()
 
 
-    /**
-     * Returns the lines where warnings should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of warnings that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getWarningList()
-    {
-        return [];
-
-    }//end getWarningList()
-
-
+	/**
+	 * Returns the lines where warnings should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of warnings that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getWarningList() {
+		return array();
+	}//end getWarningList()
 }//end class

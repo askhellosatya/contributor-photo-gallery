@@ -16,71 +16,63 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\PEAR\Sniffs\WhiteSpace\ScopeIndentSniff
  */
-final class ScopeIndentUnitTest extends AbstractSniffUnitTest
-{
+final class ScopeIndentUnitTest extends AbstractSniffUnitTest {
 
 
-    /**
-     * Get a list of CLI values to set before the file is tested.
-     *
-     * @param string                  $testFile The name of the file being tested.
-     * @param \PHP_CodeSniffer\Config $config   The config data for the test run.
-     *
-     * @return void
-     */
-    public function setCliValues($testFile, $config)
-    {
-        $config->setConfigData('scope_indent_debug', '0', true);
 
-    }//end setCliValues()
-
-
-    /**
-     * Returns the lines where errors should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of errors that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getErrorList()
-    {
-        return [
-            7   => 1,
-            10  => 1,
-            17  => 1,
-            20  => 1,
-            24  => 1,
-            25  => 1,
-            27  => 1,
-            28  => 1,
-            29  => 1,
-            30  => 1,
-            58  => 1,
-            123 => 1,
-            224 => 1,
-            225 => 1,
-            279 => 1,
-            284 => 1,
-            311 => 1,
-        ];
-
-    }//end getErrorList()
+	/**
+	 * Get a list of CLI values to set before the file is tested.
+	 *
+	 * @param string                  $testFile The name of the file being tested.
+	 * @param \PHP_CodeSniffer\Config $config   The config data for the test run.
+	 *
+	 * @return void
+	 */
+	public function setCliValues( $testFile, $config ) {
+		$config->setConfigData( 'scope_indent_debug', '0', true );
+	}//end setCliValues()
 
 
-    /**
-     * Returns the lines where warnings should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of warnings that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getWarningList()
-    {
-        return [];
+	/**
+	 * Returns the lines where errors should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of errors that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getErrorList() {
+		return array(
+			7   => 1,
+			10  => 1,
+			17  => 1,
+			20  => 1,
+			24  => 1,
+			25  => 1,
+			27  => 1,
+			28  => 1,
+			29  => 1,
+			30  => 1,
+			58  => 1,
+			123 => 1,
+			224 => 1,
+			225 => 1,
+			279 => 1,
+			284 => 1,
+			311 => 1,
+		);
+	}//end getErrorList()
 
-    }//end getWarningList()
 
-
+	/**
+	 * Returns the lines where warnings should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of warnings that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getWarningList() {
+		return array();
+	}//end getWarningList()
 }//end class

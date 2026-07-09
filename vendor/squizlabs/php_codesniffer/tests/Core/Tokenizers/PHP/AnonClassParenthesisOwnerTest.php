@@ -11,148 +11,136 @@ namespace PHP_CodeSniffer\Tests\Core\Tokenizers\PHP;
 
 use PHP_CodeSniffer\Tests\Core\Tokenizers\AbstractTokenizerTestCase;
 
-final class AnonClassParenthesisOwnerTest extends AbstractTokenizerTestCase
-{
+final class AnonClassParenthesisOwnerTest extends AbstractTokenizerTestCase {
 
 
-    /**
-     * Test that anonymous class tokens without parenthesis do not get assigned a parenthesis owner.
-     *
-     * @param string $testMarker The comment which prefaces the target token in the test file.
-     *
-     * @dataProvider dataAnonClassNoParentheses
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::processAdditional
-     *
-     * @return void
-     */
-    public function testAnonClassNoParentheses($testMarker)
-    {
-        $tokens = $this->phpcsFile->getTokens();
 
-        $anonClass = $this->getTargetToken($testMarker, T_ANON_CLASS);
-        $this->assertArrayNotHasKey('parenthesis_owner', $tokens[$anonClass]);
-        $this->assertArrayNotHasKey('parenthesis_opener', $tokens[$anonClass]);
-        $this->assertArrayNotHasKey('parenthesis_closer', $tokens[$anonClass]);
+	/**
+	 * Test that anonymous class tokens without parenthesis do not get assigned a parenthesis owner.
+	 *
+	 * @param string $testMarker The comment which prefaces the target token in the test file.
+	 *
+	 * @dataProvider dataAnonClassNoParentheses
+	 * @covers       PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+	 *
+	 * @return void
+	 */
+	public function testAnonClassNoParentheses( $testMarker ) {
+		$tokens = $this->phpcsFile->getTokens();
 
-    }//end testAnonClassNoParentheses()
-
-
-    /**
-     * Test that the next open/close parenthesis after an anonymous class without parenthesis
-     * do not get assigned the anonymous class as a parenthesis owner.
-     *
-     * @param string $testMarker The comment which prefaces the target token in the test file.
-     *
-     * @dataProvider dataAnonClassNoParentheses
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::processAdditional
-     *
-     * @return void
-     */
-    public function testAnonClassNoParenthesesNextOpenClose($testMarker)
-    {
-        $tokens   = $this->phpcsFile->getTokens();
-        $function = $this->getTargetToken($testMarker, T_FUNCTION);
-
-        $opener = $this->getTargetToken($testMarker, T_OPEN_PARENTHESIS);
-        $this->assertArrayHasKey('parenthesis_owner', $tokens[$opener]);
-        $this->assertSame($function, $tokens[$opener]['parenthesis_owner']);
-
-        $closer = $this->getTargetToken($testMarker, T_CLOSE_PARENTHESIS);
-        $this->assertArrayHasKey('parenthesis_owner', $tokens[$closer]);
-        $this->assertSame($function, $tokens[$closer]['parenthesis_owner']);
-
-    }//end testAnonClassNoParenthesesNextOpenClose()
+		$anonClass = $this->getTargetToken( $testMarker, T_ANON_CLASS );
+		$this->assertArrayNotHasKey( 'parenthesis_owner', $tokens[ $anonClass ] );
+		$this->assertArrayNotHasKey( 'parenthesis_opener', $tokens[ $anonClass ] );
+		$this->assertArrayNotHasKey( 'parenthesis_closer', $tokens[ $anonClass ] );
+	}//end testAnonClassNoParentheses()
 
 
-    /**
-     * Data provider.
-     *
-     * @see testAnonClassNoParentheses()
-     * @see testAnonClassNoParenthesesNextOpenClose()
-     *
-     * @return array<string, array<string, string>>
-     */
-    public static function dataAnonClassNoParentheses()
-    {
-        return [
-            'plain'                                              => [
-                'testMarker' => '/* testNoParentheses */',
-            ],
-            'readonly'                                           => [
-                'testMarker' => '/* testReadonlyNoParentheses */',
-            ],
-            'declaration contains comments and extra whitespace' => [
-                'testMarker' => '/* testNoParenthesesAndEmptyTokens */',
-            ],
-        ];
+	/**
+	 * Test that the next open/close parenthesis after an anonymous class without parenthesis
+	 * do not get assigned the anonymous class as a parenthesis owner.
+	 *
+	 * @param string $testMarker The comment which prefaces the target token in the test file.
+	 *
+	 * @dataProvider dataAnonClassNoParentheses
+	 * @covers       PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+	 *
+	 * @return void
+	 */
+	public function testAnonClassNoParenthesesNextOpenClose( $testMarker ) {
+		$tokens   = $this->phpcsFile->getTokens();
+		$function = $this->getTargetToken( $testMarker, T_FUNCTION );
 
-    }//end dataAnonClassNoParentheses()
+		$opener = $this->getTargetToken( $testMarker, T_OPEN_PARENTHESIS );
+		$this->assertArrayHasKey( 'parenthesis_owner', $tokens[ $opener ] );
+		$this->assertSame( $function, $tokens[ $opener ]['parenthesis_owner'] );
 
-
-    /**
-     * Test that anonymous class tokens with parenthesis get assigned a parenthesis owner,
-     * opener and closer; and that the opener/closer get the anonymous class assigned as owner.
-     *
-     * @param string $testMarker The comment which prefaces the target token in the test file.
-     *
-     * @dataProvider dataAnonClassWithParentheses
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::processAdditional
-     *
-     * @return void
-     */
-    public function testAnonClassWithParentheses($testMarker)
-    {
-        $tokens    = $this->phpcsFile->getTokens();
-        $anonClass = $this->getTargetToken($testMarker, T_ANON_CLASS);
-        $opener    = $this->getTargetToken($testMarker, T_OPEN_PARENTHESIS);
-        $closer    = $this->getTargetToken($testMarker, T_CLOSE_PARENTHESIS);
-
-        $this->assertArrayHasKey('parenthesis_owner', $tokens[$anonClass]);
-        $this->assertArrayHasKey('parenthesis_opener', $tokens[$anonClass]);
-        $this->assertArrayHasKey('parenthesis_closer', $tokens[$anonClass]);
-        $this->assertSame($anonClass, $tokens[$anonClass]['parenthesis_owner']);
-        $this->assertSame($opener, $tokens[$anonClass]['parenthesis_opener']);
-        $this->assertSame($closer, $tokens[$anonClass]['parenthesis_closer']);
-
-        $this->assertArrayHasKey('parenthesis_owner', $tokens[$opener]);
-        $this->assertArrayHasKey('parenthesis_opener', $tokens[$opener]);
-        $this->assertArrayHasKey('parenthesis_closer', $tokens[$opener]);
-        $this->assertSame($anonClass, $tokens[$opener]['parenthesis_owner']);
-        $this->assertSame($opener, $tokens[$opener]['parenthesis_opener']);
-        $this->assertSame($closer, $tokens[$opener]['parenthesis_closer']);
-
-        $this->assertArrayHasKey('parenthesis_owner', $tokens[$closer]);
-        $this->assertArrayHasKey('parenthesis_opener', $tokens[$closer]);
-        $this->assertArrayHasKey('parenthesis_closer', $tokens[$closer]);
-        $this->assertSame($anonClass, $tokens[$closer]['parenthesis_owner']);
-        $this->assertSame($opener, $tokens[$closer]['parenthesis_opener']);
-        $this->assertSame($closer, $tokens[$closer]['parenthesis_closer']);
-
-    }//end testAnonClassWithParentheses()
+		$closer = $this->getTargetToken( $testMarker, T_CLOSE_PARENTHESIS );
+		$this->assertArrayHasKey( 'parenthesis_owner', $tokens[ $closer ] );
+		$this->assertSame( $function, $tokens[ $closer ]['parenthesis_owner'] );
+	}//end testAnonClassNoParenthesesNextOpenClose()
 
 
-    /**
-     * Data provider.
-     *
-     * @see testAnonClassWithParentheses()
-     *
-     * @return array<string, array<string, string>>
-     */
-    public static function dataAnonClassWithParentheses()
-    {
-        return [
-            'plain'                                              => [
-                'testMarker' => '/* testWithParentheses */',
-            ],
-            'readonly'                                           => [
-                'testMarker' => '/* testReadonlyWithParentheses */',
-            ],
-            'declaration contains comments and extra whitespace' => [
-                'testMarker' => '/* testWithParenthesesAndEmptyTokens */',
-            ],
-        ];
+	/**
+	 * Data provider.
+	 *
+	 * @see testAnonClassNoParentheses()
+	 * @see testAnonClassNoParenthesesNextOpenClose()
+	 *
+	 * @return array<string, array<string, string>>
+	 */
+	public static function dataAnonClassNoParentheses() {
+		return array(
+			'plain'    => array(
+				'testMarker' => '/* testNoParentheses */',
+			),
+			'readonly' => array(
+				'testMarker' => '/* testReadonlyNoParentheses */',
+			),
+			'declaration contains comments and extra whitespace' => array(
+				'testMarker' => '/* testNoParenthesesAndEmptyTokens */',
+			),
+		);
+	}//end dataAnonClassNoParentheses()
 
-    }//end dataAnonClassWithParentheses()
+
+	/**
+	 * Test that anonymous class tokens with parenthesis get assigned a parenthesis owner,
+	 * opener and closer; and that the opener/closer get the anonymous class assigned as owner.
+	 *
+	 * @param string $testMarker The comment which prefaces the target token in the test file.
+	 *
+	 * @dataProvider dataAnonClassWithParentheses
+	 * @covers       PHP_CodeSniffer\Tokenizers\PHP::processAdditional
+	 *
+	 * @return void
+	 */
+	public function testAnonClassWithParentheses( $testMarker ) {
+		$tokens    = $this->phpcsFile->getTokens();
+		$anonClass = $this->getTargetToken( $testMarker, T_ANON_CLASS );
+		$opener    = $this->getTargetToken( $testMarker, T_OPEN_PARENTHESIS );
+		$closer    = $this->getTargetToken( $testMarker, T_CLOSE_PARENTHESIS );
+
+		$this->assertArrayHasKey( 'parenthesis_owner', $tokens[ $anonClass ] );
+		$this->assertArrayHasKey( 'parenthesis_opener', $tokens[ $anonClass ] );
+		$this->assertArrayHasKey( 'parenthesis_closer', $tokens[ $anonClass ] );
+		$this->assertSame( $anonClass, $tokens[ $anonClass ]['parenthesis_owner'] );
+		$this->assertSame( $opener, $tokens[ $anonClass ]['parenthesis_opener'] );
+		$this->assertSame( $closer, $tokens[ $anonClass ]['parenthesis_closer'] );
+
+		$this->assertArrayHasKey( 'parenthesis_owner', $tokens[ $opener ] );
+		$this->assertArrayHasKey( 'parenthesis_opener', $tokens[ $opener ] );
+		$this->assertArrayHasKey( 'parenthesis_closer', $tokens[ $opener ] );
+		$this->assertSame( $anonClass, $tokens[ $opener ]['parenthesis_owner'] );
+		$this->assertSame( $opener, $tokens[ $opener ]['parenthesis_opener'] );
+		$this->assertSame( $closer, $tokens[ $opener ]['parenthesis_closer'] );
+
+		$this->assertArrayHasKey( 'parenthesis_owner', $tokens[ $closer ] );
+		$this->assertArrayHasKey( 'parenthesis_opener', $tokens[ $closer ] );
+		$this->assertArrayHasKey( 'parenthesis_closer', $tokens[ $closer ] );
+		$this->assertSame( $anonClass, $tokens[ $closer ]['parenthesis_owner'] );
+		$this->assertSame( $opener, $tokens[ $closer ]['parenthesis_opener'] );
+		$this->assertSame( $closer, $tokens[ $closer ]['parenthesis_closer'] );
+	}//end testAnonClassWithParentheses()
 
 
+	/**
+	 * Data provider.
+	 *
+	 * @see testAnonClassWithParentheses()
+	 *
+	 * @return array<string, array<string, string>>
+	 */
+	public static function dataAnonClassWithParentheses() {
+		return array(
+			'plain'    => array(
+				'testMarker' => '/* testWithParentheses */',
+			),
+			'readonly' => array(
+				'testMarker' => '/* testReadonlyWithParentheses */',
+			),
+			'declaration contains comments and extra whitespace' => array(
+				'testMarker' => '/* testWithParenthesesAndEmptyTokens */',
+			),
+		);
+	}//end dataAnonClassWithParentheses()
 }//end class

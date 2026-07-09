@@ -9,16 +9,14 @@ namespace Fixtures\TestStandard\Sniffs\MissingInterface;
 
 use PHP_CodeSniffer\Files\File;
 
-final class InvalidImplementsWithoutImplementSniff
-{
+final class InvalidImplementsWithoutImplementSniff {
 
-    public function register()
-    {
-        return [T_OPEN_TAG];
-    }
 
-    public function process(File $phpcsFile, $stackPtr)
-    {
-        // Do something.
-    }
+	public function register() {
+		return array( T_OPEN_TAG );
+	}
+
+	public function process( File $phpcsFile, $stackPtr ) {
+		// Do something.
+	}
 }

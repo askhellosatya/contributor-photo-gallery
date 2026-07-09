@@ -18,26 +18,22 @@ use PHP_CodeSniffer\Tests\Core\Ruleset\AbstractRulesetTestCase;
  *
  * @covers \PHP_CodeSniffer\Ruleset::processRule
  */
-final class ProcessRuleInvalidTypeTest extends AbstractRulesetTestCase
-{
+final class ProcessRuleInvalidTypeTest extends AbstractRulesetTestCase {
 
 
-    /**
-     * Test displaying an error when an invalid type is given.
-     *
-     * @return void
-     */
-    public function testInvalidTypeHandling()
-    {
-        $standard = __DIR__.'/ProcessRuleInvalidTypeTest.xml';
-        $config   = new ConfigDouble(["--standard=$standard"]);
 
-        $message = 'ERROR: Message type "notice" for "Generic.Files.ByteOrderMark" is invalid; must be "error" or "warning".'.PHP_EOL.PHP_EOL;
-        $this->expectRuntimeExceptionMessage($message);
+	/**
+	 * Test displaying an error when an invalid type is given.
+	 *
+	 * @return void
+	 */
+	public function testInvalidTypeHandling() {
+		$standard = __DIR__ . '/ProcessRuleInvalidTypeTest.xml';
+		$config   = new ConfigDouble( array( "--standard=$standard" ) );
 
-        new Ruleset($config);
+		$message = 'ERROR: Message type "notice" for "Generic.Files.ByteOrderMark" is invalid; must be "error" or "warning".' . PHP_EOL . PHP_EOL;
+		$this->expectRuntimeExceptionMessage( $message );
 
-    }//end testInvalidTypeHandling()
-
-
+		new Ruleset( $config );
+	}//end testInvalidTypeHandling()
 }//end class

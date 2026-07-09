@@ -15,96 +15,84 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\DeprecatedSniff;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
-class DisallowMultipleStyleDefinitionsSniff implements Sniff, DeprecatedSniff
-{
-
-    /**
-     * A list of tokenizers this sniff supports.
-     *
-     * @var string[]
-     */
-    public $supportedTokenizers = ['CSS'];
+class DisallowMultipleStyleDefinitionsSniff implements Sniff, DeprecatedSniff {
 
 
-    /**
-     * Returns the token types that this sniff is interested in.
-     *
-     * @return array<int|string>
-     */
-    public function register()
-    {
-        return [T_STYLE];
-
-    }//end register()
+	/**
+	 * A list of tokenizers this sniff supports.
+	 *
+	 * @var string[]
+	 */
+	public $supportedTokenizers = array( 'CSS' );
 
 
-    /**
-     * Processes the tokens that this sniff is interested in.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
-     * @param int                         $stackPtr  The position in the stack where
-     *                                               the token was found.
-     *
-     * @return void
-     */
-    public function process(File $phpcsFile, $stackPtr)
-    {
-        $tokens = $phpcsFile->getTokens();
-        $next   = $phpcsFile->findNext(T_STYLE, ($stackPtr + 1));
-        if ($next === false) {
-            return;
-        }
-
-        if ($tokens[$next]['content'] === 'progid') {
-            // Special case for IE filters.
-            return;
-        }
-
-        if ($tokens[$next]['line'] === $tokens[$stackPtr]['line']) {
-            $error = 'Each style definition must be on a line by itself';
-            $fix   = $phpcsFile->addFixableError($error, $next, 'Found');
-            if ($fix === true) {
-                $phpcsFile->fixer->addNewlineBefore($next);
-            }
-        }
-
-    }//end process()
+	/**
+	 * Returns the token types that this sniff is interested in.
+	 *
+	 * @return array<int|string>
+	 */
+	public function register() {
+		return array( T_STYLE );
+	}//end register()
 
 
-    /**
-     * Provide the version number in which the sniff was deprecated.
-     *
-     * @return string
-     */
-    public function getDeprecationVersion()
-    {
-        return 'v3.9.0';
+	/**
+	 * Processes the tokens that this sniff is interested in.
+	 *
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
+	 * @param int                         $stackPtr  The position in the stack where
+	 *                                               the token was found.
+	 *
+	 * @return void
+	 */
+	public function process( File $phpcsFile, $stackPtr ) {
+		$tokens = $phpcsFile->getTokens();
+		$next   = $phpcsFile->findNext( T_STYLE, ( $stackPtr + 1 ) );
+		if ( $next === false ) {
+			return;
+		}
 
-    }//end getDeprecationVersion()
+		if ( $tokens[ $next ]['content'] === 'progid' ) {
+			// Special case for IE filters.
+			return;
+		}
 
-
-    /**
-     * Provide the version number in which the sniff will be removed.
-     *
-     * @return string
-     */
-    public function getRemovalVersion()
-    {
-        return 'v4.0.0';
-
-    }//end getRemovalVersion()
-
-
-    /**
-     * Provide a custom message to display with the deprecation.
-     *
-     * @return string
-     */
-    public function getDeprecationMessage()
-    {
-        return 'Support for scanning CSS files will be removed completely in v4.0.0.';
-
-    }//end getDeprecationMessage()
+		if ( $tokens[ $next ]['line'] === $tokens[ $stackPtr ]['line'] ) {
+			$error = 'Each style definition must be on a line by itself';
+			$fix   = $phpcsFile->addFixableError( $error, $next, 'Found' );
+			if ( $fix === true ) {
+				$phpcsFile->fixer->addNewlineBefore( $next );
+			}
+		}
+	}//end process()
 
 
+	/**
+	 * Provide the version number in which the sniff was deprecated.
+	 *
+	 * @return string
+	 */
+	public function getDeprecationVersion() {
+		return 'v3.9.0';
+	}//end getDeprecationVersion()
+
+
+	/**
+	 * Provide the version number in which the sniff will be removed.
+	 *
+	 * @return string
+	 */
+	public function getRemovalVersion() {
+		return 'v4.0.0';
+	}//end getRemovalVersion()
+
+
+	/**
+	 * Provide a custom message to display with the deprecation.
+	 *
+	 * @return string
+	 */
+	public function getDeprecationMessage() {
+		return 'Support for scanning CSS files will be removed completely in v4.0.0.';
+	}//end getDeprecationMessage()
 }//end class

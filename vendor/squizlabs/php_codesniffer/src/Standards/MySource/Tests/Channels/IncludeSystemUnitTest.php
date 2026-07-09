@@ -16,50 +16,44 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers PHP_CodeSniffer\Standards\MySource\Sniffs\Channels\IncludeSystemSniff
  */
-final class IncludeSystemUnitTest extends AbstractSniffUnitTest
-{
+final class IncludeSystemUnitTest extends AbstractSniffUnitTest {
 
 
-    /**
-     * Returns the lines where errors should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of errors that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getErrorList()
-    {
-        return [
-            9  => 1,
-            14 => 1,
-            24 => 1,
-            27 => 1,
-            28 => 1,
-            31 => 1,
-            36 => 1,
-            41 => 1,
-            61 => 1,
-            70 => 1,
-            89 => 1,
-        ];
 
-    }//end getErrorList()
-
-
-    /**
-     * Returns the lines where warnings should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of warnings that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getWarningList()
-    {
-        return [];
-
-    }//end getWarningList()
+	/**
+	 * Returns the lines where errors should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of errors that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getErrorList() {
+		return array(
+			9  => 1,
+			14 => 1,
+			24 => 1,
+			27 => 1,
+			28 => 1,
+			31 => 1,
+			36 => 1,
+			41 => 1,
+			61 => 1,
+			70 => 1,
+			89 => 1,
+		);
+	}//end getErrorList()
 
 
+	/**
+	 * Returns the lines where warnings should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of warnings that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getWarningList() {
+		return array();
+	}//end getWarningList()
 }//end class

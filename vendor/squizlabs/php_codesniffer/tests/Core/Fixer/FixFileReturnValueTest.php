@@ -18,72 +18,64 @@ use PHPUnit\Framework\TestCase;
  *
  * @covers PHP_CodeSniffer\Fixer::fixFile
  */
-final class FixFileReturnValueTest extends TestCase
-{
+final class FixFileReturnValueTest extends TestCase {
 
 
-    /**
-     * Test that the return value of the fixFile() method is true when the file was completely fixed.
-     *
-     * @return void
-     */
-    public function testReturnValueIsTrueWhenFileWasFixed()
-    {
-        $standard = __DIR__.'/FixFileReturnValueAllGoodTest.xml';
-        $config   = new ConfigDouble(["--standard=$standard"]);
-        $ruleset  = new Ruleset($config);
 
-        $testCaseFile = __DIR__.'/Fixtures/test.inc';
-        $phpcsFile    = new LocalFile($testCaseFile, $ruleset, $config);
-        $phpcsFile->process();
-        $fixed = $phpcsFile->fixer->fixFile();
+	/**
+	 * Test that the return value of the fixFile() method is true when the file was completely fixed.
+	 *
+	 * @return void
+	 */
+	public function testReturnValueIsTrueWhenFileWasFixed() {
+		$standard = __DIR__ . '/FixFileReturnValueAllGoodTest.xml';
+		$config   = new ConfigDouble( array( "--standard=$standard" ) );
+		$ruleset  = new Ruleset( $config );
 
-        $this->assertTrue($fixed);
+		$testCaseFile = __DIR__ . '/Fixtures/test.inc';
+		$phpcsFile    = new LocalFile( $testCaseFile, $ruleset, $config );
+		$phpcsFile->process();
+		$fixed = $phpcsFile->fixer->fixFile();
 
-    }//end testReturnValueIsTrueWhenFileWasFixed()
-
-
-    /**
-     * Test that the return value of the fixFile() method is false when the file failed to make all fixes.
-     *
-     * @param string $standard The ruleset file to use for the test.
-     *
-     * @dataProvider dataReturnValueIsFalse
-     *
-     * @return void
-     */
-    public function testReturnValueIsFalse($standard)
-    {
-        $config  = new ConfigDouble(["--standard=$standard"]);
-        $ruleset = new Ruleset($config);
-
-        $testCaseFile = __DIR__.'/Fixtures/test.inc';
-        $phpcsFile    = new LocalFile($testCaseFile, $ruleset, $config);
-        $phpcsFile->process();
-        $fixed = $phpcsFile->fixer->fixFile();
-
-        $this->assertFalse($fixed);
-
-    }//end testReturnValueIsFalse()
+		$this->assertTrue( $fixed );
+	}//end testReturnValueIsTrueWhenFileWasFixed()
 
 
-    /**
-     * Data provider.
-     *
-     * @return array<string, array<string, string>>
-     */
-    public static function dataReturnValueIsFalse()
-    {
-        return [
-            'when there is a fixer conflict'                                    => [
-                'standard' => __DIR__.'/FixFileReturnValueConflictTest.xml',
-            ],
-            'when the fixer ran out of loops before all fixes could be applied' => [
-                'standard' => __DIR__.'/FixFileReturnValueNotEnoughLoopsTest.xml',
-            ],
-        ];
+	/**
+	 * Test that the return value of the fixFile() method is false when the file failed to make all fixes.
+	 *
+	 * @param string $standard The ruleset file to use for the test.
+	 *
+	 * @dataProvider dataReturnValueIsFalse
+	 *
+	 * @return void
+	 */
+	public function testReturnValueIsFalse( $standard ) {
+		$config  = new ConfigDouble( array( "--standard=$standard" ) );
+		$ruleset = new Ruleset( $config );
 
-    }//end dataReturnValueIsFalse()
+		$testCaseFile = __DIR__ . '/Fixtures/test.inc';
+		$phpcsFile    = new LocalFile( $testCaseFile, $ruleset, $config );
+		$phpcsFile->process();
+		$fixed = $phpcsFile->fixer->fixFile();
+
+		$this->assertFalse( $fixed );
+	}//end testReturnValueIsFalse()
 
 
+	/**
+	 * Data provider.
+	 *
+	 * @return array<string, array<string, string>>
+	 */
+	public static function dataReturnValueIsFalse() {
+		return array(
+			'when there is a fixer conflict' => array(
+				'standard' => __DIR__ . '/FixFileReturnValueConflictTest.xml',
+			),
+			'when the fixer ran out of loops before all fixes could be applied' => array(
+				'standard' => __DIR__ . '/FixFileReturnValueNotEnoughLoopsTest.xml',
+			),
+		);
+	}//end dataReturnValueIsFalse()
 }//end class

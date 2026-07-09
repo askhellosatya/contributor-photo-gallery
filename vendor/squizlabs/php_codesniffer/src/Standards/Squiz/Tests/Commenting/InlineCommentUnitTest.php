@@ -16,82 +16,76 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\Commenting\InlineCommentSniff
  */
-final class InlineCommentUnitTest extends AbstractSniffUnitTest
-{
+final class InlineCommentUnitTest extends AbstractSniffUnitTest {
 
 
-    /**
-     * Returns the lines where errors should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of errors that should occur on that line.
-     *
-     * @param string $testFile The name of the file being tested.
-     *
-     * @return array<int, int>
-     */
-    public function getErrorList($testFile='')
-    {
-        switch ($testFile) {
-        case 'InlineCommentUnitTest.inc':
-            $errors = [
-                17  => 1,
-                27  => 1,
-                28  => 1,
-                32  => 2,
-                36  => 1,
-                44  => 2,
-                58  => 1,
-                61  => 1,
-                64  => 1,
-                67  => 1,
-                95  => 1,
-                96  => 1,
-                97  => 3,
-                118 => 1,
-                126 => 2,
-                130 => 2,
-                149 => 1,
-                189 => 1,
-            ];
 
-            return $errors;
-        case 'InlineCommentUnitTest.js':
-            return [
-                31  => 1,
-                36  => 2,
-                48  => 1,
-                51  => 1,
-                54  => 1,
-                57  => 1,
-                102 => 1,
-                103 => 1,
-                104 => 3,
-                118 => 1,
-                121 => 1,
-                125 => 2,
-                129 => 2,
-            ];
-        default:
-            return [];
-        }//end switch
+	/**
+	 * Returns the lines where errors should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of errors that should occur on that line.
+	 *
+	 * @param string $testFile The name of the file being tested.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getErrorList( $testFile = '' ) {
+		switch ( $testFile ) {
+			case 'InlineCommentUnitTest.inc':
+				$errors = array(
+					17  => 1,
+					27  => 1,
+					28  => 1,
+					32  => 2,
+					36  => 1,
+					44  => 2,
+					58  => 1,
+					61  => 1,
+					64  => 1,
+					67  => 1,
+					95  => 1,
+					96  => 1,
+					97  => 3,
+					118 => 1,
+					126 => 2,
+					130 => 2,
+					149 => 1,
+					189 => 1,
+				);
 
-    }//end getErrorList()
-
-
-    /**
-     * Returns the lines where warnings should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of warnings that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getWarningList()
-    {
-        return [];
-
-    }//end getWarningList()
+				return $errors;
+			case 'InlineCommentUnitTest.js':
+				return array(
+					31  => 1,
+					36  => 2,
+					48  => 1,
+					51  => 1,
+					54  => 1,
+					57  => 1,
+					102 => 1,
+					103 => 1,
+					104 => 3,
+					118 => 1,
+					121 => 1,
+					125 => 2,
+					129 => 2,
+				);
+			default:
+				return array();
+		}//end switch
+	}//end getErrorList()
 
 
+	/**
+	 * Returns the lines where warnings should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of warnings that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getWarningList() {
+		return array();
+	}//end getWarningList()
 }//end class

@@ -16,23 +16,19 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
  *
  * @covers \PHP_CodeSniffer\Files\File::getMethodParameters
  */
-final class GetMethodParametersParseError2Test extends AbstractMethodUnitTest
-{
+final class GetMethodParametersParseError2Test extends AbstractMethodUnitTest {
 
 
-    /**
-     * Test receiving an empty array when encountering a specific parse error.
-     *
-     * @return void
-     */
-    public function testParseError()
-    {
-        $target = $this->getTargetToken('/* testParseError */', [T_FUNCTION, T_CLOSURE, T_FN]);
-        $result = self::$phpcsFile->getMethodParameters($target);
 
-        $this->assertSame([], $result);
+	/**
+	 * Test receiving an empty array when encountering a specific parse error.
+	 *
+	 * @return void
+	 */
+	public function testParseError() {
+		$target = $this->getTargetToken( '/* testParseError */', array( T_FUNCTION, T_CLOSURE, T_FN ) );
+		$result = self::$phpcsFile->getMethodParameters( $target );
 
-    }//end testParseError()
-
-
+		$this->assertSame( array(), $result );
+	}//end testParseError()
 }//end class

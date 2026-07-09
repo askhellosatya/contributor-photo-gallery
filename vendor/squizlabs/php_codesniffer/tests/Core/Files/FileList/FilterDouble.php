@@ -11,21 +11,17 @@ namespace PHP_CodeSniffer\Tests\Core\Files\FileList;
 use PHP_CodeSniffer\Filters\Filter;
 use ReturnTypeWillChange;
 
-final class FilterDouble extends Filter
-{
+final class FilterDouble extends Filter {
 
 
-    /**
-     * Accepts every file.
-     *
-     * @return true
-     */
-    #[ReturnTypeWillChange]
-    public function accept()
-    {
-        return true;
 
-    }//end accept()
-
-
+	/**
+	 * Accepts every file.
+	 *
+	 * @return true
+	 */
+	#[ReturnTypeWillChange]
+	public function accept() {
+		return true;
+	}//end accept()
 }//end class

@@ -15,118 +15,106 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\DeprecatedSniff;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
-class NamedColoursSniff implements Sniff, DeprecatedSniff
-{
-
-    /**
-     * A list of tokenizers this sniff supports.
-     *
-     * @var array
-     */
-    public $supportedTokenizers = ['CSS'];
-
-    /**
-     * A list of named colours.
-     *
-     * This is the list of standard colours defined in the CSS specification.
-     *
-     * @var array
-     */
-    protected $colourNames = [
-        'aqua'    => 'aqua',
-        'black'   => 'black',
-        'blue'    => 'blue',
-        'fuchsia' => 'fuchsia',
-        'gray'    => 'gray',
-        'green'   => 'green',
-        'lime'    => 'lime',
-        'maroon'  => 'maroon',
-        'navy'    => 'navy',
-        'olive'   => 'olive',
-        'orange'  => 'orange',
-        'purple'  => 'purple',
-        'red'     => 'red',
-        'silver'  => 'silver',
-        'teal'    => 'teal',
-        'white'   => 'white',
-        'yellow'  => 'yellow',
-    ];
+class NamedColoursSniff implements Sniff, DeprecatedSniff {
 
 
-    /**
-     * Returns the token types that this sniff is interested in.
-     *
-     * @return array<int|string>
-     */
-    public function register()
-    {
-        return [T_STRING];
+	/**
+	 * A list of tokenizers this sniff supports.
+	 *
+	 * @var array
+	 */
+	public $supportedTokenizers = array( 'CSS' );
 
-    }//end register()
-
-
-    /**
-     * Processes the tokens that this sniff is interested in.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
-     * @param int                         $stackPtr  The position in the stack where
-     *                                               the token was found.
-     *
-     * @return void
-     */
-    public function process(File $phpcsFile, $stackPtr)
-    {
-        $tokens = $phpcsFile->getTokens();
-
-        if ($tokens[($stackPtr - 1)]['code'] === T_HASH
-            || $tokens[($stackPtr - 1)]['code'] === T_STRING_CONCAT
-        ) {
-            // Class name.
-            return;
-        }
-
-        if (isset($this->colourNames[strtolower($tokens[$stackPtr]['content'])]) === true) {
-            $error = 'Named colours are forbidden; use hex, rgb, or rgba values instead';
-            $phpcsFile->addError($error, $stackPtr, 'Forbidden');
-        }
-
-    }//end process()
+	/**
+	 * A list of named colours.
+	 *
+	 * This is the list of standard colours defined in the CSS specification.
+	 *
+	 * @var array
+	 */
+	protected $colourNames = array(
+		'aqua'    => 'aqua',
+		'black'   => 'black',
+		'blue'    => 'blue',
+		'fuchsia' => 'fuchsia',
+		'gray'    => 'gray',
+		'green'   => 'green',
+		'lime'    => 'lime',
+		'maroon'  => 'maroon',
+		'navy'    => 'navy',
+		'olive'   => 'olive',
+		'orange'  => 'orange',
+		'purple'  => 'purple',
+		'red'     => 'red',
+		'silver'  => 'silver',
+		'teal'    => 'teal',
+		'white'   => 'white',
+		'yellow'  => 'yellow',
+	);
 
 
-    /**
-     * Provide the version number in which the sniff was deprecated.
-     *
-     * @return string
-     */
-    public function getDeprecationVersion()
-    {
-        return 'v3.9.0';
-
-    }//end getDeprecationVersion()
+	/**
+	 * Returns the token types that this sniff is interested in.
+	 *
+	 * @return array<int|string>
+	 */
+	public function register() {
+		return array( T_STRING );
+	}//end register()
 
 
-    /**
-     * Provide the version number in which the sniff will be removed.
-     *
-     * @return string
-     */
-    public function getRemovalVersion()
-    {
-        return 'v4.0.0';
+	/**
+	 * Processes the tokens that this sniff is interested in.
+	 *
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
+	 * @param int                         $stackPtr  The position in the stack where
+	 *                                               the token was found.
+	 *
+	 * @return void
+	 */
+	public function process( File $phpcsFile, $stackPtr ) {
+		$tokens = $phpcsFile->getTokens();
 
-    }//end getRemovalVersion()
+		if ( $tokens[ ( $stackPtr - 1 ) ]['code'] === T_HASH
+			|| $tokens[ ( $stackPtr - 1 ) ]['code'] === T_STRING_CONCAT
+		) {
+			// Class name.
+			return;
+		}
+
+		if ( isset( $this->colourNames[ strtolower( $tokens[ $stackPtr ]['content'] ) ] ) === true ) {
+			$error = 'Named colours are forbidden; use hex, rgb, or rgba values instead';
+			$phpcsFile->addError( $error, $stackPtr, 'Forbidden' );
+		}
+	}//end process()
 
 
-    /**
-     * Provide a custom message to display with the deprecation.
-     *
-     * @return string
-     */
-    public function getDeprecationMessage()
-    {
-        return 'Support for scanning CSS files will be removed completely in v4.0.0.';
-
-    }//end getDeprecationMessage()
+	/**
+	 * Provide the version number in which the sniff was deprecated.
+	 *
+	 * @return string
+	 */
+	public function getDeprecationVersion() {
+		return 'v3.9.0';
+	}//end getDeprecationVersion()
 
 
+	/**
+	 * Provide the version number in which the sniff will be removed.
+	 *
+	 * @return string
+	 */
+	public function getRemovalVersion() {
+		return 'v4.0.0';
+	}//end getRemovalVersion()
+
+
+	/**
+	 * Provide a custom message to display with the deprecation.
+	 *
+	 * @return string
+	 */
+	public function getDeprecationMessage() {
+		return 'Support for scanning CSS files will be removed completely in v4.0.0.';
+	}//end getDeprecationMessage()
 }//end class

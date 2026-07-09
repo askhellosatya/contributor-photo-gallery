@@ -32,70 +32,68 @@ namespace Fixtures\TestStandard\Sniffs\FixFileReturnValue;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
-class ConflictSniff implements Sniff
-{
+class ConflictSniff implements Sniff {
 
-    public function register()
-    {
-        return [T_OPEN_TAG];
-    }
 
-    public function process(File $phpcsFile, $stackPtr)
-    {
-        $tokens = $phpcsFile->getTokens();
+	public function register() {
+		return array( T_OPEN_TAG );
+	}
 
-        // Demand a blank line after the PHP open tag.
-        // This error is here to ensure something will be fixed in the file.
-        $nextNonWhitespace = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+	public function process( File $phpcsFile, $stackPtr ) {
+		$tokens = $phpcsFile->getTokens();
 
-        if (($tokens[$nextNonWhitespace]['line'] - $tokens[$stackPtr]['line']) !== 2) {
-            $error = 'There must be a single blank line after the PHP open tag';
-            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'BlankLineAfterOpen');
-            if ($fix === true) {
-                $phpcsFile->fixer->addNewline($stackPtr);
+		// Demand a blank line after the PHP open tag.
+		// This error is here to ensure something will be fixed in the file.
+		$nextNonWhitespace = $phpcsFile->findNext( T_WHITESPACE, ( $stackPtr + 1 ), null, true );
 
-                // This return is here deliberately to force a new loop.
-                // This should ensure that loop 50 does *NOT* apply any fixes.
-                return;
-            }
-        }
+		if ( ( $tokens[ $nextNonWhitespace ]['line'] - $tokens[ $stackPtr ]['line'] ) !== 2 ) {
+			$error = 'There must be a single blank line after the PHP open tag';
+			$fix   = $phpcsFile->addFixableError( $error, $stackPtr, 'BlankLineAfterOpen' );
+			if ( $fix === true ) {
+				$phpcsFile->fixer->addNewline( $stackPtr );
 
-        // Skip to the end of the file.
-        $stackPtr = ($phpcsFile->numTokens - 1);
+				// This return is here deliberately to force a new loop.
+				// This should ensure that loop 50 does *NOT* apply any fixes.
+				return;
+			}
+		}
 
-        $eolCharLen = strlen($phpcsFile->eolChar);
-        $lastChars  = substr($tokens[$stackPtr]['content'], ($eolCharLen * -1));
+		// Skip to the end of the file.
+		$stackPtr = ( $phpcsFile->numTokens - 1 );
 
-        // Demand a newline at the end of a file.
-        if ($lastChars !== $phpcsFile->eolChar) {
-            $error = 'File must end with a newline character';
-            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NoNewlineEOF');
-            if ($fix === true) {
-                $phpcsFile->fixer->addNewline($stackPtr);
-            }
-        }
+		$eolCharLen = strlen( $phpcsFile->eolChar );
+		$lastChars  = substr( $tokens[ $stackPtr ]['content'], ( $eolCharLen * -1 ) );
 
-        // Demand NO newline at the end of a file.
-        if ($lastChars === $phpcsFile->eolChar) {
-            $error = 'File must not end with a newline character';
-            $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NewlineEOF');
-            if ($fix === true) {
-                $phpcsFile->fixer->beginChangeset();
+		// Demand a newline at the end of a file.
+		if ( $lastChars !== $phpcsFile->eolChar ) {
+			$error = 'File must end with a newline character';
+			$fix   = $phpcsFile->addFixableError( $error, $stackPtr, 'NoNewlineEOF' );
+			if ( $fix === true ) {
+				$phpcsFile->fixer->addNewline( $stackPtr );
+			}
+		}
 
-                for ($i = $stackPtr; $i > 0; $i--) {
-                    $newContent = rtrim($tokens[$i]['content'], $phpcsFile->eolChar);
-                    $phpcsFile->fixer->replaceToken($i, $newContent);
+		// Demand NO newline at the end of a file.
+		if ( $lastChars === $phpcsFile->eolChar ) {
+			$error = 'File must not end with a newline character';
+			$fix   = $phpcsFile->addFixableError( $error, $stackPtr, 'NewlineEOF' );
+			if ( $fix === true ) {
+				$phpcsFile->fixer->beginChangeset();
 
-                    if ($newContent !== '') {
-                        break;
-                    }
-                }
+				for ( $i = $stackPtr; $i > 0; $i-- ) {
+					$newContent = rtrim( $tokens[ $i ]['content'], $phpcsFile->eolChar );
+					$phpcsFile->fixer->replaceToken( $i, $newContent );
 
-                $phpcsFile->fixer->endChangeset();
-            }
-        }
+					if ( $newContent !== '' ) {
+						break;
+					}
+				}
 
-        // Ignore the rest of the file.
-        return $phpcsFile->numTokens;
-    }
+				$phpcsFile->fixer->endChangeset();
+			}
+		}
+
+		// Ignore the rest of the file.
+		return $phpcsFile->numTokens;
+	}
 }

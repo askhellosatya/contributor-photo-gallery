@@ -16,48 +16,42 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Files\ByteOrderMarkSniff
  */
-final class ByteOrderMarkUnitTest extends AbstractSniffUnitTest
-{
+final class ByteOrderMarkUnitTest extends AbstractSniffUnitTest {
 
 
-    /**
-     * Returns the lines where errors should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of errors that should occur on that line.
-     *
-     * @param string $testFile The name of the file being tested.
-     *
-     * @return array<int, int>
-     */
-    public function getErrorList($testFile='')
-    {
-        switch ($testFile) {
-        case 'ByteOrderMarkUnitTest.1.inc':
-        case 'ByteOrderMarkUnitTest.4.inc':
-        case 'ByteOrderMarkUnitTest.5.inc':
-            return [1 => 1];
 
-        default:
-            return [];
-        }
+	/**
+	 * Returns the lines where errors should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of errors that should occur on that line.
+	 *
+	 * @param string $testFile The name of the file being tested.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getErrorList( $testFile = '' ) {
+		switch ( $testFile ) {
+			case 'ByteOrderMarkUnitTest.1.inc':
+			case 'ByteOrderMarkUnitTest.4.inc':
+			case 'ByteOrderMarkUnitTest.5.inc':
+				return array( 1 => 1 );
 
-    }//end getErrorList()
-
-
-    /**
-     * Returns the lines where warnings should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of warnings that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getWarningList()
-    {
-        return [];
-
-    }//end getWarningList()
+			default:
+				return array();
+		}
+	}//end getErrorList()
 
 
+	/**
+	 * Returns the lines where warnings should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of warnings that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getWarningList() {
+		return array();
+	}//end getWarningList()
 }//end class

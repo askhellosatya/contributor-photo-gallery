@@ -30,64 +30,58 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
-class UnconditionalIfStatementSniff implements Sniff
-{
+class UnconditionalIfStatementSniff implements Sniff {
 
 
-    /**
-     * Registers the tokens that this sniff wants to listen for.
-     *
-     * @return array<int|string>
-     */
-    public function register()
-    {
-        return [
-            T_IF,
-            T_ELSEIF,
-        ];
 
-    }//end register()
-
-
-    /**
-     * Processes this test, when one of its tokens is encountered.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-     * @param int                         $stackPtr  The position of the current token
-     *                                               in the stack passed in $tokens.
-     *
-     * @return void
-     */
-    public function process(File $phpcsFile, $stackPtr)
-    {
-        $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
-
-        // Skip if statement without body.
-        if (isset($token['parenthesis_opener'], $token['parenthesis_closer']) === false) {
-            return;
-        }
-
-        $next = ++$token['parenthesis_opener'];
-        $end  = --$token['parenthesis_closer'];
-
-        $goodCondition = false;
-        for (; $next <= $end; ++$next) {
-            $code = $tokens[$next]['code'];
-
-            if (isset(Tokens::$emptyTokens[$code]) === true || $code === T_NS_SEPARATOR) {
-                continue;
-            } else if ($code !== T_TRUE && $code !== T_FALSE) {
-                $goodCondition = true;
-            }
-        }
-
-        if ($goodCondition === false) {
-            $error = 'Avoid IF statements that are always true or false';
-            $phpcsFile->addWarning($error, $stackPtr, 'Found');
-        }
-
-    }//end process()
+	/**
+	 * Registers the tokens that this sniff wants to listen for.
+	 *
+	 * @return array<int|string>
+	 */
+	public function register() {
+		return array(
+			T_IF,
+			T_ELSEIF,
+		);
+	}//end register()
 
 
+	/**
+	 * Processes this test, when one of its tokens is encountered.
+	 *
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+	 * @param int                         $stackPtr  The position of the current token
+	 *                                               in the stack passed in $tokens.
+	 *
+	 * @return void
+	 */
+	public function process( File $phpcsFile, $stackPtr ) {
+		$tokens = $phpcsFile->getTokens();
+		$token  = $tokens[ $stackPtr ];
+
+		// Skip if statement without body.
+		if ( isset( $token['parenthesis_opener'], $token['parenthesis_closer'] ) === false ) {
+			return;
+		}
+
+		$next = ++$token['parenthesis_opener'];
+		$end  = --$token['parenthesis_closer'];
+
+		$goodCondition = false;
+		for ( ; $next <= $end; ++$next ) {
+			$code = $tokens[ $next ]['code'];
+
+			if ( isset( Tokens::$emptyTokens[ $code ] ) === true || $code === T_NS_SEPARATOR ) {
+				continue;
+			} elseif ( $code !== T_TRUE && $code !== T_FALSE ) {
+				$goodCondition = true;
+			}
+		}
+
+		if ( $goodCondition === false ) {
+			$error = 'Avoid IF statements that are always true or false';
+			$phpcsFile->addWarning( $error, $stackPtr, 'Found' );
+		}
+	}//end process()
 }//end class

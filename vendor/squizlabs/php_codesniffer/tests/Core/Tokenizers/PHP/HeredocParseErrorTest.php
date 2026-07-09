@@ -16,26 +16,22 @@ use PHP_CodeSniffer\Tests\Core\Tokenizers\AbstractTokenizerTestCase;
  *
  * @covers PHP_CodeSniffer\Tokenizers\PHP::tokenize
  */
-final class HeredocParseErrorTest extends AbstractTokenizerTestCase
-{
+final class HeredocParseErrorTest extends AbstractTokenizerTestCase {
 
 
-    /**
-     * Verify that a heredoc (and nowdoc) start token is retokenized to T_STRING if no closer is found.
-     *
-     * @return void
-     */
-    public function testMergeConflict()
-    {
-        $tokens = $this->phpcsFile->getTokens();
 
-        $token      = $this->getTargetToken('/* testUnclosedHeredoc */', [T_START_HEREDOC, T_STRING], '<<< HEAD'."\n");
-        $tokenArray = $tokens[$token];
+	/**
+	 * Verify that a heredoc (and nowdoc) start token is retokenized to T_STRING if no closer is found.
+	 *
+	 * @return void
+	 */
+	public function testMergeConflict() {
+		$tokens = $this->phpcsFile->getTokens();
 
-        $this->assertSame(T_STRING, $tokenArray['code'], 'Token tokenized as '.$tokenArray['type'].', not T_START_HEREDOC (code)');
-        $this->assertSame('T_STRING', $tokenArray['type'], 'Token tokenized as '.$tokenArray['type'].', not T_START_HEREDOC (type)');
+		$token      = $this->getTargetToken( '/* testUnclosedHeredoc */', array( T_START_HEREDOC, T_STRING ), '<<< HEAD' . "\n" );
+		$tokenArray = $tokens[ $token ];
 
-    }//end testMergeConflict()
-
-
+		$this->assertSame( T_STRING, $tokenArray['code'], 'Token tokenized as ' . $tokenArray['type'] . ', not T_START_HEREDOC (code)' );
+		$this->assertSame( 'T_STRING', $tokenArray['type'], 'Token tokenized as ' . $tokenArray['type'] . ', not T_START_HEREDOC (type)' );
+	}//end testMergeConflict()
 }//end class

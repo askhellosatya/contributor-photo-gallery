@@ -15,122 +15,110 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\DeprecatedSniff;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
-class LowercaseStyleDefinitionSniff implements Sniff, DeprecatedSniff
-{
-
-    /**
-     * A list of tokenizers this sniff supports.
-     *
-     * @var array
-     */
-    public $supportedTokenizers = ['CSS'];
+class LowercaseStyleDefinitionSniff implements Sniff, DeprecatedSniff {
 
 
-    /**
-     * Returns the token types that this sniff is interested in.
-     *
-     * @return array<int|string>
-     */
-    public function register()
-    {
-        return [T_OPEN_CURLY_BRACKET];
-
-    }//end register()
+	/**
+	 * A list of tokenizers this sniff supports.
+	 *
+	 * @var array
+	 */
+	public $supportedTokenizers = array( 'CSS' );
 
 
-    /**
-     * Processes the tokens that this sniff is interested in.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
-     * @param int                         $stackPtr  The position in the stack where
-     *                                               the token was found.
-     *
-     * @return void
-     */
-    public function process(File $phpcsFile, $stackPtr)
-    {
-        $tokens  = $phpcsFile->getTokens();
-        $start   = ($stackPtr + 1);
-        $end     = ($tokens[$stackPtr]['bracket_closer'] - 1);
-        $inStyle = null;
-
-        for ($i = $start; $i <= $end; $i++) {
-            // Skip nested definitions as they are checked individually.
-            if ($tokens[$i]['code'] === T_OPEN_CURLY_BRACKET) {
-                $i = $tokens[$i]['bracket_closer'];
-                continue;
-            }
-
-            if ($tokens[$i]['code'] === T_STYLE) {
-                $inStyle = $tokens[$i]['content'];
-            }
-
-            if ($tokens[$i]['code'] === T_SEMICOLON) {
-                $inStyle = null;
-            }
-
-            if ($inStyle === 'progid') {
-                // Special case for IE filters.
-                continue;
-            }
-
-            if ($tokens[$i]['code'] === T_STYLE
-                || ($inStyle !== null
-                && $tokens[$i]['code'] === T_STRING)
-            ) {
-                $expected = strtolower($tokens[$i]['content']);
-                if ($expected !== $tokens[$i]['content']) {
-                    $error = 'Style definitions must be lowercase; expected %s but found %s';
-                    $data  = [
-                        $expected,
-                        $tokens[$i]['content'],
-                    ];
-
-                    $fix = $phpcsFile->addFixableError($error, $i, 'FoundUpper', $data);
-                    if ($fix === true) {
-                        $phpcsFile->fixer->replaceToken($i, $expected);
-                    }
-                }
-            }
-        }//end for
-
-    }//end process()
+	/**
+	 * Returns the token types that this sniff is interested in.
+	 *
+	 * @return array<int|string>
+	 */
+	public function register() {
+		return array( T_OPEN_CURLY_BRACKET );
+	}//end register()
 
 
-    /**
-     * Provide the version number in which the sniff was deprecated.
-     *
-     * @return string
-     */
-    public function getDeprecationVersion()
-    {
-        return 'v3.9.0';
+	/**
+	 * Processes the tokens that this sniff is interested in.
+	 *
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
+	 * @param int                         $stackPtr  The position in the stack where
+	 *                                               the token was found.
+	 *
+	 * @return void
+	 */
+	public function process( File $phpcsFile, $stackPtr ) {
+		$tokens  = $phpcsFile->getTokens();
+		$start   = ( $stackPtr + 1 );
+		$end     = ( $tokens[ $stackPtr ]['bracket_closer'] - 1 );
+		$inStyle = null;
 
-    }//end getDeprecationVersion()
+		for ( $i = $start; $i <= $end; $i++ ) {
+			// Skip nested definitions as they are checked individually.
+			if ( $tokens[ $i ]['code'] === T_OPEN_CURLY_BRACKET ) {
+				$i = $tokens[ $i ]['bracket_closer'];
+				continue;
+			}
+
+			if ( $tokens[ $i ]['code'] === T_STYLE ) {
+				$inStyle = $tokens[ $i ]['content'];
+			}
+
+			if ( $tokens[ $i ]['code'] === T_SEMICOLON ) {
+				$inStyle = null;
+			}
+
+			if ( $inStyle === 'progid' ) {
+				// Special case for IE filters.
+				continue;
+			}
+
+			if ( $tokens[ $i ]['code'] === T_STYLE
+				|| ( $inStyle !== null
+				&& $tokens[ $i ]['code'] === T_STRING )
+			) {
+				$expected = strtolower( $tokens[ $i ]['content'] );
+				if ( $expected !== $tokens[ $i ]['content'] ) {
+					$error = 'Style definitions must be lowercase; expected %s but found %s';
+					$data  = array(
+						$expected,
+						$tokens[ $i ]['content'],
+					);
+
+					$fix = $phpcsFile->addFixableError( $error, $i, 'FoundUpper', $data );
+					if ( $fix === true ) {
+						$phpcsFile->fixer->replaceToken( $i, $expected );
+					}
+				}
+			}
+		}//end for
+	}//end process()
 
 
-    /**
-     * Provide the version number in which the sniff will be removed.
-     *
-     * @return string
-     */
-    public function getRemovalVersion()
-    {
-        return 'v4.0.0';
-
-    }//end getRemovalVersion()
+	/**
+	 * Provide the version number in which the sniff was deprecated.
+	 *
+	 * @return string
+	 */
+	public function getDeprecationVersion() {
+		return 'v3.9.0';
+	}//end getDeprecationVersion()
 
 
-    /**
-     * Provide a custom message to display with the deprecation.
-     *
-     * @return string
-     */
-    public function getDeprecationMessage()
-    {
-        return 'Support for scanning CSS files will be removed completely in v4.0.0.';
-
-    }//end getDeprecationMessage()
+	/**
+	 * Provide the version number in which the sniff will be removed.
+	 *
+	 * @return string
+	 */
+	public function getRemovalVersion() {
+		return 'v4.0.0';
+	}//end getRemovalVersion()
 
 
+	/**
+	 * Provide a custom message to display with the deprecation.
+	 *
+	 * @return string
+	 */
+	public function getDeprecationMessage() {
+		return 'Support for scanning CSS files will be removed completely in v4.0.0.';
+	}//end getDeprecationMessage()
 }//end class

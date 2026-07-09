@@ -13,61 +13,55 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
-class LowercaseClassKeywordsSniff implements Sniff
-{
+class LowercaseClassKeywordsSniff implements Sniff {
 
 
-    /**
-     * Returns an array of tokens this test wants to listen for.
-     *
-     * @return array<int|string>
-     */
-    public function register()
-    {
-        $targets   = Tokens::$ooScopeTokens;
-        $targets[] = T_EXTENDS;
-        $targets[] = T_IMPLEMENTS;
-        $targets[] = T_ABSTRACT;
-        $targets[] = T_FINAL;
-        $targets[] = T_READONLY;
-        $targets[] = T_VAR;
-        $targets[] = T_CONST;
 
-        return $targets;
+	/**
+	 * Returns an array of tokens this test wants to listen for.
+	 *
+	 * @return array<int|string>
+	 */
+	public function register() {
+		$targets   = Tokens::$ooScopeTokens;
+		$targets[] = T_EXTENDS;
+		$targets[] = T_IMPLEMENTS;
+		$targets[] = T_ABSTRACT;
+		$targets[] = T_FINAL;
+		$targets[] = T_READONLY;
+		$targets[] = T_VAR;
+		$targets[] = T_CONST;
 
-    }//end register()
-
-
-    /**
-     * Processes this test, when one of its tokens is encountered.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-     * @param int                         $stackPtr  The position of the current token in
-     *                                               the stack passed in $tokens.
-     *
-     * @return void
-     */
-    public function process(File $phpcsFile, $stackPtr)
-    {
-        $tokens = $phpcsFile->getTokens();
-
-        $content   = $tokens[$stackPtr]['content'];
-        $contentLc = strtolower($content);
-        if ($content !== $contentLc) {
-            $error = '%s keyword must be lowercase; expected "%s" but found "%s"';
-            $data  = [
-                strtoupper($content),
-                $contentLc,
-                $content,
-            ];
-
-            $fix = $phpcsFile->addFixableError($error, $stackPtr, 'FoundUppercase', $data);
-            if ($fix === true) {
-                $phpcsFile->fixer->replaceToken($stackPtr, $contentLc);
-            }
-        }
-
-    }//end process()
+		return $targets;
+	}//end register()
 
 
+	/**
+	 * Processes this test, when one of its tokens is encountered.
+	 *
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+	 * @param int                         $stackPtr  The position of the current token in
+	 *                                               the stack passed in $tokens.
+	 *
+	 * @return void
+	 */
+	public function process( File $phpcsFile, $stackPtr ) {
+		$tokens = $phpcsFile->getTokens();
+
+		$content   = $tokens[ $stackPtr ]['content'];
+		$contentLc = strtolower( $content );
+		if ( $content !== $contentLc ) {
+			$error = '%s keyword must be lowercase; expected "%s" but found "%s"';
+			$data  = array(
+				strtoupper( $content ),
+				$contentLc,
+				$content,
+			);
+
+			$fix = $phpcsFile->addFixableError( $error, $stackPtr, 'FoundUppercase', $data );
+			if ( $fix === true ) {
+				$phpcsFile->fixer->replaceToken( $stackPtr, $contentLc );
+			}
+		}
+	}//end process()
 }//end class

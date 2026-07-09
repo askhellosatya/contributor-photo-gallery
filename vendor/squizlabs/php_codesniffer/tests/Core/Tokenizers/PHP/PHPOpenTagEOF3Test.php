@@ -19,36 +19,32 @@ use PHP_CodeSniffer\Util\Tokens;
  *
  * @covers PHP_CodeSniffer\Tokenizers\PHP::tokenize
  */
-final class PHPOpenTagEOF3Test extends AbstractTokenizerTestCase
-{
+final class PHPOpenTagEOF3Test extends AbstractTokenizerTestCase {
 
 
-    /**
-     * Test that the tokenization of a long PHP open tag at the very end of a file is correct and consistent.
-     *
-     * @return void
-     */
-    public function testLongOpenTagAtEndOfFile()
-    {
-        $tokens   = $this->phpcsFile->getTokens();
-        $stackPtr = $this->getTargetToken('/* testLongOpenTagEndOfFileNoSpaceNoNewLineUppercase */', [T_OPEN_TAG, T_STRING, T_INLINE_HTML]);
 
-        $this->assertSame(
-            T_OPEN_TAG,
-            $tokens[$stackPtr]['code'],
-            'Token tokenized as '.Tokens::tokenName($tokens[$stackPtr]['code']).', not T_OPEN_TAG (code)'
-        );
-        $this->assertSame(
-            'T_OPEN_TAG',
-            $tokens[$stackPtr]['type'],
-            'Token tokenized as '.$tokens[$stackPtr]['type'].', not T_OPEN_TAG (type)'
-        );
-        $this->assertSame('<?PHP', $tokens[$stackPtr]['content']);
+	/**
+	 * Test that the tokenization of a long PHP open tag at the very end of a file is correct and consistent.
+	 *
+	 * @return void
+	 */
+	public function testLongOpenTagAtEndOfFile() {
+		$tokens   = $this->phpcsFile->getTokens();
+		$stackPtr = $this->getTargetToken( '/* testLongOpenTagEndOfFileNoSpaceNoNewLineUppercase */', array( T_OPEN_TAG, T_STRING, T_INLINE_HTML ) );
 
-        // Now make sure that this is the very last token in the file and there are no tokens after it.
-        $this->assertArrayNotHasKey(($stackPtr + 1), $tokens);
+		$this->assertSame(
+			T_OPEN_TAG,
+			$tokens[ $stackPtr ]['code'],
+			'Token tokenized as ' . Tokens::tokenName( $tokens[ $stackPtr ]['code'] ) . ', not T_OPEN_TAG (code)'
+		);
+		$this->assertSame(
+			'T_OPEN_TAG',
+			$tokens[ $stackPtr ]['type'],
+			'Token tokenized as ' . $tokens[ $stackPtr ]['type'] . ', not T_OPEN_TAG (type)'
+		);
+		$this->assertSame( '<?PHP', $tokens[ $stackPtr ]['content'] );
 
-    }//end testLongOpenTagAtEndOfFile()
-
-
+		// Now make sure that this is the very last token in the file and there are no tokens after it.
+		$this->assertArrayNotHasKey( ( $stackPtr + 1 ), $tokens );
+	}//end testLongOpenTagAtEndOfFile()
 }//end class

@@ -16,53 +16,47 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\Scope\MemberVarScopeSniff
  */
-final class MemberVarScopeUnitTest extends AbstractSniffUnitTest
-{
+final class MemberVarScopeUnitTest extends AbstractSniffUnitTest {
 
 
-    /**
-     * Returns the lines where errors should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of errors that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getErrorList()
-    {
-        return [
-            7  => 1,
-            25 => 1,
-            29 => 1,
-            33 => 1,
-            39 => 1,
-            41 => 1,
-            66 => 2,
-            67 => 1,
-            75 => 1,
-            80 => 1,
-            81 => 1,
-            82 => 1,
-            90 => 1,
-        ];
 
-    }//end getErrorList()
-
-
-    /**
-     * Returns the lines where warnings should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of warnings that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getWarningList()
-    {
-        // Warning from getMemberProperties() about parse error.
-        return [71 => 1];
-
-    }//end getWarningList()
+	/**
+	 * Returns the lines where errors should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of errors that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getErrorList() {
+		return array(
+			7  => 1,
+			25 => 1,
+			29 => 1,
+			33 => 1,
+			39 => 1,
+			41 => 1,
+			66 => 2,
+			67 => 1,
+			75 => 1,
+			80 => 1,
+			81 => 1,
+			82 => 1,
+			90 => 1,
+		);
+	}//end getErrorList()
 
 
+	/**
+	 * Returns the lines where warnings should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of warnings that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getWarningList() {
+		// Warning from getMemberProperties() about parse error.
+		return array( 71 => 1 );
+	}//end getWarningList()
 }//end class

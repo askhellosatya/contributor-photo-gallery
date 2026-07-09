@@ -14,7 +14,7 @@ namespace PHP_CodeSniffer\Exceptions;
 
 use Exception;
 
-class DeepExitException extends Exception
-{
+class DeepExitException extends Exception {
+
 
 }//end class

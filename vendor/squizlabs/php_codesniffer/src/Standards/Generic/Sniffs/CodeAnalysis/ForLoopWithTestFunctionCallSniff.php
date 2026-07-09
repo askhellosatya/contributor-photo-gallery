@@ -30,72 +30,66 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
-class ForLoopWithTestFunctionCallSniff implements Sniff
-{
+class ForLoopWithTestFunctionCallSniff implements Sniff {
 
 
-    /**
-     * Registers the tokens that this sniff wants to listen for.
-     *
-     * @return array<int|string>
-     */
-    public function register()
-    {
-        return [T_FOR];
 
-    }//end register()
-
-
-    /**
-     * Processes this test, when one of its tokens is encountered.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-     * @param int                         $stackPtr  The position of the current token
-     *                                               in the stack passed in $tokens.
-     *
-     * @return void
-     */
-    public function process(File $phpcsFile, $stackPtr)
-    {
-        $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
-
-        // Skip invalid statement.
-        if (isset($token['parenthesis_opener'], $token['parenthesis_closer']) === false) {
-            return;
-        }
-
-        $next = ++$token['parenthesis_opener'];
-        $end  = --$token['parenthesis_closer'];
-
-        $position = 0;
-
-        for (; $next <= $end; ++$next) {
-            $code = $tokens[$next]['code'];
-            if ($code === T_SEMICOLON) {
-                ++$position;
-            }
-
-            if ($position < 1) {
-                continue;
-            } else if ($position > 1) {
-                break;
-            } else if ($code !== T_VARIABLE && $code !== T_STRING) {
-                continue;
-            }
-
-            // Find next non empty token, if it is a open parenthesis we have a
-            // function call.
-            $index = $phpcsFile->findNext(Tokens::$emptyTokens, ($next + 1), null, true);
-
-            if ($tokens[$index]['code'] === T_OPEN_PARENTHESIS) {
-                $error = 'Avoid function calls in a FOR loop test part';
-                $phpcsFile->addWarning($error, $stackPtr, 'NotAllowed');
-                break;
-            }
-        }//end for
-
-    }//end process()
+	/**
+	 * Registers the tokens that this sniff wants to listen for.
+	 *
+	 * @return array<int|string>
+	 */
+	public function register() {
+		return array( T_FOR );
+	}//end register()
 
 
+	/**
+	 * Processes this test, when one of its tokens is encountered.
+	 *
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+	 * @param int                         $stackPtr  The position of the current token
+	 *                                               in the stack passed in $tokens.
+	 *
+	 * @return void
+	 */
+	public function process( File $phpcsFile, $stackPtr ) {
+		$tokens = $phpcsFile->getTokens();
+		$token  = $tokens[ $stackPtr ];
+
+		// Skip invalid statement.
+		if ( isset( $token['parenthesis_opener'], $token['parenthesis_closer'] ) === false ) {
+			return;
+		}
+
+		$next = ++$token['parenthesis_opener'];
+		$end  = --$token['parenthesis_closer'];
+
+		$position = 0;
+
+		for ( ; $next <= $end; ++$next ) {
+			$code = $tokens[ $next ]['code'];
+			if ( $code === T_SEMICOLON ) {
+				++$position;
+			}
+
+			if ( $position < 1 ) {
+				continue;
+			} elseif ( $position > 1 ) {
+				break;
+			} elseif ( $code !== T_VARIABLE && $code !== T_STRING ) {
+				continue;
+			}
+
+			// Find next non empty token, if it is a open parenthesis we have a
+			// function call.
+			$index = $phpcsFile->findNext( Tokens::$emptyTokens, ( $next + 1 ), null, true );
+
+			if ( $tokens[ $index ]['code'] === T_OPEN_PARENTHESIS ) {
+				$error = 'Avoid function calls in a FOR loop test part';
+				$phpcsFile->addWarning( $error, $stackPtr, 'NotAllowed' );
+				break;
+			}
+		}//end for
+	}//end process()
 }//end class

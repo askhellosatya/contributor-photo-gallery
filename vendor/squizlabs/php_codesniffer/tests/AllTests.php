@@ -16,43 +16,39 @@ require_once 'Standards/AllSniffs.php';
 // older PHPUnit versions due to return type hints, so maintain
 // two different suite objects.
 $phpunit7 = false;
-if (class_exists('\PHPUnit\Runner\Version') === true) {
-    $version = \PHPUnit\Runner\Version::id();
-    if (version_compare($version, '7.0', '>=') === true) {
-        $phpunit7 = true;
-    }
+if ( class_exists( '\PHPUnit\Runner\Version' ) === true ) {
+	$version = \PHPUnit\Runner\Version::id();
+	if ( version_compare( $version, '7.0', '>=' ) === true ) {
+		$phpunit7 = true;
+	}
 }
 
-if ($phpunit7 === true) {
-    include_once 'TestSuite7.php';
+if ( $phpunit7 === true ) {
+	include_once 'TestSuite7.php';
 } else {
-    include_once 'TestSuite.php';
+	include_once 'TestSuite.php';
 }
 
-class PHP_CodeSniffer_AllTests
-{
+class PHP_CodeSniffer_AllTests {
 
 
-    /**
-     * Add all PHP_CodeSniffer test suites into a single test suite.
-     *
-     * @return \PHPUnit\Framework\TestSuite
-     */
-    public static function suite()
-    {
-        $GLOBALS['PHP_CODESNIFFER_STANDARD_DIRS'] = [];
-        $GLOBALS['PHP_CODESNIFFER_TEST_DIRS']     = [];
 
-        // Use a special PHP_CodeSniffer test suite so that we can
-        // unset our autoload function after the run.
-        $suite = new TestSuite('PHP CodeSniffer');
+	/**
+	 * Add all PHP_CodeSniffer test suites into a single test suite.
+	 *
+	 * @return \PHPUnit\Framework\TestSuite
+	 */
+	public static function suite() {
+		$GLOBALS['PHP_CODESNIFFER_STANDARD_DIRS'] = array();
+		$GLOBALS['PHP_CODESNIFFER_TEST_DIRS']     = array();
 
-        $suite->addTest(Core\AllTests::suite());
-        $suite->addTest(Standards\AllSniffs::suite());
+		// Use a special PHP_CodeSniffer test suite so that we can
+		// unset our autoload function after the run.
+		$suite = new TestSuite( 'PHP CodeSniffer' );
 
-        return $suite;
+		$suite->addTest( Core\AllTests::suite() );
+		$suite->addTest( Standards\AllSniffs::suite() );
 
-    }//end suite()
-
-
+		return $suite;
+	}//end suite()
 }//end class

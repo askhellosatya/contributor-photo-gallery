@@ -15,41 +15,37 @@ use PHPUnit\Framework\TestCase;
 /**
  * Base functionality and utilities for testing FileList methods.
  */
-abstract class AbstractFileListTestCase extends TestCase
-{
-
-    /**
-     * The Config object.
-     *
-     * @var \PHP_CodeSniffer\Config
-     */
-    protected static $config;
-
-    /**
-     * The Ruleset object.
-     *
-     * @var \PHP_CodeSniffer\Ruleset
-     */
-    protected static $ruleset;
+abstract class AbstractFileListTestCase extends TestCase {
 
 
-    /**
-     * Initialize the config and ruleset objects only once.
-     *
-     * @beforeClass
-     *
-     * @return void
-     */
-    public static function initializeConfigAndRuleset()
-    {
-        // Wrapped in an `isset()` as the properties may have been set already (via a call to this method from a dataprovider).
-        if (isset(self::$ruleset) === false) {
-            self::$config         = new ConfigDouble();
-            self::$config->filter = __DIR__.'/FilterDouble.php';
-            self::$ruleset        = new Ruleset(self::$config);
-        }
+	/**
+	 * The Config object.
+	 *
+	 * @var \PHP_CodeSniffer\Config
+	 */
+	protected static $config;
 
-    }//end initializeConfigAndRuleset()
+	/**
+	 * The Ruleset object.
+	 *
+	 * @var \PHP_CodeSniffer\Ruleset
+	 */
+	protected static $ruleset;
 
 
+	/**
+	 * Initialize the config and ruleset objects only once.
+	 *
+	 * @beforeClass
+	 *
+	 * @return void
+	 */
+	public static function initializeConfigAndRuleset() {
+		// Wrapped in an `isset()` as the properties may have been set already (via a call to this method from a dataprovider).
+		if ( isset( self::$ruleset ) === false ) {
+			self::$config         = new ConfigDouble();
+			self::$config->filter = __DIR__ . '/FilterDouble.php';
+			self::$ruleset        = new Ruleset( self::$config );
+		}
+	}//end initializeConfigAndRuleset()
 }//end class

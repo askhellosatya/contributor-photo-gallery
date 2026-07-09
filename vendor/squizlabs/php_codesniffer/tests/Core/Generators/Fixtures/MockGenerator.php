@@ -11,18 +11,17 @@ namespace PHP_CodeSniffer\Tests\Core\Generators\Fixtures;
 use DOMNode;
 use PHP_CodeSniffer\Generators\Generator;
 
-class MockGenerator extends Generator
-{
+class MockGenerator extends Generator {
 
-    /**
-     * Process the documentation for a single sniff.
-     *
-     * @param \DOMNode $doc The DOMNode object for the sniff.
-     *
-     * @return void
-     */
-    protected function processSniff(DOMNode $doc)
-    {
-        echo $this->getTitle($doc), PHP_EOL;
-    }
+
+	/**
+	 * Process the documentation for a single sniff.
+	 *
+	 * @param \DOMNode $doc The DOMNode object for the sniff.
+	 *
+	 * @return void
+	 */
+	protected function processSniff( DOMNode $doc ) {
+		echo $this->getTitle( $doc ), PHP_EOL;
+	}
 }

@@ -15,49 +15,47 @@
 
 namespace PHP_CodeSniffer\Sniffs;
 
-interface DeprecatedSniff
-{
+interface DeprecatedSniff {
 
 
-    /**
-     * Provide the version number in which the sniff was deprecated.
-     *
-     * Recommended format for PHPCS native sniffs: "v3.3.0".
-     * Recommended format for external sniffs: "StandardName v3.3.0".
-     *
-     * @return string
-     */
-    public function getDeprecationVersion();
+
+	/**
+	 * Provide the version number in which the sniff was deprecated.
+	 *
+	 * Recommended format for PHPCS native sniffs: "v3.3.0".
+	 * Recommended format for external sniffs: "StandardName v3.3.0".
+	 *
+	 * @return string
+	 */
+	public function getDeprecationVersion();
 
 
-    /**
-     * Provide the version number in which the sniff will be removed.
-     *
-     * Recommended format for PHPCS native sniffs: "v3.3.0".
-     * Recommended format for external sniffs: "StandardName v3.3.0".
-     *
-     * If the removal version is not yet known, it is recommended to set
-     * this to: "a future version".
-     *
-     * @return string
-     */
-    public function getRemovalVersion();
+	/**
+	 * Provide the version number in which the sniff will be removed.
+	 *
+	 * Recommended format for PHPCS native sniffs: "v3.3.0".
+	 * Recommended format for external sniffs: "StandardName v3.3.0".
+	 *
+	 * If the removal version is not yet known, it is recommended to set
+	 * this to: "a future version".
+	 *
+	 * @return string
+	 */
+	public function getRemovalVersion();
 
 
-    /**
-     * Optionally provide an arbitrary custom message to display with the deprecation.
-     *
-     * Typically intended to allow for displaying information about what to
-     * replace the deprecated sniff with.
-     * Example: "Use the Stnd.Cat.SniffName sniff instead."
-     * Multi-line messages (containing new line characters) are supported.
-     *
-     * An empty string can be returned if there is no replacement/no need
-     * for a custom message.
-     *
-     * @return string
-     */
-    public function getDeprecationMessage();
-
-
+	/**
+	 * Optionally provide an arbitrary custom message to display with the deprecation.
+	 *
+	 * Typically intended to allow for displaying information about what to
+	 * replace the deprecated sniff with.
+	 * Example: "Use the Stnd.Cat.SniffName sniff instead."
+	 * Multi-line messages (containing new line characters) are supported.
+	 *
+	 * An empty string can be returned if there is no replacement/no need
+	 * for a custom message.
+	 *
+	 * @return string
+	 */
+	public function getDeprecationMessage();
 }//end interface

@@ -15,26 +15,22 @@ use PHP_CodeSniffer\Tests\Core\Tokenizers\AbstractTokenizerTestCase;
  *
  * @covers PHP_CodeSniffer\Tokenizers\PHP::tokenize
  */
-final class NullableVsInlineThenParseErrorTest extends AbstractTokenizerTestCase
-{
+final class NullableVsInlineThenParseErrorTest extends AbstractTokenizerTestCase {
 
 
-    /**
-     * Verify that a "?" as the last functional token in a file (live coding) is tokenized as `T_INLINE_THEN`
-     * as it cannot yet be determined what the token would be once the code is finalized.
-     *
-     * @return void
-     */
-    public function testInlineThenAtEndOfFile()
-    {
-        $tokens     = $this->phpcsFile->getTokens();
-        $target     = $this->getTargetToken('/* testLiveCoding */', [T_NULLABLE, T_INLINE_THEN]);
-        $tokenArray = $tokens[$target];
 
-        $this->assertSame(T_INLINE_THEN, $tokenArray['code'], 'Token tokenized as '.$tokenArray['type'].', not T_INLINE_THEN (code)');
-        $this->assertSame('T_INLINE_THEN', $tokenArray['type'], 'Token tokenized as '.$tokenArray['type'].', not T_INLINE_THEN (type)');
+	/**
+	 * Verify that a "?" as the last functional token in a file (live coding) is tokenized as `T_INLINE_THEN`
+	 * as it cannot yet be determined what the token would be once the code is finalized.
+	 *
+	 * @return void
+	 */
+	public function testInlineThenAtEndOfFile() {
+		$tokens     = $this->phpcsFile->getTokens();
+		$target     = $this->getTargetToken( '/* testLiveCoding */', array( T_NULLABLE, T_INLINE_THEN ) );
+		$tokenArray = $tokens[ $target ];
 
-    }//end testInlineThenAtEndOfFile()
-
-
+		$this->assertSame( T_INLINE_THEN, $tokenArray['code'], 'Token tokenized as ' . $tokenArray['type'] . ', not T_INLINE_THEN (code)' );
+		$this->assertSame( 'T_INLINE_THEN', $tokenArray['type'], 'Token tokenized as ' . $tokenArray['type'] . ', not T_INLINE_THEN (type)' );
+	}//end testInlineThenAtEndOfFile()
 }//end class

@@ -13,131 +13,125 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
-class SpaceAfterNotSniff implements Sniff
-{
-
-    /**
-     * A list of tokenizers this sniff supports.
-     *
-     * @var array
-     */
-    public $supportedTokenizers = [
-        'PHP',
-        'JS',
-    ];
-
-    /**
-     * The number of spaces desired after the NOT operator.
-     *
-     * @var integer
-     */
-    public $spacing = 1;
-
-    /**
-     * Allow newlines instead of spaces.
-     *
-     * @var boolean
-     */
-    public $ignoreNewlines = false;
+class SpaceAfterNotSniff implements Sniff {
 
 
-    /**
-     * Returns an array of tokens this test wants to listen for.
-     *
-     * @return array<int|string>
-     */
-    public function register()
-    {
-        return [T_BOOLEAN_NOT];
+	/**
+	 * A list of tokenizers this sniff supports.
+	 *
+	 * @var array
+	 */
+	public $supportedTokenizers = array(
+		'PHP',
+		'JS',
+	);
 
-    }//end register()
+	/**
+	 * The number of spaces desired after the NOT operator.
+	 *
+	 * @var integer
+	 */
+	public $spacing = 1;
 
-
-    /**
-     * Processes this test, when one of its tokens is encountered.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-     * @param int                         $stackPtr  The position of the current token in
-     *                                               the stack passed in $tokens.
-     *
-     * @return void
-     */
-    public function process(File $phpcsFile, $stackPtr)
-    {
-        $tokens         = $phpcsFile->getTokens();
-        $this->spacing  = (int) $this->spacing;
-        $pluralizeSpace = 's';
-        if ($this->spacing === 1) {
-            $pluralizeSpace = '';
-        }
-
-        $nextNonEmpty = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
-        if ($nextNonEmpty === false) {
-            return;
-        }
-
-        if ($this->ignoreNewlines === true
-            && $tokens[$stackPtr]['line'] !== $tokens[$nextNonEmpty]['line']
-        ) {
-            return;
-        }
-
-        if ($this->spacing === 0 && $nextNonEmpty === ($stackPtr + 1)) {
-            return;
-        }
-
-        $nextNonWhitespace = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
-        if ($nextNonEmpty !== $nextNonWhitespace) {
-            $error = 'Expected %s space%s after NOT operator; comment found';
-            $data  = [
-                $this->spacing,
-                $pluralizeSpace,
-            ];
-            $phpcsFile->addError($error, $stackPtr, 'CommentFound', $data);
-            return;
-        }
-
-        $found = 0;
-        if ($tokens[$stackPtr]['line'] !== $tokens[$nextNonEmpty]['line']) {
-            $found = 'newline';
-        } else if ($tokens[($stackPtr + 1)]['code'] === T_WHITESPACE) {
-            $found = $tokens[($stackPtr + 1)]['length'];
-        }
-
-        if ($found === $this->spacing) {
-            return;
-        }
-
-        $error = 'Expected %s space%s after NOT operator; %s found';
-        $data  = [
-            $this->spacing,
-            $pluralizeSpace,
-            $found,
-        ];
-
-        $fix = $phpcsFile->addFixableError($error, $stackPtr, 'Incorrect', $data);
-        if ($fix === true) {
-            $padding = str_repeat(' ', $this->spacing);
-            if ($found === 0) {
-                $phpcsFile->fixer->addContent($stackPtr, $padding);
-            } else {
-                $phpcsFile->fixer->beginChangeset();
-                $start = ($stackPtr + 1);
-
-                if ($this->spacing > 0) {
-                    $phpcsFile->fixer->replaceToken($start, $padding);
-                    ++$start;
-                }
-
-                for ($i = $start; $i < $nextNonWhitespace; $i++) {
-                    $phpcsFile->fixer->replaceToken($i, '');
-                }
-
-                $phpcsFile->fixer->endChangeset();
-            }
-        }
-
-    }//end process()
+	/**
+	 * Allow newlines instead of spaces.
+	 *
+	 * @var boolean
+	 */
+	public $ignoreNewlines = false;
 
 
+	/**
+	 * Returns an array of tokens this test wants to listen for.
+	 *
+	 * @return array<int|string>
+	 */
+	public function register() {
+		return array( T_BOOLEAN_NOT );
+	}//end register()
+
+
+	/**
+	 * Processes this test, when one of its tokens is encountered.
+	 *
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+	 * @param int                         $stackPtr  The position of the current token in
+	 *                                               the stack passed in $tokens.
+	 *
+	 * @return void
+	 */
+	public function process( File $phpcsFile, $stackPtr ) {
+		$tokens         = $phpcsFile->getTokens();
+		$this->spacing  = (int) $this->spacing;
+		$pluralizeSpace = 's';
+		if ( $this->spacing === 1 ) {
+			$pluralizeSpace = '';
+		}
+
+		$nextNonEmpty = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
+		if ( $nextNonEmpty === false ) {
+			return;
+		}
+
+		if ( $this->ignoreNewlines === true
+			&& $tokens[ $stackPtr ]['line'] !== $tokens[ $nextNonEmpty ]['line']
+		) {
+			return;
+		}
+
+		if ( $this->spacing === 0 && $nextNonEmpty === ( $stackPtr + 1 ) ) {
+			return;
+		}
+
+		$nextNonWhitespace = $phpcsFile->findNext( T_WHITESPACE, ( $stackPtr + 1 ), null, true );
+		if ( $nextNonEmpty !== $nextNonWhitespace ) {
+			$error = 'Expected %s space%s after NOT operator; comment found';
+			$data  = array(
+				$this->spacing,
+				$pluralizeSpace,
+			);
+			$phpcsFile->addError( $error, $stackPtr, 'CommentFound', $data );
+			return;
+		}
+
+		$found = 0;
+		if ( $tokens[ $stackPtr ]['line'] !== $tokens[ $nextNonEmpty ]['line'] ) {
+			$found = 'newline';
+		} elseif ( $tokens[ ( $stackPtr + 1 ) ]['code'] === T_WHITESPACE ) {
+			$found = $tokens[ ( $stackPtr + 1 ) ]['length'];
+		}
+
+		if ( $found === $this->spacing ) {
+			return;
+		}
+
+		$error = 'Expected %s space%s after NOT operator; %s found';
+		$data  = array(
+			$this->spacing,
+			$pluralizeSpace,
+			$found,
+		);
+
+		$fix = $phpcsFile->addFixableError( $error, $stackPtr, 'Incorrect', $data );
+		if ( $fix === true ) {
+			$padding = str_repeat( ' ', $this->spacing );
+			if ( $found === 0 ) {
+				$phpcsFile->fixer->addContent( $stackPtr, $padding );
+			} else {
+				$phpcsFile->fixer->beginChangeset();
+				$start = ( $stackPtr + 1 );
+
+				if ( $this->spacing > 0 ) {
+					$phpcsFile->fixer->replaceToken( $start, $padding );
+					++$start;
+				}
+
+				for ( $i = $start; $i < $nextNonWhitespace; $i++ ) {
+					$phpcsFile->fixer->replaceToken( $i, '' );
+				}
+
+				$phpcsFile->fixer->endChangeset();
+			}
+		}
+	}//end process()
 }//end class

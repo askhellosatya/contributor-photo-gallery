@@ -16,85 +16,73 @@ use PHP_CodeSniffer\Sniffs\DeprecatedSniff;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
-class EmptyClassDefinitionSniff implements Sniff, DeprecatedSniff
-{
-
-    /**
-     * A list of tokenizers this sniff supports.
-     *
-     * @var array
-     */
-    public $supportedTokenizers = ['CSS'];
+class EmptyClassDefinitionSniff implements Sniff, DeprecatedSniff {
 
 
-    /**
-     * Returns the token types that this sniff is interested in.
-     *
-     * @return array<int|string>
-     */
-    public function register()
-    {
-        return [T_OPEN_CURLY_BRACKET];
-
-    }//end register()
+	/**
+	 * A list of tokenizers this sniff supports.
+	 *
+	 * @var array
+	 */
+	public $supportedTokenizers = array( 'CSS' );
 
 
-    /**
-     * Processes the tokens that this sniff is interested in.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
-     * @param int                         $stackPtr  The position in the stack where
-     *                                               the token was found.
-     *
-     * @return void
-     */
-    public function process(File $phpcsFile, $stackPtr)
-    {
-        $tokens = $phpcsFile->getTokens();
-        $next   = $phpcsFile->findNext(Tokens::$emptyTokens, ($stackPtr + 1), null, true);
-
-        if ($next === false || $tokens[$next]['code'] === T_CLOSE_CURLY_BRACKET) {
-            $error = 'Class definition is empty';
-            $phpcsFile->addError($error, $stackPtr, 'Found');
-        }
-
-    }//end process()
+	/**
+	 * Returns the token types that this sniff is interested in.
+	 *
+	 * @return array<int|string>
+	 */
+	public function register() {
+		return array( T_OPEN_CURLY_BRACKET );
+	}//end register()
 
 
-    /**
-     * Provide the version number in which the sniff was deprecated.
-     *
-     * @return string
-     */
-    public function getDeprecationVersion()
-    {
-        return 'v3.9.0';
+	/**
+	 * Processes the tokens that this sniff is interested in.
+	 *
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
+	 * @param int                         $stackPtr  The position in the stack where
+	 *                                               the token was found.
+	 *
+	 * @return void
+	 */
+	public function process( File $phpcsFile, $stackPtr ) {
+		$tokens = $phpcsFile->getTokens();
+		$next   = $phpcsFile->findNext( Tokens::$emptyTokens, ( $stackPtr + 1 ), null, true );
 
-    }//end getDeprecationVersion()
-
-
-    /**
-     * Provide the version number in which the sniff will be removed.
-     *
-     * @return string
-     */
-    public function getRemovalVersion()
-    {
-        return 'v4.0.0';
-
-    }//end getRemovalVersion()
+		if ( $next === false || $tokens[ $next ]['code'] === T_CLOSE_CURLY_BRACKET ) {
+			$error = 'Class definition is empty';
+			$phpcsFile->addError( $error, $stackPtr, 'Found' );
+		}
+	}//end process()
 
 
-    /**
-     * Provide a custom message to display with the deprecation.
-     *
-     * @return string
-     */
-    public function getDeprecationMessage()
-    {
-        return 'Support for scanning CSS files will be removed completely in v4.0.0.';
-
-    }//end getDeprecationMessage()
+	/**
+	 * Provide the version number in which the sniff was deprecated.
+	 *
+	 * @return string
+	 */
+	public function getDeprecationVersion() {
+		return 'v3.9.0';
+	}//end getDeprecationVersion()
 
 
+	/**
+	 * Provide the version number in which the sniff will be removed.
+	 *
+	 * @return string
+	 */
+	public function getRemovalVersion() {
+		return 'v4.0.0';
+	}//end getRemovalVersion()
+
+
+	/**
+	 * Provide a custom message to display with the deprecation.
+	 *
+	 * @return string
+	 */
+	public function getDeprecationMessage() {
+		return 'Support for scanning CSS files will be removed completely in v4.0.0.';
+	}//end getDeprecationMessage()
 }//end class

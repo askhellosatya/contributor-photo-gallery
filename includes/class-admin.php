@@ -654,17 +654,17 @@ class CPGLRY_Admin {
 
 		// Styling
 		$validated['card_style']        = in_array( $input['card_style'] ?? 'default', array( 'default', 'polaroid', 'circle', 'fixed' ), true ) ? sanitize_text_field( $input['card_style'] ) : 'default';
-		$tmp_color = sanitize_hex_color( $input['card_bg_color'] ?? '#ffffff' );
-		$validated['card_bg_color'] = $tmp_color ? $tmp_color : '#ffffff';
+		$tmp_color                      = sanitize_hex_color( $input['card_bg_color'] ?? '#ffffff' );
+		$validated['card_bg_color']     = $tmp_color ? $tmp_color : '#ffffff';
 		$validated['card_border_style'] = in_array( $input['card_border_style'] ?? 'solid', array( 'none', 'solid', 'dashed', 'dotted' ), true ) ? sanitize_text_field( $input['card_border_style'] ) : 'solid';
 		$validated['card_border_width'] = max( 0, min( 10, absint( $input['card_border_width'] ?? 1 ) ) );
-		$tmp_border = sanitize_hex_color( $input['card_border_color'] ?? '#e5e5e5' );
+		$tmp_border                     = sanitize_hex_color( $input['card_border_color'] ?? '#e5e5e5' );
 		$validated['card_border_color'] = $tmp_border ? $tmp_border : '#e5e5e5';
 		$validated['card_shadow_style'] = in_array( $input['card_shadow_style'] ?? 'subtle', array( 'none', 'subtle', 'medium', 'strong' ), true ) ? sanitize_text_field( $input['card_shadow_style'] ) : 'subtle';
 		$validated['show_captions']     = ! empty( $input['show_captions'] ) ? 1 : 0;
 
 		// New: caption color
-		$tmp_caption = sanitize_hex_color( $input['caption_text_color'] ?? '#0f1724' );
+		$tmp_caption                     = sanitize_hex_color( $input['caption_text_color'] ?? '#0f1724' );
 		$validated['caption_text_color'] = $tmp_caption ? $tmp_caption : '#0f1724';
 
 		// Advanced

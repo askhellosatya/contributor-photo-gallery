@@ -11,88 +11,78 @@ namespace PHP_CodeSniffer\Tests\Core\Tokenizers\PHP;
 
 use PHP_CodeSniffer\Tests\Core\Tokenizers\AbstractTokenizerTestCase;
 
-final class FinallyTest extends AbstractTokenizerTestCase
-{
+final class FinallyTest extends AbstractTokenizerTestCase {
 
 
-    /**
-     * Test that the finally keyword is tokenized as such.
-     *
-     * @param string $testMarker The comment which prefaces the target token in the test file.
-     *
-     * @dataProvider dataFinallyKeyword
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
-     *
-     * @return void
-     */
-    public function testFinallyKeyword($testMarker)
-    {
-        $tokens     = $this->phpcsFile->getTokens();
-        $target     = $this->getTargetToken($testMarker, [T_FINALLY, T_STRING]);
-        $tokenArray = $tokens[$target];
 
-        $this->assertSame(T_FINALLY, $tokenArray['code'], 'Token tokenized as '.$tokenArray['type'].', not T_FINALLY (code)');
-        $this->assertSame('T_FINALLY', $tokenArray['type'], 'Token tokenized as '.$tokenArray['type'].', not T_FINALLY (type)');
+	/**
+	 * Test that the finally keyword is tokenized as such.
+	 *
+	 * @param string $testMarker The comment which prefaces the target token in the test file.
+	 *
+	 * @dataProvider dataFinallyKeyword
+	 * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
+	 *
+	 * @return void
+	 */
+	public function testFinallyKeyword( $testMarker ) {
+		$tokens     = $this->phpcsFile->getTokens();
+		$target     = $this->getTargetToken( $testMarker, array( T_FINALLY, T_STRING ) );
+		$tokenArray = $tokens[ $target ];
 
-    }//end testFinallyKeyword()
-
-
-    /**
-     * Data provider.
-     *
-     * @see testFinallyKeyword()
-     *
-     * @return array<string, array<string>>
-     */
-    public static function dataFinallyKeyword()
-    {
-        return [
-            'finally after try and catch'   => ['/* testTryCatchFinally */'],
-            'finally between try and catch' => ['/* testTryFinallyCatch */'],
-            'finally after try, no catch'   => ['/* testTryFinally */'],
-        ];
-
-    }//end dataFinallyKeyword()
+		$this->assertSame( T_FINALLY, $tokenArray['code'], 'Token tokenized as ' . $tokenArray['type'] . ', not T_FINALLY (code)' );
+		$this->assertSame( 'T_FINALLY', $tokenArray['type'], 'Token tokenized as ' . $tokenArray['type'] . ', not T_FINALLY (type)' );
+	}//end testFinallyKeyword()
 
 
-    /**
-     * Test that 'finally' when not used as the reserved keyword is tokenized as `T_STRING`.
-     *
-     * @param string $testMarker The comment which prefaces the target token in the test file.
-     *
-     * @dataProvider dataFinallyNonKeyword
-     * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
-     *
-     * @return void
-     */
-    public function testFinallyNonKeyword($testMarker)
-    {
-        $tokens     = $this->phpcsFile->getTokens();
-        $target     = $this->getTargetToken($testMarker, [T_FINALLY, T_STRING]);
-        $tokenArray = $tokens[$target];
-
-        $this->assertSame(T_STRING, $tokenArray['code'], 'Token tokenized as '.$tokenArray['type'].', not T_STRING (code)');
-        $this->assertSame('T_STRING', $tokenArray['type'], 'Token tokenized as '.$tokenArray['type'].', not T_STRING (type)');
-
-    }//end testFinallyNonKeyword()
+	/**
+	 * Data provider.
+	 *
+	 * @see testFinallyKeyword()
+	 *
+	 * @return array<string, array<string>>
+	 */
+	public static function dataFinallyKeyword() {
+		return array(
+			'finally after try and catch'   => array( '/* testTryCatchFinally */' ),
+			'finally between try and catch' => array( '/* testTryFinallyCatch */' ),
+			'finally after try, no catch'   => array( '/* testTryFinally */' ),
+		);
+	}//end dataFinallyKeyword()
 
 
-    /**
-     * Data provider.
-     *
-     * @see testFinallyNonKeyword()
-     *
-     * @return array<string, array<string>>
-     */
-    public static function dataFinallyNonKeyword()
-    {
-        return [
-            'finally used as class constant name' => ['/* testFinallyUsedAsClassConstantName */'],
-            'finally used as method name'         => ['/* testFinallyUsedAsMethodName */'],
-            'finally used as property name'       => ['/* testFinallyUsedAsPropertyName */'],
-        ];
+	/**
+	 * Test that 'finally' when not used as the reserved keyword is tokenized as `T_STRING`.
+	 *
+	 * @param string $testMarker The comment which prefaces the target token in the test file.
+	 *
+	 * @dataProvider dataFinallyNonKeyword
+	 * @covers       PHP_CodeSniffer\Tokenizers\PHP::tokenize
+	 *
+	 * @return void
+	 */
+	public function testFinallyNonKeyword( $testMarker ) {
+		$tokens     = $this->phpcsFile->getTokens();
+		$target     = $this->getTargetToken( $testMarker, array( T_FINALLY, T_STRING ) );
+		$tokenArray = $tokens[ $target ];
 
-    }//end dataFinallyNonKeyword()
+		$this->assertSame( T_STRING, $tokenArray['code'], 'Token tokenized as ' . $tokenArray['type'] . ', not T_STRING (code)' );
+		$this->assertSame( 'T_STRING', $tokenArray['type'], 'Token tokenized as ' . $tokenArray['type'] . ', not T_STRING (type)' );
+	}//end testFinallyNonKeyword()
 
 
+	/**
+	 * Data provider.
+	 *
+	 * @see testFinallyNonKeyword()
+	 *
+	 * @return array<string, array<string>>
+	 */
+	public static function dataFinallyNonKeyword() {
+		return array(
+			'finally used as class constant name' => array( '/* testFinallyUsedAsClassConstantName */' ),
+			'finally used as method name'         => array( '/* testFinallyUsedAsMethodName */' ),
+			'finally used as property name'       => array( '/* testFinallyUsedAsPropertyName */' ),
+		);
+	}//end dataFinallyNonKeyword()
 }//end class

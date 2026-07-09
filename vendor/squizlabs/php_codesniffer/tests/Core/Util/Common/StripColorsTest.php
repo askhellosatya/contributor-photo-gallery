@@ -17,80 +17,74 @@ use PHPUnit\Framework\TestCase;
  *
  * @covers \PHP_CodeSniffer\Util\Common::stripColors
  */
-final class StripColorsTest extends TestCase
-{
+final class StripColorsTest extends TestCase {
 
 
-    /**
-     * Test stripping color codes from a text.
-     *
-     * @param string $text     The text provided.
-     * @param string $expected Expected function output.
-     *
-     * @dataProvider dataStripColors
-     *
-     * @return void
-     */
-    public function testStripColors($text, $expected)
-    {
-        $this->assertSame($expected, Common::stripColors($text));
 
-    }//end testStripColors()
+	/**
+	 * Test stripping color codes from a text.
+	 *
+	 * @param string $text     The text provided.
+	 * @param string $expected Expected function output.
+	 *
+	 * @dataProvider dataStripColors
+	 *
+	 * @return void
+	 */
+	public function testStripColors( $text, $expected ) {
+		$this->assertSame( $expected, Common::stripColors( $text ) );
+	}//end testStripColors()
 
 
-    /**
-     * Data provider.
-     *
-     * @see testStripColors()
-     *
-     * @return array<string, array<string, string>>
-     */
-    public static function dataStripColors()
-    {
-        return [
-            'Text is empty'                                                      => [
-                'text'     => '',
-                'expected' => '',
-            ],
-            'Text enclosed in color code'                                        => [
-                'text'     => "\033[36mSome text\033[0m",
-                'expected' => 'Some text',
-            ],
-            'Text containing color code'                                         => [
-                'text'     => "Some text \033[33mSome other text",
-                'expected' => 'Some text Some other text',
-            ],
-            'Text enclosed in color code, bold'                                  => [
-                'text'     => "\033[1;32mSome text\033[0m",
-                'expected' => 'Some text',
-            ],
-            'Text enclosed in color code, with escaped text'                     => [
-                'text'     => "\033[30;1m\\n\033[0m",
-                'expected' => '\n',
-            ],
-            'Text enclosed in color code, bold, dark, italic'                    => [
-                'text'     => "\033[1;2;3mtext\033[0m",
-                'expected' => 'text',
-            ],
-            'Text enclosed in color code, foreground color'                      => [
-                'text'     => "\033[38;5;255mtext\033[0m",
-                'expected' => 'text',
-            ],
-            'Text enclosed in color code, foreground color and background color' => [
-                'text'     => "\033[38;5;200;48;5;255mtext\033[0m",
-                'expected' => 'text',
-            ],
-            'Multiline text containing multiple color codes'                     => [
-                'text'     => "First \033[36mSecond\033[0m
+	/**
+	 * Data provider.
+	 *
+	 * @see testStripColors()
+	 *
+	 * @return array<string, array<string, string>>
+	 */
+	public static function dataStripColors() {
+		return array(
+			'Text is empty'                     => array(
+				'text'     => '',
+				'expected' => '',
+			),
+			'Text enclosed in color code'       => array(
+				'text'     => "\033[36mSome text\033[0m",
+				'expected' => 'Some text',
+			),
+			'Text containing color code'        => array(
+				'text'     => "Some text \033[33mSome other text",
+				'expected' => 'Some text Some other text',
+			),
+			'Text enclosed in color code, bold' => array(
+				'text'     => "\033[1;32mSome text\033[0m",
+				'expected' => 'Some text',
+			),
+			'Text enclosed in color code, with escaped text' => array(
+				'text'     => "\033[30;1m\\n\033[0m",
+				'expected' => '\n',
+			),
+			'Text enclosed in color code, bold, dark, italic' => array(
+				'text'     => "\033[1;2;3mtext\033[0m",
+				'expected' => 'text',
+			),
+			'Text enclosed in color code, foreground color' => array(
+				'text'     => "\033[38;5;255mtext\033[0m",
+				'expected' => 'text',
+			),
+			'Text enclosed in color code, foreground color and background color' => array(
+				'text'     => "\033[38;5;200;48;5;255mtext\033[0m",
+				'expected' => 'text',
+			),
+			'Multiline text containing multiple color codes' => array(
+				'text'     => "First \033[36mSecond\033[0m
 Third \033[1;2;3mFourth
 Next line\033[0m Last",
-                'expected' => 'First Second
+				'expected' => 'First Second
 Third Fourth
 Next line Last',
-            ],
-        ];
-
-    }//end dataStripColors()
-
-
+			),
+		);
+	}//end dataStripColors()
 }//end class

@@ -16,99 +16,91 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff
  */
-final class LineLengthUnitTest extends AbstractSniffUnitTest
-{
+final class LineLengthUnitTest extends AbstractSniffUnitTest {
 
 
-    /**
-     * Get a list of CLI values to set before the file is tested.
-     *
-     * @param string                  $testFile The name of the file being tested.
-     * @param \PHP_CodeSniffer\Config $config   The config data for the test run.
-     *
-     * @return void
-     */
-    public function setCliValues($testFile, $config)
-    {
-        $config->tabWidth = 4;
 
-    }//end setCliValues()
-
-
-    /**
-     * Returns the lines where errors should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of errors that should occur on that line.
-     *
-     * @param string $testFile The name of the file being tested.
-     *
-     * @return array<int, int>
-     */
-    public function getErrorList($testFile='')
-    {
-        switch ($testFile) {
-        case 'LineLengthUnitTest.1.inc':
-            return [
-                31 => 1,
-                34 => 1,
-                45 => 1,
-                82 => 1,
-            ];
-
-        case 'LineLengthUnitTest.2.inc':
-        case 'LineLengthUnitTest.3.inc':
-            return [7 => 1];
-
-        default:
-            return [];
-        }//end switch
-
-    }//end getErrorList()
+	/**
+	 * Get a list of CLI values to set before the file is tested.
+	 *
+	 * @param string                  $testFile The name of the file being tested.
+	 * @param \PHP_CodeSniffer\Config $config   The config data for the test run.
+	 *
+	 * @return void
+	 */
+	public function setCliValues( $testFile, $config ) {
+		$config->tabWidth = 4;
+	}//end setCliValues()
 
 
-    /**
-     * Returns the lines where warnings should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of warnings that should occur on that line.
-     *
-     * @param string $testFile The name of the file being tested.
-     *
-     * @return array<int, int>
-     */
-    public function getWarningList($testFile='')
-    {
-        switch ($testFile) {
-        case 'LineLengthUnitTest.1.inc':
-            return [
-                9  => 1,
-                15 => 1,
-                21 => 1,
-                24 => 1,
-                29 => 1,
-                37 => 1,
-                63 => 1,
-                73 => 1,
-                75 => 1,
-                84 => 1,
-            ];
+	/**
+	 * Returns the lines where errors should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of errors that should occur on that line.
+	 *
+	 * @param string $testFile The name of the file being tested.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getErrorList( $testFile = '' ) {
+		switch ( $testFile ) {
+			case 'LineLengthUnitTest.1.inc':
+				return array(
+					31 => 1,
+					34 => 1,
+					45 => 1,
+					82 => 1,
+				);
 
-        case 'LineLengthUnitTest.2.inc':
-        case 'LineLengthUnitTest.3.inc':
-            return [6 => 1];
+			case 'LineLengthUnitTest.2.inc':
+			case 'LineLengthUnitTest.3.inc':
+				return array( 7 => 1 );
 
-        case 'LineLengthUnitTest.4.inc':
-            return [
-                10 => 1,
-                14 => 1,
-            ];
-
-        default:
-            return [];
-        }//end switch
-
-    }//end getWarningList()
+			default:
+				return array();
+		}//end switch
+	}//end getErrorList()
 
 
+	/**
+	 * Returns the lines where warnings should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of warnings that should occur on that line.
+	 *
+	 * @param string $testFile The name of the file being tested.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getWarningList( $testFile = '' ) {
+		switch ( $testFile ) {
+			case 'LineLengthUnitTest.1.inc':
+				return array(
+					9  => 1,
+					15 => 1,
+					21 => 1,
+					24 => 1,
+					29 => 1,
+					37 => 1,
+					63 => 1,
+					73 => 1,
+					75 => 1,
+					84 => 1,
+				);
+
+			case 'LineLengthUnitTest.2.inc':
+			case 'LineLengthUnitTest.3.inc':
+				return array( 6 => 1 );
+
+			case 'LineLengthUnitTest.4.inc':
+				return array(
+					10 => 1,
+					14 => 1,
+				);
+
+			default:
+				return array();
+		}//end switch
+	}//end getWarningList()
 }//end class

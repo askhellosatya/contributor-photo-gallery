@@ -16,60 +16,54 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Arrays\DisallowLongArraySyntaxSniff
  */
-final class DisallowLongArraySyntaxUnitTest extends AbstractSniffUnitTest
-{
+final class DisallowLongArraySyntaxUnitTest extends AbstractSniffUnitTest {
 
 
-    /**
-     * Returns the lines where errors should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of errors that should occur on that line.
-     *
-     * @param string $testFile The name of the file being tested.
-     *
-     * @return array<int, int>
-     */
-    public function getErrorList($testFile='')
-    {
-        switch ($testFile) {
-        case 'DisallowLongArraySyntaxUnitTest.1.inc':
-            return [
-                2  => 1,
-                4  => 1,
-                6  => 1,
-                7  => 1,
-                12 => 1,
-            ];
-        case 'DisallowLongArraySyntaxUnitTest.2.inc':
-            return [
-                2 => 1,
-                9 => 1,
-            ];
-        case 'DisallowLongArraySyntaxUnitTest.3.inc':
-            return [
-                7 => 1,
-            ];
-        default:
-            return [];
-        }//end switch
 
-    }//end getErrorList()
-
-
-    /**
-     * Returns the lines where warnings should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of warnings that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getWarningList()
-    {
-        return [];
-
-    }//end getWarningList()
+	/**
+	 * Returns the lines where errors should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of errors that should occur on that line.
+	 *
+	 * @param string $testFile The name of the file being tested.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getErrorList( $testFile = '' ) {
+		switch ( $testFile ) {
+			case 'DisallowLongArraySyntaxUnitTest.1.inc':
+				return array(
+					2  => 1,
+					4  => 1,
+					6  => 1,
+					7  => 1,
+					12 => 1,
+				);
+			case 'DisallowLongArraySyntaxUnitTest.2.inc':
+				return array(
+					2 => 1,
+					9 => 1,
+				);
+			case 'DisallowLongArraySyntaxUnitTest.3.inc':
+				return array(
+					7 => 1,
+				);
+			default:
+				return array();
+		}//end switch
+	}//end getErrorList()
 
 
+	/**
+	 * Returns the lines where warnings should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of warnings that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getWarningList() {
+		return array();
+	}//end getWarningList()
 }//end class

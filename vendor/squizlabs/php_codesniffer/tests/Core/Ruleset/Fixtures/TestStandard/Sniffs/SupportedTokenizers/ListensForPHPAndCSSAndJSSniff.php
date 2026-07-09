@@ -10,25 +10,23 @@ namespace Fixtures\TestStandard\Sniffs\SupportedTokenizers;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
-class ListensForPHPAndCSSAndJSSniff implements Sniff
-{
+class ListensForPHPAndCSSAndJSSniff implements Sniff {
 
-    public $supportedTokenizers = [
-        'PHP',
-        'JS',
-        'CSS',
-    ];
 
-    public function register()
-    {
-        return [
-            T_OPEN_TAG,
-            T_OPEN_TAG_WITH_ECHO,
-        ];
-    }
+	public $supportedTokenizers = array(
+		'PHP',
+		'JS',
+		'CSS',
+	);
 
-    public function process(File $phpcsFile, $stackPtr)
-    {
-        // Do something.
-    }
+	public function register() {
+		return array(
+			T_OPEN_TAG,
+			T_OPEN_TAG_WITH_ECHO,
+		);
+	}
+
+	public function process( File $phpcsFile, $stackPtr ) {
+		// Do something.
+	}
 }

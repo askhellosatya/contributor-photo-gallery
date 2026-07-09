@@ -16,53 +16,45 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineEndingsSniff
  */
-final class LineEndingsUnitTest extends AbstractSniffUnitTest
-{
+final class LineEndingsUnitTest extends AbstractSniffUnitTest {
 
 
-    /**
-     * Get a list of CLI values to set before the file is tested.
-     *
-     * @param string                  $testFile The name of the file being tested.
-     * @param \PHP_CodeSniffer\Config $config   The config data for the test run.
-     *
-     * @return void
-     */
-    public function setCliValues($testFile, $config)
-    {
-        $config->tabWidth = 4;
 
-    }//end setCliValues()
-
-
-    /**
-     * Returns the lines where errors should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of errors that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getErrorList()
-    {
-        return [1 => 1];
-
-    }//end getErrorList()
+	/**
+	 * Get a list of CLI values to set before the file is tested.
+	 *
+	 * @param string                  $testFile The name of the file being tested.
+	 * @param \PHP_CodeSniffer\Config $config   The config data for the test run.
+	 *
+	 * @return void
+	 */
+	public function setCliValues( $testFile, $config ) {
+		$config->tabWidth = 4;
+	}//end setCliValues()
 
 
-    /**
-     * Returns the lines where warnings should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of warnings that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getWarningList()
-    {
-        return [];
-
-    }//end getWarningList()
+	/**
+	 * Returns the lines where errors should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of errors that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getErrorList() {
+		return array( 1 => 1 );
+	}//end getErrorList()
 
 
+	/**
+	 * Returns the lines where warnings should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of warnings that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getWarningList() {
+		return array();
+	}//end getWarningList()
 }//end class

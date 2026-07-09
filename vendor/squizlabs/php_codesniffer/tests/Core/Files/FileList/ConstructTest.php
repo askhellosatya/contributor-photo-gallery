@@ -15,108 +15,102 @@ use PHP_CodeSniffer\Files\FileList;
  *
  * @covers \PHP_CodeSniffer\Files\FileList::__construct
  */
-final class ConstructTest extends AbstractFileListTestCase
-{
+final class ConstructTest extends AbstractFileListTestCase {
 
 
-    /**
-     * Test the __construct() method.
-     *
-     * @param array<string> $files         List of file paths in the Config class.
-     * @param array<string> $expectedFiles List of expected file paths in the FileList.
-     *
-     * @dataProvider dataConstruct
-     *
-     * @return void
-     */
-    public function testConstruct($files, $expectedFiles)
-    {
-        self::$config->files = $files;
 
-        $fileList = new FileList(self::$config, self::$ruleset);
+	/**
+	 * Test the __construct() method.
+	 *
+	 * @param array<string> $files         List of file paths in the Config class.
+	 * @param array<string> $expectedFiles List of expected file paths in the FileList.
+	 *
+	 * @dataProvider dataConstruct
+	 *
+	 * @return void
+	 */
+	public function testConstruct( $files, $expectedFiles ) {
+		self::$config->files = $files;
 
-        $this->assertSame(self::$config, $fileList->config, 'Config object mismatch');
-        $this->assertSame(self::$ruleset, $fileList->ruleset, 'Ruleset object mismatch');
+		$fileList = new FileList( self::$config, self::$ruleset );
 
-        $this->assertCount(count($expectedFiles), $fileList, 'File count mismatch');
+		$this->assertSame( self::$config, $fileList->config, 'Config object mismatch' );
+		$this->assertSame( self::$ruleset, $fileList->ruleset, 'Ruleset object mismatch' );
 
-        $i = 0;
+		$this->assertCount( count( $expectedFiles ), $fileList, 'File count mismatch' );
 
-        // Sort the values to make the tests stable as different OSes will read directories
-        // in a different order and the order is not relevant for these tests. Just the values.
-        $fileListArray = iterator_to_array($fileList);
-        ksort($fileListArray);
+		$i = 0;
 
-        foreach ($fileListArray as $filePath => $fileObject) {
-            $this->assertSame(
-                $expectedFiles[$i],
-                $filePath,
-                sprintf('File path mismatch: expected "%s", got "%s"', $expectedFiles[$i], $filePath)
-            );
-            $this->assertInstanceOf(
-                'PHP_CodeSniffer\Files\File',
-                $fileObject,
-                sprintf('File object for "%s" is not an instance of PHP_CodeSniffer\Files\File', $filePath)
-            );
-            $i++;
-        }
+		// Sort the values to make the tests stable as different OSes will read directories
+		// in a different order and the order is not relevant for these tests. Just the values.
+		$fileListArray = iterator_to_array( $fileList );
+		ksort( $fileListArray );
 
-    }//end testConstruct()
-
-
-    /**
-     * Data provider for testConstruct.
-     *
-     * @return array<string, array<string, array<string>>>
-     */
-    public static function dataConstruct()
-    {
-        $fixturesDir = __DIR__.DIRECTORY_SEPARATOR.'Fixtures'.DIRECTORY_SEPARATOR;
-
-        return [
-            'No files'                                     => [
-                'files'         => [],
-                'expectedFiles' => [],
-            ],
-            'Two files'                                    => [
-                'files'         => [
-                    'file1.php',
-                    'file2.php',
-                ],
-                'expectedFiles' => [
-                    'file1.php',
-                    'file2.php',
-                ],
-            ],
-            'A directory'                                  => [
-                'files'         => [$fixturesDir],
-                'expectedFiles' => [
-                    $fixturesDir.'file1.php',
-                    $fixturesDir.'file2.php',
-                ],
-            ],
-            'Same file twice'                              => [
-                'files'         => [
-                    'file1.php',
-                    'file1.php',
-                ],
-                'expectedFiles' => [
-                    'file1.php',
-                ],
-            ],
-            'File and then directory containing that file' => [
-                'files'         => [
-                    $fixturesDir.'file1.php',
-                    $fixturesDir,
-                ],
-                'expectedFiles' => [
-                    $fixturesDir.'file1.php',
-                    $fixturesDir.'file2.php',
-                ],
-            ],
-        ];
-
-    }//end dataConstruct()
+		foreach ( $fileListArray as $filePath => $fileObject ) {
+			$this->assertSame(
+				$expectedFiles[ $i ],
+				$filePath,
+				sprintf( 'File path mismatch: expected "%s", got "%s"', $expectedFiles[ $i ], $filePath )
+			);
+			$this->assertInstanceOf(
+				'PHP_CodeSniffer\Files\File',
+				$fileObject,
+				sprintf( 'File object for "%s" is not an instance of PHP_CodeSniffer\Files\File', $filePath )
+			);
+			++$i;
+		}
+	}//end testConstruct()
 
 
+	/**
+	 * Data provider for testConstruct.
+	 *
+	 * @return array<string, array<string, array<string>>>
+	 */
+	public static function dataConstruct() {
+		$fixturesDir = __DIR__ . DIRECTORY_SEPARATOR . 'Fixtures' . DIRECTORY_SEPARATOR;
+
+		return array(
+			'No files'                                     => array(
+				'files'         => array(),
+				'expectedFiles' => array(),
+			),
+			'Two files'                                    => array(
+				'files'         => array(
+					'file1.php',
+					'file2.php',
+				),
+				'expectedFiles' => array(
+					'file1.php',
+					'file2.php',
+				),
+			),
+			'A directory'                                  => array(
+				'files'         => array( $fixturesDir ),
+				'expectedFiles' => array(
+					$fixturesDir . 'file1.php',
+					$fixturesDir . 'file2.php',
+				),
+			),
+			'Same file twice'                              => array(
+				'files'         => array(
+					'file1.php',
+					'file1.php',
+				),
+				'expectedFiles' => array(
+					'file1.php',
+				),
+			),
+			'File and then directory containing that file' => array(
+				'files'         => array(
+					$fixturesDir . 'file1.php',
+					$fixturesDir,
+				),
+				'expectedFiles' => array(
+					$fixturesDir . 'file1.php',
+					$fixturesDir . 'file2.php',
+				),
+			),
+		);
+	}//end dataConstruct()
 }//end class

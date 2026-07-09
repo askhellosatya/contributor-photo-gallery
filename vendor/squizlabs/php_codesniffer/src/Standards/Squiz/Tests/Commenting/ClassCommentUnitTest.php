@@ -16,51 +16,45 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\Commenting\ClassCommentSniff
  */
-final class ClassCommentUnitTest extends AbstractSniffUnitTest
-{
+final class ClassCommentUnitTest extends AbstractSniffUnitTest {
 
 
-    /**
-     * Returns the lines where errors should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of errors that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getErrorList()
-    {
-        return [
-            2   => 1,
-            15  => 1,
-            31  => 1,
-            54  => 1,
-            143 => 1,
-            145 => 1,
-        ];
 
-    }//end getErrorList()
-
-
-    /**
-     * Returns the lines where warnings should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of warnings that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getWarningList()
-    {
-        return [
-            29 => 1,
-            30 => 1,
-            50 => 1,
-            66 => 1,
-            67 => 1,
-        ];
-
-    }//end getWarningList()
+	/**
+	 * Returns the lines where errors should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of errors that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getErrorList() {
+		return array(
+			2   => 1,
+			15  => 1,
+			31  => 1,
+			54  => 1,
+			143 => 1,
+			145 => 1,
+		);
+	}//end getErrorList()
 
 
+	/**
+	 * Returns the lines where warnings should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of warnings that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getWarningList() {
+		return array(
+			29 => 1,
+			30 => 1,
+			50 => 1,
+			66 => 1,
+			67 => 1,
+		);
+	}//end getWarningList()
 }//end class

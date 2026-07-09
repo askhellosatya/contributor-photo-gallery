@@ -12,31 +12,26 @@ use PHP_CodeSniffer\Sniffs\DeprecatedSniff;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use stdClass;
 
-class InvalidDeprecationMessageSniff implements Sniff, DeprecatedSniff
-{
+class InvalidDeprecationMessageSniff implements Sniff, DeprecatedSniff {
 
-    public function getDeprecationVersion()
-    {
-        return 'dummy';
-    }
 
-    public function getRemovalVersion()
-    {
-        return 'dummy';
-    }
+	public function getDeprecationVersion() {
+		return 'dummy';
+	}
 
-    public function getDeprecationMessage()
-    {
-        return new stdClass;
-    }
+	public function getRemovalVersion() {
+		return 'dummy';
+	}
 
-    public function register()
-    {
-        return [T_WHITESPACE];
-    }
+	public function getDeprecationMessage() {
+		return new stdClass();
+	}
 
-    public function process(File $phpcsFile, $stackPtr)
-    {
-        // Do something.
-    }
+	public function register() {
+		return array( T_WHITESPACE );
+	}
+
+	public function process( File $phpcsFile, $stackPtr ) {
+		// Do something.
+	}
 }

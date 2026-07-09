@@ -7,11 +7,10 @@
 
 namespace Fixtures\TestStandard\Sniffs\InvalidSniffError;
 
-final class NoImplementsNoProcessSniff
-{
+final class NoImplementsNoProcessSniff {
 
-    public function register()
-    {
-        return [T_OPEN_TAG];
-    }
+
+	public function register() {
+		return array( T_OPEN_TAG );
+	}
 }

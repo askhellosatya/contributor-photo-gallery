@@ -16,54 +16,48 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\PSR2\Sniffs\Files\ClosingTagSniff
  */
-final class ClosingTagUnitTest extends AbstractSniffUnitTest
-{
+final class ClosingTagUnitTest extends AbstractSniffUnitTest {
 
 
-    /**
-     * Returns the lines where errors should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of errors that should occur on that line.
-     *
-     * @param string $testFile The name of the file being tested.
-     *
-     * @return array<int, int>
-     */
-    public function getErrorList($testFile='')
-    {
-        switch ($testFile) {
-        case 'ClosingTagUnitTest.1.inc':
-            return [11 => 1];
 
-        case 'ClosingTagUnitTest.4.inc':
-        case 'ClosingTagUnitTest.5.inc':
-            return [1 => 1];
+	/**
+	 * Returns the lines where errors should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of errors that should occur on that line.
+	 *
+	 * @param string $testFile The name of the file being tested.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getErrorList( $testFile = '' ) {
+		switch ( $testFile ) {
+			case 'ClosingTagUnitTest.1.inc':
+				return array( 11 => 1 );
 
-        case 'ClosingTagUnitTest.6.inc':
-        case 'ClosingTagUnitTest.7.inc':
-            return [5 => 1];
+			case 'ClosingTagUnitTest.4.inc':
+			case 'ClosingTagUnitTest.5.inc':
+				return array( 1 => 1 );
 
-        default:
-            return [];
-        }
+			case 'ClosingTagUnitTest.6.inc':
+			case 'ClosingTagUnitTest.7.inc':
+				return array( 5 => 1 );
 
-    }//end getErrorList()
-
-
-    /**
-     * Returns the lines where warnings should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of warnings that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getWarningList()
-    {
-        return [];
-
-    }//end getWarningList()
+			default:
+				return array();
+		}
+	}//end getErrorList()
 
 
+	/**
+	 * Returns the lines where warnings should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of warnings that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getWarningList() {
+		return array();
+	}//end getWarningList()
 }//end class

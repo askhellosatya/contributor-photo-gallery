@@ -16,51 +16,45 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\PSR12\Sniffs\Functions\ReturnTypeDeclarationSniff
  */
-final class ReturnTypeDeclarationUnitTest extends AbstractSniffUnitTest
-{
+final class ReturnTypeDeclarationUnitTest extends AbstractSniffUnitTest {
 
 
-    /**
-     * Returns the lines where errors should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of errors that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    protected function getErrorList()
-    {
-        return [
-            27 => 1,
-            28 => 1,
-            35 => 2,
-            41 => 2,
-            48 => 2,
-            52 => 1,
-            55 => 1,
-            56 => 1,
-            59 => 1,
-            60 => 1,
-            62 => 1,
-            64 => 1,
-        ];
 
-    }//end getErrorList()
-
-
-    /**
-     * Returns the lines where warnings should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of warnings that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    protected function getWarningList()
-    {
-        return [];
-
-    }//end getWarningList()
+	/**
+	 * Returns the lines where errors should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of errors that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	protected function getErrorList() {
+		return array(
+			27 => 1,
+			28 => 1,
+			35 => 2,
+			41 => 2,
+			48 => 2,
+			52 => 1,
+			55 => 1,
+			56 => 1,
+			59 => 1,
+			60 => 1,
+			62 => 1,
+			64 => 1,
+		);
+	}//end getErrorList()
 
 
+	/**
+	 * Returns the lines where warnings should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of warnings that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	protected function getWarningList() {
+		return array();
+	}//end getWarningList()
 }//end class

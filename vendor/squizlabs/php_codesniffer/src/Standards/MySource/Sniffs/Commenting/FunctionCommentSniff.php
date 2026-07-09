@@ -18,106 +18,96 @@ use PHP_CodeSniffer\Standards\Squiz\Sniffs\Commenting\FunctionCommentSniff as Sq
 use PHP_CodeSniffer\Util\Tokens;
 use PHP_CodeSniffer\Files\File;
 
-class FunctionCommentSniff extends SquizFunctionCommentSniff implements DeprecatedSniff
-{
+class FunctionCommentSniff extends SquizFunctionCommentSniff implements DeprecatedSniff {
 
 
-    /**
-     * Processes this test, when one of its tokens is encountered.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-     * @param int                         $stackPtr  The position of the current token
-     *                                               in the stack passed in $tokens.
-     *
-     * @return void
-     */
-    public function process(File $phpcsFile, $stackPtr)
-    {
-        parent::process($phpcsFile, $stackPtr);
 
-        $tokens = $phpcsFile->getTokens();
-        $find   = Tokens::$methodPrefixes;
-        $find[] = T_WHITESPACE;
+	/**
+	 * Processes this test, when one of its tokens is encountered.
+	 *
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+	 * @param int                         $stackPtr  The position of the current token
+	 *                                               in the stack passed in $tokens.
+	 *
+	 * @return void
+	 */
+	public function process( File $phpcsFile, $stackPtr ) {
+		parent::process( $phpcsFile, $stackPtr );
 
-        $commentEnd = $phpcsFile->findPrevious($find, ($stackPtr - 1), null, true);
-        if ($tokens[$commentEnd]['code'] !== T_DOC_COMMENT_CLOSE_TAG) {
-            return;
-        }
+		$tokens = $phpcsFile->getTokens();
+		$find   = Tokens::$methodPrefixes;
+		$find[] = T_WHITESPACE;
 
-        $commentStart = $tokens[$commentEnd]['comment_opener'];
-        $hasApiTag    = false;
-        foreach ($tokens[$commentStart]['comment_tags'] as $tag) {
-            if ($tokens[$tag]['content'] === '@api') {
-                if ($hasApiTag === true) {
-                    // We've come across an API tag already, which means
-                    // we were not the first tag in the API list.
-                    $error = 'The @api tag must come first in the @api tag list in a function comment';
-                    $phpcsFile->addError($error, $tag, 'ApiNotFirst');
-                }
+		$commentEnd = $phpcsFile->findPrevious( $find, ( $stackPtr - 1 ), null, true );
+		if ( $tokens[ $commentEnd ]['code'] !== T_DOC_COMMENT_CLOSE_TAG ) {
+			return;
+		}
 
-                $hasApiTag = true;
+		$commentStart = $tokens[ $commentEnd ]['comment_opener'];
+		$hasApiTag    = false;
+		foreach ( $tokens[ $commentStart ]['comment_tags'] as $tag ) {
+			if ( $tokens[ $tag ]['content'] === '@api' ) {
+				if ( $hasApiTag === true ) {
+					// We've come across an API tag already, which means
+					// we were not the first tag in the API list.
+					$error = 'The @api tag must come first in the @api tag list in a function comment';
+					$phpcsFile->addError( $error, $tag, 'ApiNotFirst' );
+				}
 
-                // There needs to be a blank line before the @api tag.
-                $prev = $phpcsFile->findPrevious([T_DOC_COMMENT_STRING, T_DOC_COMMENT_TAG], ($tag - 1));
-                if ($tokens[$prev]['line'] !== ($tokens[$tag]['line'] - 2)) {
-                    $error = 'There must be one blank line before the @api tag in a function comment';
-                    $phpcsFile->addError($error, $tag, 'ApiSpacing');
-                }
-            } else if (substr($tokens[$tag]['content'], 0, 5) === '@api-') {
-                $hasApiTag = true;
+				$hasApiTag = true;
 
-                $prev = $phpcsFile->findPrevious([T_DOC_COMMENT_STRING, T_DOC_COMMENT_TAG], ($tag - 1));
-                if ($tokens[$prev]['line'] !== ($tokens[$tag]['line'] - 1)) {
-                    $error = 'There must be no blank line before the @%s tag in a function comment';
-                    $data  = [$tokens[$tag]['content']];
-                    $phpcsFile->addError($error, $tag, 'ApiTagSpacing', $data);
-                }
-            }//end if
-        }//end foreach
+				// There needs to be a blank line before the @api tag.
+				$prev = $phpcsFile->findPrevious( array( T_DOC_COMMENT_STRING, T_DOC_COMMENT_TAG ), ( $tag - 1 ) );
+				if ( $tokens[ $prev ]['line'] !== ( $tokens[ $tag ]['line'] - 2 ) ) {
+					$error = 'There must be one blank line before the @api tag in a function comment';
+					$phpcsFile->addError( $error, $tag, 'ApiSpacing' );
+				}
+			} elseif ( substr( $tokens[ $tag ]['content'], 0, 5 ) === '@api-' ) {
+				$hasApiTag = true;
 
-        if ($hasApiTag === true && substr($tokens[$tag]['content'], 0, 4) !== '@api') {
-            // API tags must be the last tags in a function comment.
-            $error = 'The @api tags must be the last tags in a function comment';
-            $phpcsFile->addError($error, $commentEnd, 'ApiNotLast');
-        }
+				$prev = $phpcsFile->findPrevious( array( T_DOC_COMMENT_STRING, T_DOC_COMMENT_TAG ), ( $tag - 1 ) );
+				if ( $tokens[ $prev ]['line'] !== ( $tokens[ $tag ]['line'] - 1 ) ) {
+					$error = 'There must be no blank line before the @%s tag in a function comment';
+					$data  = array( $tokens[ $tag ]['content'] );
+					$phpcsFile->addError( $error, $tag, 'ApiTagSpacing', $data );
+				}
+			}//end if
+		}//end foreach
 
-    }//end process()
-
-
-    /**
-     * Provide the version number in which the sniff was deprecated.
-     *
-     * @return string
-     */
-    public function getDeprecationVersion()
-    {
-        return 'v3.9.0';
-
-    }//end getDeprecationVersion()
+		if ( $hasApiTag === true && substr( $tokens[ $tag ]['content'], 0, 4 ) !== '@api' ) {
+			// API tags must be the last tags in a function comment.
+			$error = 'The @api tags must be the last tags in a function comment';
+			$phpcsFile->addError( $error, $commentEnd, 'ApiNotLast' );
+		}
+	}//end process()
 
 
-    /**
-     * Provide the version number in which the sniff will be removed.
-     *
-     * @return string
-     */
-    public function getRemovalVersion()
-    {
-        return 'v4.0.0';
-
-    }//end getRemovalVersion()
+	/**
+	 * Provide the version number in which the sniff was deprecated.
+	 *
+	 * @return string
+	 */
+	public function getDeprecationVersion() {
+		return 'v3.9.0';
+	}//end getDeprecationVersion()
 
 
-    /**
-     * Provide a custom message to display with the deprecation.
-     *
-     * @return string
-     */
-    public function getDeprecationMessage()
-    {
-        return 'The MySource standard will be removed completely in v4.0.0.';
-
-    }//end getDeprecationMessage()
+	/**
+	 * Provide the version number in which the sniff will be removed.
+	 *
+	 * @return string
+	 */
+	public function getRemovalVersion() {
+		return 'v4.0.0';
+	}//end getRemovalVersion()
 
 
+	/**
+	 * Provide a custom message to display with the deprecation.
+	 *
+	 * @return string
+	 */
+	public function getDeprecationMessage() {
+		return 'The MySource standard will be removed completely in v4.0.0.';
+	}//end getDeprecationMessage()
 }//end class

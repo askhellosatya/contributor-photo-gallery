@@ -14,55 +14,49 @@ namespace PHP_CodeSniffer\Tests\Core\Tokenizers\Comment;
  *
  * @covers PHP_CodeSniffer\Tokenizers\Comment
  */
-final class LiveCoding2Test extends CommentTestCase
-{
+final class LiveCoding2Test extends CommentTestCase {
 
 
-    /**
-     * Data provider.
-     *
-     * @see testDocblockOpenerCloser()
-     *
-     * @return array<string, array<string, string|int|array<int>>>
-     */
-    public static function dataDocblockOpenerCloser()
-    {
-        return [
-            'live coding: unclosed docblock with blank line at end of file' => [
-                'marker'       => '/* testLiveCoding */',
-                'closerOffset' => 7,
-                'expectedTags' => [],
-            ],
-        ];
 
-    }//end dataDocblockOpenerCloser()
+	/**
+	 * Data provider.
+	 *
+	 * @see testDocblockOpenerCloser()
+	 *
+	 * @return array<string, array<string, string|int|array<int>>>
+	 */
+	public static function dataDocblockOpenerCloser() {
+		return array(
+			'live coding: unclosed docblock with blank line at end of file' => array(
+				'marker'       => '/* testLiveCoding */',
+				'closerOffset' => 7,
+				'expectedTags' => array(),
+			),
+		);
+	}//end dataDocblockOpenerCloser()
 
 
-    /**
-     * Verify tokenization of the DocBlock.
-     *
+	/**
+	 * Verify tokenization of the DocBlock.
+	 *
      * @phpcs:disable Squiz.Arrays.ArrayDeclaration.SpaceBeforeDoubleArrow -- Readability is better with alignment.
-     *
-     * @return void
-     */
-    public function testLiveCoding()
-    {
-        $expectedSequence = [
-            [T_DOC_COMMENT_OPEN_TAG   => '/**'],
-            [T_DOC_COMMENT_WHITESPACE => "\n"],
-            [T_DOC_COMMENT_WHITESPACE => ' '],
-            [T_DOC_COMMENT_STAR       => '*'],
-            [T_DOC_COMMENT_WHITESPACE => ' '],
-            [T_DOC_COMMENT_STRING     => 'Unclosed docblock, live coding.... with a blank line at end of file.'],
-            [T_DOC_COMMENT_WHITESPACE => "\n"],
-            [T_DOC_COMMENT_CLOSE_TAG  => ''],
-        ];
+	 *
+	 * @return void
+	 */
+	public function testLiveCoding() {
+		$expectedSequence = array(
+			array( T_DOC_COMMENT_OPEN_TAG => '/**' ),
+			array( T_DOC_COMMENT_WHITESPACE => "\n" ),
+			array( T_DOC_COMMENT_WHITESPACE => ' ' ),
+			array( T_DOC_COMMENT_STAR => '*' ),
+			array( T_DOC_COMMENT_WHITESPACE => ' ' ),
+			array( T_DOC_COMMENT_STRING => 'Unclosed docblock, live coding.... with a blank line at end of file.' ),
+			array( T_DOC_COMMENT_WHITESPACE => "\n" ),
+			array( T_DOC_COMMENT_CLOSE_TAG => '' ),
+		);
 
-        $target = $this->getTargetToken('/* '.__FUNCTION__.' */', T_DOC_COMMENT_OPEN_TAG);
+		$target = $this->getTargetToken( '/* ' . __FUNCTION__ . ' */', T_DOC_COMMENT_OPEN_TAG );
 
-        $this->checkTokenSequence($target, $expectedSequence);
-
-    }//end testLiveCoding()
-
-
+		$this->checkTokenSequence( $target, $expectedSequence );
+	}//end testLiveCoding()
 }//end class

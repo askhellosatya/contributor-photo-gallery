@@ -6,7 +6,7 @@
  */
 
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
-    exit;
+	exit;
 }
 
 // Remove stored options on uninstall.

@@ -18,100 +18,94 @@ use PHP_CodeSniffer\Tests\Core\Tokenizers\AbstractTokenizerTestCase;
  *
  * @covers PHP_CodeSniffer\Tokenizers\Tokenizer::createPositionMap
  */
-final class CreatePositionMapHeredocNowdocCloserTest extends AbstractTokenizerTestCase
-{
+final class CreatePositionMapHeredocNowdocCloserTest extends AbstractTokenizerTestCase {
 
 
-    /**
-     * Verify that leading (indent) whitespace in a heredoc/nowdoc closer token get the tab replacement treatment.
-     *
-     * @param string                         $testMarker The comment prefacing the target token.
-     * @param array<string, int|string|null> $expected   Expectations for the token array.
-     *
-     * @dataProvider dataHeredocNowdocCloserTabReplacement
-     *
-     * @return void
-     */
-    public function testHeredocNowdocCloserTabReplacement($testMarker, $expected)
-    {
-        $tokens = $this->phpcsFile->getTokens();
 
-        $closer = $this->getTargetToken($testMarker, [T_END_HEREDOC, T_END_NOWDOC]);
+	/**
+	 * Verify that leading (indent) whitespace in a heredoc/nowdoc closer token get the tab replacement treatment.
+	 *
+	 * @param string                         $testMarker The comment prefacing the target token.
+	 * @param array<string, int|string|null> $expected   Expectations for the token array.
+	 *
+	 * @dataProvider dataHeredocNowdocCloserTabReplacement
+	 *
+	 * @return void
+	 */
+	public function testHeredocNowdocCloserTabReplacement( $testMarker, $expected ) {
+		$tokens = $this->phpcsFile->getTokens();
 
-        foreach ($expected as $key => $value) {
-            if ($key === 'orig_content' && $value === null) {
-                $this->assertArrayNotHasKey($key, $tokens[$closer], "Unexpected 'orig_content' key found in the token array.");
-                continue;
-            }
+		$closer = $this->getTargetToken( $testMarker, array( T_END_HEREDOC, T_END_NOWDOC ) );
 
-            $this->assertArrayHasKey($key, $tokens[$closer], "Key $key not found in the token array.");
-            $this->assertSame($value, $tokens[$closer][$key], "Value for key $key does not match expectation.");
-        }
+		foreach ( $expected as $key => $value ) {
+			if ( $key === 'orig_content' && $value === null ) {
+				$this->assertArrayNotHasKey( $key, $tokens[ $closer ], "Unexpected 'orig_content' key found in the token array." );
+				continue;
+			}
 
-    }//end testHeredocNowdocCloserTabReplacement()
-
-
-    /**
-     * Data provider.
-     *
-     * @see testHeredocNowdocCloserTabReplacement()
-     *
-     * @return array<string, array<string, string|array<string, int|string|null>>>
-     */
-    public static function dataHeredocNowdocCloserTabReplacement()
-    {
-        return [
-            'Heredoc closer without indent'      => [
-                'testMarker' => '/* testHeredocCloserNoIndent */',
-                'expected'   => [
-                    'length'       => 3,
-                    'content'      => 'EOD',
-                    'orig_content' => null,
-                ],
-            ],
-            'Nowdoc closer without indent'       => [
-                'testMarker' => '/* testNowdocCloserNoIndent */',
-                'expected'   => [
-                    'length'       => 3,
-                    'content'      => 'EOD',
-                    'orig_content' => null,
-                ],
-            ],
-            'Heredoc closer with indent, spaces' => [
-                'testMarker' => '/* testHeredocCloserSpaceIndent */',
-                'expected'   => [
-                    'length'       => 7,
-                    'content'      => '    END',
-                    'orig_content' => null,
-                ],
-            ],
-            'Nowdoc closer with indent, spaces'  => [
-                'testMarker' => '/* testNowdocCloserSpaceIndent */',
-                'expected'   => [
-                    'length'       => 8,
-                    'content'      => '     END',
-                    'orig_content' => null,
-                ],
-            ],
-            'Heredoc closer with indent, tabs'   => [
-                'testMarker' => '/* testHeredocCloserTabIndent */',
-                'expected'   => [
-                    'length'       => 8,
-                    'content'      => '     END',
-                    'orig_content' => '	 END',
-                ],
-            ],
-            'Nowdoc closer with indent, tabs'    => [
-                'testMarker' => '/* testNowdocCloserTabIndent */',
-                'expected'   => [
-                    'length'       => 7,
-                    'content'      => '    END',
-                    'orig_content' => '	END',
-                ],
-            ],
-        ];
-
-    }//end dataHeredocNowdocCloserTabReplacement()
+			$this->assertArrayHasKey( $key, $tokens[ $closer ], "Key $key not found in the token array." );
+			$this->assertSame( $value, $tokens[ $closer ][ $key ], "Value for key $key does not match expectation." );
+		}
+	}//end testHeredocNowdocCloserTabReplacement()
 
 
+	/**
+	 * Data provider.
+	 *
+	 * @see testHeredocNowdocCloserTabReplacement()
+	 *
+	 * @return array<string, array<string, string|array<string, int|string|null>>>
+	 */
+	public static function dataHeredocNowdocCloserTabReplacement() {
+		return array(
+			'Heredoc closer without indent'      => array(
+				'testMarker' => '/* testHeredocCloserNoIndent */',
+				'expected'   => array(
+					'length'       => 3,
+					'content'      => 'EOD',
+					'orig_content' => null,
+				),
+			),
+			'Nowdoc closer without indent'       => array(
+				'testMarker' => '/* testNowdocCloserNoIndent */',
+				'expected'   => array(
+					'length'       => 3,
+					'content'      => 'EOD',
+					'orig_content' => null,
+				),
+			),
+			'Heredoc closer with indent, spaces' => array(
+				'testMarker' => '/* testHeredocCloserSpaceIndent */',
+				'expected'   => array(
+					'length'       => 7,
+					'content'      => '    END',
+					'orig_content' => null,
+				),
+			),
+			'Nowdoc closer with indent, spaces'  => array(
+				'testMarker' => '/* testNowdocCloserSpaceIndent */',
+				'expected'   => array(
+					'length'       => 8,
+					'content'      => '     END',
+					'orig_content' => null,
+				),
+			),
+			'Heredoc closer with indent, tabs'   => array(
+				'testMarker' => '/* testHeredocCloserTabIndent */',
+				'expected'   => array(
+					'length'       => 8,
+					'content'      => '     END',
+					'orig_content' => '	 END',
+				),
+			),
+			'Nowdoc closer with indent, tabs'    => array(
+				'testMarker' => '/* testNowdocCloserTabIndent */',
+				'expected'   => array(
+					'length'       => 7,
+					'content'      => '    END',
+					'orig_content' => '	END',
+				),
+			),
+		);
+	}//end dataHeredocNowdocCloserTabReplacement()
 }//end class

@@ -16,58 +16,52 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\FunctionOpeningBraceSpaceSniff
  */
-final class FunctionOpeningBraceSpaceUnitTest extends AbstractSniffUnitTest
-{
+final class FunctionOpeningBraceSpaceUnitTest extends AbstractSniffUnitTest {
 
 
-    /**
-     * Returns the lines where errors should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of errors that should occur on that line.
-     *
-     * @param string $testFile The name of the file being tested.
-     *
-     * @return array<int, int>
-     */
-    public function getErrorList($testFile='')
-    {
-        switch ($testFile) {
-        case 'FunctionOpeningBraceSpaceUnitTest.inc':
-            return [
-                10 => 1,
-                25 => 1,
-                49 => 1,
-            ];
 
-        case 'FunctionOpeningBraceSpaceUnitTest.js':
-            return [
-                11 => 1,
-                31 => 1,
-                38 => 1,
-                88 => 1,
-            ];
+	/**
+	 * Returns the lines where errors should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of errors that should occur on that line.
+	 *
+	 * @param string $testFile The name of the file being tested.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getErrorList( $testFile = '' ) {
+		switch ( $testFile ) {
+			case 'FunctionOpeningBraceSpaceUnitTest.inc':
+				return array(
+					10 => 1,
+					25 => 1,
+					49 => 1,
+				);
 
-        default:
-            return [];
-        }//end switch
+			case 'FunctionOpeningBraceSpaceUnitTest.js':
+				return array(
+					11 => 1,
+					31 => 1,
+					38 => 1,
+					88 => 1,
+				);
 
-    }//end getErrorList()
-
-
-    /**
-     * Returns the lines where warnings should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of warnings that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getWarningList()
-    {
-        return [];
-
-    }//end getWarningList()
+			default:
+				return array();
+		}//end switch
+	}//end getErrorList()
 
 
+	/**
+	 * Returns the lines where warnings should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of warnings that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getWarningList() {
+		return array();
+	}//end getWarningList()
 }//end class

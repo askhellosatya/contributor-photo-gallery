@@ -12,64 +12,58 @@ namespace PHP_CodeSniffer\Standards\PSR1\Sniffs\Classes;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
-class ClassDeclarationSniff implements Sniff
-{
+class ClassDeclarationSniff implements Sniff {
 
 
-    /**
-     * Returns an array of tokens this test wants to listen for.
-     *
-     * @return array<int|string>
-     */
-    public function register()
-    {
-        return [
-            T_CLASS,
-            T_INTERFACE,
-            T_TRAIT,
-            T_ENUM,
-        ];
 
-    }//end register()
-
-
-    /**
-     * Processes this test, when one of its tokens is encountered.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-     * @param integer                     $stackPtr  The position of the current token in
-     *                                               the token stack.
-     *
-     * @return void
-     */
-    public function process(File $phpcsFile, $stackPtr)
-    {
-        $tokens = $phpcsFile->getTokens();
-        if (isset($tokens[$stackPtr]['scope_closer']) === false) {
-            return;
-        }
-
-        $errorData = [strtolower($tokens[$stackPtr]['content'])];
-
-        $nextClass = $phpcsFile->findNext([T_CLASS, T_INTERFACE, T_TRAIT, T_ENUM], ($tokens[$stackPtr]['scope_closer'] + 1));
-        if ($nextClass !== false) {
-            $error = 'Each %s must be in a file by itself';
-            $phpcsFile->addError($error, $nextClass, 'MultipleClasses', $errorData);
-            $phpcsFile->recordMetric($stackPtr, 'One class per file', 'no');
-        } else {
-            $phpcsFile->recordMetric($stackPtr, 'One class per file', 'yes');
-        }
-
-        $namespace = $phpcsFile->findNext([T_NAMESPACE, T_CLASS, T_INTERFACE, T_TRAIT, T_ENUM], 0);
-        if ($tokens[$namespace]['code'] !== T_NAMESPACE) {
-            $error = 'Each %s must be in a namespace of at least one level (a top-level vendor name)';
-            $phpcsFile->addError($error, $stackPtr, 'MissingNamespace', $errorData);
-            $phpcsFile->recordMetric($stackPtr, 'Class defined in namespace', 'no');
-        } else {
-            $phpcsFile->recordMetric($stackPtr, 'Class defined in namespace', 'yes');
-        }
-
-    }//end process()
+	/**
+	 * Returns an array of tokens this test wants to listen for.
+	 *
+	 * @return array<int|string>
+	 */
+	public function register() {
+		return array(
+			T_CLASS,
+			T_INTERFACE,
+			T_TRAIT,
+			T_ENUM,
+		);
+	}//end register()
 
 
+	/**
+	 * Processes this test, when one of its tokens is encountered.
+	 *
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+	 * @param integer                     $stackPtr  The position of the current token in
+	 *                                               the token stack.
+	 *
+	 * @return void
+	 */
+	public function process( File $phpcsFile, $stackPtr ) {
+		$tokens = $phpcsFile->getTokens();
+		if ( isset( $tokens[ $stackPtr ]['scope_closer'] ) === false ) {
+			return;
+		}
+
+		$errorData = array( strtolower( $tokens[ $stackPtr ]['content'] ) );
+
+		$nextClass = $phpcsFile->findNext( array( T_CLASS, T_INTERFACE, T_TRAIT, T_ENUM ), ( $tokens[ $stackPtr ]['scope_closer'] + 1 ) );
+		if ( $nextClass !== false ) {
+			$error = 'Each %s must be in a file by itself';
+			$phpcsFile->addError( $error, $nextClass, 'MultipleClasses', $errorData );
+			$phpcsFile->recordMetric( $stackPtr, 'One class per file', 'no' );
+		} else {
+			$phpcsFile->recordMetric( $stackPtr, 'One class per file', 'yes' );
+		}
+
+		$namespace = $phpcsFile->findNext( array( T_NAMESPACE, T_CLASS, T_INTERFACE, T_TRAIT, T_ENUM ), 0 );
+		if ( $tokens[ $namespace ]['code'] !== T_NAMESPACE ) {
+			$error = 'Each %s must be in a namespace of at least one level (a top-level vendor name)';
+			$phpcsFile->addError( $error, $stackPtr, 'MissingNamespace', $errorData );
+			$phpcsFile->recordMetric( $stackPtr, 'Class defined in namespace', 'no' );
+		} else {
+			$phpcsFile->recordMetric( $stackPtr, 'Class defined in namespace', 'yes' );
+		}
+	}//end process()
 }//end class

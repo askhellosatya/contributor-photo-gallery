@@ -17,30 +17,29 @@ use PHP_CodeSniffer\Tests\Core\Runner\AbstractRunnerTestCase;
  * @covers \PHP_CodeSniffer\Runner::runPHPCS
  * @group  Windows
  */
-final class RunPHPCSGeneratorTest extends AbstractRunnerTestCase
-{
+final class RunPHPCSGeneratorTest extends AbstractRunnerTestCase {
 
 
-    /**
-     * Test that the documentation for each standard passed on the command-line is shown separately.
-     *
-     * @return void
-     */
-    public function testGeneratorWillShowEachStandardSeparately()
-    {
-        if (PHP_CODESNIFFER_CBF === true) {
-            $this->markTestSkipped('This test needs CS mode to run');
-        }
 
-        $standard        = dirname(__DIR__).'/Generators/OneDocTest.xml';
-        $_SERVER['argv'] = [
-            'phpcs',
-            '--generator=Text',
-            "--standard=$standard,PSR1",
-            '--report-width=80',
-        ];
+	/**
+	 * Test that the documentation for each standard passed on the command-line is shown separately.
+	 *
+	 * @return void
+	 */
+	public function testGeneratorWillShowEachStandardSeparately() {
+		if ( PHP_CODESNIFFER_CBF === true ) {
+			$this->markTestSkipped( 'This test needs CS mode to run' );
+		}
 
-        $regex = '`^
+		$standard        = dirname( __DIR__ ) . '/Generators/OneDocTest.xml';
+		$_SERVER['argv'] = array(
+			'phpcs',
+			'--generator=Text',
+			"--standard=$standard,PSR1",
+			'--report-width=80',
+		);
+
+		$regex = '`^
             \R*                                                      # Optional blank line at the start.
             (?:
                 (?P<delimiter>-++\R)                                 # Line with dashes.
@@ -61,12 +60,9 @@ final class RunPHPCSGeneratorTest extends AbstractRunnerTestCase
             ){3,}                                                    # This complete group should occur at least three times.
             `x';
 
-        $this->expectOutputRegex($regex);
+		$this->expectOutputRegex( $regex );
 
-        $runner = new Runner();
-        $runner->runPHPCS();
-
-    }//end testGeneratorWillShowEachStandardSeparately()
-
-
+		$runner = new Runner();
+		$runner->runPHPCS();
+	}//end testGeneratorWillShowEachStandardSeparately()
 }//end class

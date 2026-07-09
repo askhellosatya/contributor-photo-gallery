@@ -18,63 +18,57 @@ use PHP_CodeSniffer\Tests\Core\Ruleset\AbstractRulesetTestCase;
  *
  * @covers \PHP_CodeSniffer\Ruleset::registerSniffs
  */
-final class RegisterSniffsRejectsInvalidSniffTest extends AbstractRulesetTestCase
-{
+final class RegisterSniffsRejectsInvalidSniffTest extends AbstractRulesetTestCase {
 
 
-    /**
-     * Verify that an error is thrown if an invalid sniff class is loaded.
-     *
-     * @param string $standard   The standard to use for the test.
-     * @param string $methodName The name of the missing method.
-     *
-     * @dataProvider dataExceptionIsThrownOnMissingInterfaceMethod
-     *
-     * @return void
-     */
-    public function testExceptionIsThrownOnMissingInterfaceMethod($standard, $methodName)
-    {
-        // Set up the ruleset.
-        $standard = __DIR__.'/'.$standard;
-        $config   = new ConfigDouble(["--standard=$standard"]);
 
-        $regex = "`(^|\R)ERROR: Sniff class \S+Sniff is missing required method $methodName\(\)\.\R`";
-        $this->expectRuntimeExceptionRegex($regex);
+	/**
+	 * Verify that an error is thrown if an invalid sniff class is loaded.
+	 *
+	 * @param string $standard   The standard to use for the test.
+	 * @param string $methodName The name of the missing method.
+	 *
+	 * @dataProvider dataExceptionIsThrownOnMissingInterfaceMethod
+	 *
+	 * @return void
+	 */
+	public function testExceptionIsThrownOnMissingInterfaceMethod( $standard, $methodName ) {
+		// Set up the ruleset.
+		$standard = __DIR__ . '/' . $standard;
+		$config   = new ConfigDouble( array( "--standard=$standard" ) );
 
-        new Ruleset($config);
+		$regex = "`(^|\R)ERROR: Sniff class \S+Sniff is missing required method $methodName\(\)\.\R`";
+		$this->expectRuntimeExceptionRegex( $regex );
 
-    }//end testExceptionIsThrownOnMissingInterfaceMethod()
-
-
-    /**
-     * Data provider.
-     *
-     * @see testExceptionIsThrownOnMissingInterfaceMethod()
-     *
-     * @return array<string, array<string, string>>
-     */
-    public static function dataExceptionIsThrownOnMissingInterfaceMethod()
-    {
-        return [
-            'Missing register() method'                => [
-                'standard'   => 'RegisterSniffsRejectsInvalidSniffNoImplementsNoRegisterTest.xml',
-                'methodName' => 'register',
-            ],
-            'Missing process() method'                 => [
-                'standard'   => 'RegisterSniffsRejectsInvalidSniffNoImplementsNoProcessTest.xml',
-                'methodName' => 'process',
-            ],
-            'Missing both, checking register() method' => [
-                'standard'   => 'RegisterSniffsRejectsInvalidSniffNoImplementsNoRegisterOrProcessTest.xml',
-                'methodName' => 'register',
-            ],
-            'Missing both, checking process() method'  => [
-                'standard'   => 'RegisterSniffsRejectsInvalidSniffNoImplementsNoRegisterOrProcessTest.xml',
-                'methodName' => 'process',
-            ],
-        ];
-
-    }//end dataExceptionIsThrownOnMissingInterfaceMethod()
+		new Ruleset( $config );
+	}//end testExceptionIsThrownOnMissingInterfaceMethod()
 
 
+	/**
+	 * Data provider.
+	 *
+	 * @see testExceptionIsThrownOnMissingInterfaceMethod()
+	 *
+	 * @return array<string, array<string, string>>
+	 */
+	public static function dataExceptionIsThrownOnMissingInterfaceMethod() {
+		return array(
+			'Missing register() method'                => array(
+				'standard'   => 'RegisterSniffsRejectsInvalidSniffNoImplementsNoRegisterTest.xml',
+				'methodName' => 'register',
+			),
+			'Missing process() method'                 => array(
+				'standard'   => 'RegisterSniffsRejectsInvalidSniffNoImplementsNoProcessTest.xml',
+				'methodName' => 'process',
+			),
+			'Missing both, checking register() method' => array(
+				'standard'   => 'RegisterSniffsRejectsInvalidSniffNoImplementsNoRegisterOrProcessTest.xml',
+				'methodName' => 'register',
+			),
+			'Missing both, checking process() method'  => array(
+				'standard'   => 'RegisterSniffsRejectsInvalidSniffNoImplementsNoRegisterOrProcessTest.xml',
+				'methodName' => 'process',
+			),
+		);
+	}//end dataExceptionIsThrownOnMissingInterfaceMethod()
 }//end class

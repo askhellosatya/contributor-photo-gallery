@@ -16,49 +16,43 @@ use PHPUnit\Framework\TestCase;
  *
  * @covers \PHP_CodeSniffer\Config::processLongArgument
  */
-final class ReportArgsTest extends TestCase
-{
+final class ReportArgsTest extends TestCase {
 
 
-    /**
-     * [CS mode] Verify that passing `--report-file` does not influence *which* reports get activated.
-     *
-     * @return void
-     */
-    public function testReportFileDoesNotSetReportsCs()
-    {
-        if (PHP_CODESNIFFER_CBF === true) {
-            $this->markTestSkipped('This test needs CS mode to run');
-        }
 
-        $config = new ConfigDouble(['--report-file='.__DIR__.'/report.txt']);
+	/**
+	 * [CS mode] Verify that passing `--report-file` does not influence *which* reports get activated.
+	 *
+	 * @return void
+	 */
+	public function testReportFileDoesNotSetReportsCs() {
+		if ( PHP_CODESNIFFER_CBF === true ) {
+			$this->markTestSkipped( 'This test needs CS mode to run' );
+		}
 
-        $this->assertTrue(is_string($config->reportFile));
-        $this->assertStringEndsWith('/report.txt', $config->reportFile);
-        $this->assertSame(['full' => null], $config->reports);
+		$config = new ConfigDouble( array( '--report-file=' . __DIR__ . '/report.txt' ) );
 
-    }//end testReportFileDoesNotSetReportsCs()
-
-
-    /**
-     * [CBF mode] Verify that passing `--report-file` does not influence *which* reports get activated.
-     *
-     * @group CBF
-     *
-     * @return void
-     */
-    public function testReportFileDoesNotSetReportsCbf()
-    {
-        if (PHP_CODESNIFFER_CBF === false) {
-            $this->markTestSkipped('This test needs CBF mode to run');
-        }
-
-        $config = new ConfigDouble(['--report-file='.__DIR__.'/report.txt']);
-
-        $this->assertNull($config->reportFile);
-        $this->assertSame(['full' => null], $config->reports);
-
-    }//end testReportFileDoesNotSetReportsCbf()
+		$this->assertTrue( is_string( $config->reportFile ) );
+		$this->assertStringEndsWith( '/report.txt', $config->reportFile );
+		$this->assertSame( array( 'full' => null ), $config->reports );
+	}//end testReportFileDoesNotSetReportsCs()
 
 
+	/**
+	 * [CBF mode] Verify that passing `--report-file` does not influence *which* reports get activated.
+	 *
+	 * @group CBF
+	 *
+	 * @return void
+	 */
+	public function testReportFileDoesNotSetReportsCbf() {
+		if ( PHP_CODESNIFFER_CBF === false ) {
+			$this->markTestSkipped( 'This test needs CBF mode to run' );
+		}
+
+		$config = new ConfigDouble( array( '--report-file=' . __DIR__ . '/report.txt' ) );
+
+		$this->assertNull( $config->reportFile );
+		$this->assertSame( array( 'full' => null ), $config->reports );
+	}//end testReportFileDoesNotSetReportsCbf()
 }//end class

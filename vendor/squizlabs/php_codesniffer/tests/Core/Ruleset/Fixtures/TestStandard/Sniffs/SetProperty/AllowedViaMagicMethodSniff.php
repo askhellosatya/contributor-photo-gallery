@@ -10,31 +10,27 @@ namespace Fixtures\TestStandard\Sniffs\SetProperty;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
-class AllowedViaMagicMethodSniff implements Sniff
-{
-    private $magic = [];
+class AllowedViaMagicMethodSniff implements Sniff {
 
-    public function __set($name, $value)
-    {
-        $this->magic[$name] = $value;
-    }
+	private $magic = array();
 
-    public function __get($name)
-    {
-        if (isset($this->magic[$name])) {
-            return $this->magic[$name];
-        }
+	public function __set( $name, $value ) {
+		$this->magic[ $name ] = $value;
+	}
 
-        return null;
-    }
+	public function __get( $name ) {
+		if ( isset( $this->magic[ $name ] ) ) {
+			return $this->magic[ $name ];
+		}
 
-    public function register()
-    {
-        return [T_WHITESPACE];
-    }
+		return null;
+	}
 
-    public function process(File $phpcsFile, $stackPtr)
-    {
-        // Do something.
-    }
+	public function register() {
+		return array( T_WHITESPACE );
+	}
+
+	public function process( File $phpcsFile, $stackPtr ) {
+		// Do something.
+	}
 }

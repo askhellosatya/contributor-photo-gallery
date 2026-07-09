@@ -10,16 +10,14 @@ namespace Fixtures\TestStandard\Sniffs\InvalidSniffs;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
-class RegisterNoArraySniff implements Sniff
-{
+class RegisterNoArraySniff implements Sniff {
 
-    public function register()
-    {
-        return false;
-    }
 
-    public function process(File $phpcsFile, $stackPtr)
-    {
-        // Do something.
-    }
+	public function register() {
+		return false;
+	}
+
+	public function process( File $phpcsFile, $stackPtr ) {
+		// Do something.
+	}
 }

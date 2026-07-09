@@ -17,55 +17,47 @@ use PHP_CodeSniffer\Config;
  *
  * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Debug\JSHintSniff
  */
-final class JSHintUnitTest extends AbstractSniffUnitTest
-{
+final class JSHintUnitTest extends AbstractSniffUnitTest {
 
 
-    /**
-     * Should this test be skipped for some reason.
-     *
-     * @return bool
-     */
-    protected function shouldSkipTest()
-    {
-        $jshintPath = Config::getExecutablePath('jshint');
-        if ($jshintPath === null) {
-            return true;
-        }
 
-        return false;
+	/**
+	 * Should this test be skipped for some reason.
+	 *
+	 * @return bool
+	 */
+	protected function shouldSkipTest() {
+		$jshintPath = Config::getExecutablePath( 'jshint' );
+		if ( $jshintPath === null ) {
+			return true;
+		}
 
-    }//end shouldSkipTest()
-
-
-    /**
-     * Returns the lines where errors should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of errors that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getErrorList()
-    {
-        return [];
-
-    }//end getErrorList()
+		return false;
+	}//end shouldSkipTest()
 
 
-    /**
-     * Returns the lines where warnings should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of warnings that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getWarningList()
-    {
-        return [3 => 2];
-
-    }//end getWarningList()
+	/**
+	 * Returns the lines where errors should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of errors that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getErrorList() {
+		return array();
+	}//end getErrorList()
 
 
+	/**
+	 * Returns the lines where warnings should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of warnings that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getWarningList() {
+		return array( 3 => 2 );
+	}//end getWarningList()
 }//end class

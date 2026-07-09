@@ -16,143 +16,129 @@ use PHP_CodeSniffer\Tests\Core\AbstractMethodUnitTest;
  *
  * @covers \PHP_CodeSniffer\Files\File::getDeclarationName
  */
-final class GetDeclarationNameJSTest extends AbstractMethodUnitTest
-{
-
-    /**
-     * The file extension of the test case file (without leading dot).
-     *
-     * @var string
-     */
-    protected static $fileExtension = 'js';
+final class GetDeclarationNameJSTest extends AbstractMethodUnitTest {
 
 
-    /**
-     * Test receiving an expected exception when a non-supported token is passed.
-     *
-     * @return void
-     */
-    public function testInvalidTokenPassed()
-    {
-        $this->expectRunTimeException('Token type "T_STRING" is not T_FUNCTION, T_CLASS, T_INTERFACE, T_TRAIT or T_ENUM');
-
-        $target = $this->getTargetToken('/* testInvalidTokenPassed */', T_STRING);
-        self::$phpcsFile->getDeclarationName($target);
-
-    }//end testInvalidTokenPassed()
+	/**
+	 * The file extension of the test case file (without leading dot).
+	 *
+	 * @var string
+	 */
+	protected static $fileExtension = 'js';
 
 
-    /**
-     * Test receiving "null" when passed an anonymous construct or in case of a parse error.
-     *
-     * @param string     $testMarker The comment which prefaces the target token in the test file.
-     * @param int|string $targetType Token type of the token to get as stackPtr.
-     *
-     * @dataProvider dataGetDeclarationNameNull
-     *
-     * @return void
-     */
-    public function testGetDeclarationNameNull($testMarker, $targetType)
-    {
-        $target = $this->getTargetToken($testMarker, $targetType);
-        $result = self::$phpcsFile->getDeclarationName($target);
-        $this->assertNull($result);
+	/**
+	 * Test receiving an expected exception when a non-supported token is passed.
+	 *
+	 * @return void
+	 */
+	public function testInvalidTokenPassed() {
+		$this->expectRunTimeException( 'Token type "T_STRING" is not T_FUNCTION, T_CLASS, T_INTERFACE, T_TRAIT or T_ENUM' );
 
-    }//end testGetDeclarationNameNull()
+		$target = $this->getTargetToken( '/* testInvalidTokenPassed */', T_STRING );
+		self::$phpcsFile->getDeclarationName( $target );
+	}//end testInvalidTokenPassed()
 
 
-    /**
-     * Data provider.
-     *
-     * @see GetDeclarationNameTest::testGetDeclarationNameNull()
-     *
-     * @return array<string, array<string, int|string>>
-     */
-    public static function dataGetDeclarationNameNull()
-    {
-        return [
-            'closure' => [
-                'testMarker' => '/* testClosure */',
-                'targetType' => T_CLOSURE,
-            ],
-        ];
-
-    }//end dataGetDeclarationNameNull()
+	/**
+	 * Test receiving "null" when passed an anonymous construct or in case of a parse error.
+	 *
+	 * @param string     $testMarker The comment which prefaces the target token in the test file.
+	 * @param int|string $targetType Token type of the token to get as stackPtr.
+	 *
+	 * @dataProvider dataGetDeclarationNameNull
+	 *
+	 * @return void
+	 */
+	public function testGetDeclarationNameNull( $testMarker, $targetType ) {
+		$target = $this->getTargetToken( $testMarker, $targetType );
+		$result = self::$phpcsFile->getDeclarationName( $target );
+		$this->assertNull( $result );
+	}//end testGetDeclarationNameNull()
 
 
-    /**
-     * Test retrieving the name of a function or OO structure.
-     *
-     * @param string                 $testMarker The comment which prefaces the target token in the test file.
-     * @param string                 $expected   Expected function output.
-     * @param array<int|string>|null $targetType Token type of the token to get as stackPtr.
-     *
-     * @dataProvider dataGetDeclarationName
-     *
-     * @return void
-     */
-    public function testGetDeclarationName($testMarker, $expected, $targetType=null)
-    {
-        if (isset($targetType) === false) {
-            $targetType = [
-                T_CLASS,
-                T_INTERFACE,
-                T_TRAIT,
-                T_ENUM,
-                T_FUNCTION,
-            ];
-        }
-
-        $target = $this->getTargetToken($testMarker, $targetType);
-        $result = self::$phpcsFile->getDeclarationName($target);
-        $this->assertSame($expected, $result);
-
-    }//end testGetDeclarationName()
+	/**
+	 * Data provider.
+	 *
+	 * @see GetDeclarationNameTest::testGetDeclarationNameNull()
+	 *
+	 * @return array<string, array<string, int|string>>
+	 */
+	public static function dataGetDeclarationNameNull() {
+		return array(
+			'closure' => array(
+				'testMarker' => '/* testClosure */',
+				'targetType' => T_CLOSURE,
+			),
+		);
+	}//end dataGetDeclarationNameNull()
 
 
-    /**
-     * Data provider.
-     *
-     * @see GetDeclarationNameTest::testGetDeclarationName()
-     *
-     * @return array<string, array<string, string|array<int|string>>>
-     */
-    public static function dataGetDeclarationName()
-    {
-        return [
-            'function'              => [
-                'testMarker' => '/* testFunction */',
-                'expected'   => 'functionName',
-            ],
-            'class'                 => [
-                'testMarker' => '/* testClass */',
-                'expected'   => 'ClassName',
-                'targetType' => [
-                    T_CLASS,
-                    T_STRING,
-                ],
-            ],
-            'function-unicode-name' => [
-                'testMarker' => '/* testFunctionUnicode */',
-                'expected'   => 'π',
-            ],
-        ];
+	/**
+	 * Test retrieving the name of a function or OO structure.
+	 *
+	 * @param string                 $testMarker The comment which prefaces the target token in the test file.
+	 * @param string                 $expected   Expected function output.
+	 * @param array<int|string>|null $targetType Token type of the token to get as stackPtr.
+	 *
+	 * @dataProvider dataGetDeclarationName
+	 *
+	 * @return void
+	 */
+	public function testGetDeclarationName( $testMarker, $expected, $targetType = null ) {
+		if ( isset( $targetType ) === false ) {
+			$targetType = array(
+				T_CLASS,
+				T_INTERFACE,
+				T_TRAIT,
+				T_ENUM,
+				T_FUNCTION,
+			);
+		}
 
-    }//end dataGetDeclarationName()
+		$target = $this->getTargetToken( $testMarker, $targetType );
+		$result = self::$phpcsFile->getDeclarationName( $target );
+		$this->assertSame( $expected, $result );
+	}//end testGetDeclarationName()
 
 
-    /**
-     * Test retrieving the name of JS ES6 class method.
-     *
-     * @return void
-     */
-    public function testGetDeclarationNameES6Method()
-    {
-        $target = $this->getTargetToken('/* testMethod */', [T_CLASS, T_INTERFACE, T_TRAIT, T_FUNCTION]);
-        $result = self::$phpcsFile->getDeclarationName($target);
-        $this->assertSame('methodName', $result);
+	/**
+	 * Data provider.
+	 *
+	 * @see GetDeclarationNameTest::testGetDeclarationName()
+	 *
+	 * @return array<string, array<string, string|array<int|string>>>
+	 */
+	public static function dataGetDeclarationName() {
+		return array(
+			'function'              => array(
+				'testMarker' => '/* testFunction */',
+				'expected'   => 'functionName',
+			),
+			'class'                 => array(
+				'testMarker' => '/* testClass */',
+				'expected'   => 'ClassName',
+				'targetType' => array(
+					T_CLASS,
+					T_STRING,
+				),
+			),
+			'function-unicode-name' => array(
+				'testMarker' => '/* testFunctionUnicode */',
+				'expected'   => 'π',
+			),
+		);
+	}//end dataGetDeclarationName()
 
-    }//end testGetDeclarationNameES6Method()
 
-
+	/**
+	 * Test retrieving the name of JS ES6 class method.
+	 *
+	 * @return void
+	 */
+	public function testGetDeclarationNameES6Method() {
+		$target = $this->getTargetToken( '/* testMethod */', array( T_CLASS, T_INTERFACE, T_TRAIT, T_FUNCTION ) );
+		$result = self::$phpcsFile->getDeclarationName( $target );
+		$this->assertSame( 'methodName', $result );
+	}//end testGetDeclarationNameES6Method()
 }//end class

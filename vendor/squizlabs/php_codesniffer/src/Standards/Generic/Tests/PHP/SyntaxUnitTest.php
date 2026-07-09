@@ -20,151 +20,141 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\SyntaxSniff
  */
-final class SyntaxUnitTest extends AbstractSniffUnitTest
-{
+final class SyntaxUnitTest extends AbstractSniffUnitTest {
 
 
-    /**
-     * Returns the lines where errors should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of errors that should occur on that line.
-     *
-     * @param string $testFile The name of the file being tested.
-     *
-     * @return array<int, int>
-     */
-    public function getErrorList($testFile='')
-    {
-        switch ($testFile) {
-        case 'SyntaxUnitTest.1.inc':
-        case 'SyntaxUnitTest.2.inc':
-            return [3 => 1];
 
-        default:
-            return [];
-        }
+	/**
+	 * Returns the lines where errors should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of errors that should occur on that line.
+	 *
+	 * @param string $testFile The name of the file being tested.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getErrorList( $testFile = '' ) {
+		switch ( $testFile ) {
+			case 'SyntaxUnitTest.1.inc':
+			case 'SyntaxUnitTest.2.inc':
+				return array( 3 => 1 );
 
-    }//end getErrorList()
-
-
-    /**
-     * Returns the lines where warnings should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of warnings that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getWarningList()
-    {
-        return [];
-
-    }//end getWarningList()
+			default:
+				return array();
+		}
+	}//end getErrorList()
 
 
-    /**
-     * Test the sniff checks syntax when file contents are passed via STDIN.
-     *
-     * Note: this test doesn't run on Windows as PHPCS currently doesn't support STDIN on this OS.
-     *
-     * @param string $content        The content to test.
-     * @param int    $errorCount     The expected number of errors.
-     * @param array  $expectedErrors The expected errors.
-     *
-     * @dataProvider dataStdIn
-     * @requires     OS ^(?!WIN).*
-     *
-     * @return void
-     */
-    public function testStdIn($content, $errorCount, $expectedErrors)
-    {
-        $config            = new ConfigDouble();
-        $config->standards = ['Generic'];
-        $config->sniffs    = ['Generic.PHP.Syntax'];
-
-        $ruleset = new Ruleset($config);
-
-        $file = new DummyFile($content, $ruleset, $config);
-        $file->process();
-
-        $this->assertSame(
-            $errorCount,
-            $file->getErrorCount(),
-            'Error count does not match expected value'
-        );
-        $this->assertSame(
-            0,
-            $file->getWarningCount(),
-            'Warning count does not match expected value'
-        );
-        $this->assertSame(
-            $expectedErrors,
-            $file->getErrors(),
-            'Error list does not match expected errors'
-        );
-
-    }//end testStdIn()
+	/**
+	 * Returns the lines where warnings should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of warnings that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getWarningList() {
+		return array();
+	}//end getWarningList()
 
 
-    /**
-     * Data provider for testStdIn().
-     *
-     * @return array<string, array<string|int|array>>
-     */
-    public function dataStdIn()
-    {
-        // The error message changed in PHP 8+.
-        if (PHP_VERSION_ID >= 80000) {
-            $errorMessage = 'PHP syntax error: syntax error, unexpected token ";", expecting "]"';
-        } else {
-            $errorMessage = 'PHP syntax error: syntax error, unexpected \';\', expecting \']\'';
-        }
+	/**
+	 * Test the sniff checks syntax when file contents are passed via STDIN.
+	 *
+	 * Note: this test doesn't run on Windows as PHPCS currently doesn't support STDIN on this OS.
+	 *
+	 * @param string $content        The content to test.
+	 * @param int    $errorCount     The expected number of errors.
+	 * @param array  $expectedErrors The expected errors.
+	 *
+	 * @dataProvider dataStdIn
+	 * @requires     OS ^(?!WIN).*
+	 *
+	 * @return void
+	 */
+	public function testStdIn( $content, $errorCount, $expectedErrors ) {
+		$config            = new ConfigDouble();
+		$config->standards = array( 'Generic' );
+		$config->sniffs    = array( 'Generic.PHP.Syntax' );
 
-        return [
-            'No syntax errors'                                                                => [
-                '<?php $array = [1, 2, 3];',
-                0,
-                [],
-            ],
-            'One syntax error'                                                                => [
-                '<?php $array = [1, 2, 3; // Missing closing bracket.',
-                1,
-                [
-                    1 => [
-                        1 => [
-                            0 => [
-                                'message'  => $errorMessage,
-                                'source'   => 'Generic.PHP.Syntax.PHPSyntax',
-                                'listener' => 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\PHP\\SyntaxSniff',
-                                'severity' => 5,
-                                'fixable'  => false,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-            'Single error reported even when there is more than one syntax error in the file' => [
-                '<?php $array = [1, 2, 3; // Missing closing bracket.
+		$ruleset = new Ruleset( $config );
+
+		$file = new DummyFile( $content, $ruleset, $config );
+		$file->process();
+
+		$this->assertSame(
+			$errorCount,
+			$file->getErrorCount(),
+			'Error count does not match expected value'
+		);
+		$this->assertSame(
+			0,
+			$file->getWarningCount(),
+			'Warning count does not match expected value'
+		);
+		$this->assertSame(
+			$expectedErrors,
+			$file->getErrors(),
+			'Error list does not match expected errors'
+		);
+	}//end testStdIn()
+
+
+	/**
+	 * Data provider for testStdIn().
+	 *
+	 * @return array<string, array<string|int|array>>
+	 */
+	public function dataStdIn() {
+		// The error message changed in PHP 8+.
+		if ( PHP_VERSION_ID >= 80000 ) {
+			$errorMessage = 'PHP syntax error: syntax error, unexpected token ";", expecting "]"';
+		} else {
+			$errorMessage = 'PHP syntax error: syntax error, unexpected \';\', expecting \']\'';
+		}
+
+		return array(
+			'No syntax errors' => array(
+				'<?php $array = [1, 2, 3];',
+				0,
+				array(),
+			),
+			'One syntax error' => array(
+				'<?php $array = [1, 2, 3; // Missing closing bracket.',
+				1,
+				array(
+					1 => array(
+						1 => array(
+							0 => array(
+								'message'  => $errorMessage,
+								'source'   => 'Generic.PHP.Syntax.PHPSyntax',
+								'listener' => 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\PHP\\SyntaxSniff',
+								'severity' => 5,
+								'fixable'  => false,
+							),
+						),
+					),
+				),
+			),
+			'Single error reported even when there is more than one syntax error in the file' => array(
+				'<?php $array = [1, 2, 3; // Missing closing bracket.
                 $anotherArray = [4, 5, 6; // Another missing closing bracket.',
-                1,
-                [
-                    1 => [
-                        1 => [
-                            0 => [
-                                'message'  => $errorMessage,
-                                'source'   => 'Generic.PHP.Syntax.PHPSyntax',
-                                'listener' => 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\PHP\\SyntaxSniff',
-                                'severity' => 5,
-                                'fixable'  => false,
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-    }//end dataStdIn()
-
-
+				1,
+				array(
+					1 => array(
+						1 => array(
+							0 => array(
+								'message'  => $errorMessage,
+								'source'   => 'Generic.PHP.Syntax.PHPSyntax',
+								'listener' => 'PHP_CodeSniffer\\Standards\\Generic\\Sniffs\\PHP\\SyntaxSniff',
+								'severity' => 5,
+								'fixable'  => false,
+							),
+						),
+					),
+				),
+			),
+		);
+	}//end dataStdIn()
 }//end class

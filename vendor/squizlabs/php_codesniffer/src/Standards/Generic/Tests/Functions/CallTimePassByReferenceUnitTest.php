@@ -16,60 +16,54 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\Functions\CallTimePassByReferenceSniff
  */
-final class CallTimePassByReferenceUnitTest extends AbstractSniffUnitTest
-{
+final class CallTimePassByReferenceUnitTest extends AbstractSniffUnitTest {
 
 
-    /**
-     * Returns the lines where errors should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of errors that should occur on that line.
-     *
-     * @param string $testFile The name of the test file to process.
-     *
-     * @return array<int, int>
-     */
-    public function getErrorList($testFile='CallTimePassByReferenceUnitTest.1.inc')
-    {
-        switch ($testFile) {
-        case 'CallTimePassByReferenceUnitTest.1.inc':
-            return [
-                9  => 1,
-                12 => 1,
-                15 => 1,
-                18 => 2,
-                23 => 1,
-                30 => 1,
-                41 => 1,
-                50 => 1,
-                51 => 1,
-                54 => 1,
-                62 => 1,
-                63 => 1,
-                64 => 1,
-            ];
 
-        default:
-            return [];
-        }//end switch
+	/**
+	 * Returns the lines where errors should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of errors that should occur on that line.
+	 *
+	 * @param string $testFile The name of the test file to process.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getErrorList( $testFile = 'CallTimePassByReferenceUnitTest.1.inc' ) {
+		switch ( $testFile ) {
+			case 'CallTimePassByReferenceUnitTest.1.inc':
+				return array(
+					9  => 1,
+					12 => 1,
+					15 => 1,
+					18 => 2,
+					23 => 1,
+					30 => 1,
+					41 => 1,
+					50 => 1,
+					51 => 1,
+					54 => 1,
+					62 => 1,
+					63 => 1,
+					64 => 1,
+				);
 
-    }//end getErrorList()
-
-
-    /**
-     * Returns the lines where warnings should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of warnings that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getWarningList()
-    {
-        return [];
-
-    }//end getWarningList()
+			default:
+				return array();
+		}//end switch
+	}//end getErrorList()
 
 
+	/**
+	 * Returns the lines where warnings should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of warnings that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getWarningList() {
+		return array();
+	}//end getWarningList()
 }//end class

@@ -16,113 +16,105 @@ use PHPUnit\Framework\TestCase;
  *
  * @covers \PHP_CodeSniffer\Config::processLongArgument
  */
-final class ExtensionsArgTest extends TestCase
-{
+final class ExtensionsArgTest extends TestCase {
 
 
-    /**
-     * Ensure that the extension property is set when the parameter is passed a valid value.
-     *
-     * @param string $passedValue Extensions as passed on the command line.
-     * @param string $expected    Expected value for the extensions property.
-     *
-     * @dataProvider dataValidExtensions
-     *
-     * @return void
-     */
-    public function testValidExtensions($passedValue, $expected)
-    {
-        $config = new ConfigDouble(["--extensions=$passedValue"]);
 
-        $this->assertSame($expected, $config->extensions);
+	/**
+	 * Ensure that the extension property is set when the parameter is passed a valid value.
+	 *
+	 * @param string $passedValue Extensions as passed on the command line.
+	 * @param string $expected    Expected value for the extensions property.
+	 *
+	 * @dataProvider dataValidExtensions
+	 *
+	 * @return void
+	 */
+	public function testValidExtensions( $passedValue, $expected ) {
+		$config = new ConfigDouble( array( "--extensions=$passedValue" ) );
 
-    }//end testValidExtensions()
-
-
-    /**
-     * Data provider.
-     *
-     * @see self::testValidExtensions()
-     *
-     * @return array<string, array<string, string|array<string, string>>>
-     */
-    public static function dataValidExtensions()
-    {
-        return [
-            // Passing an empty extensions list is not useful, as it will result in no files being scanned,
-            // but that's the responsibility of the user.
-            'Empty extensions list'                                                          => [
-                'passedValue' => '',
-                'expected'    => [],
-            ],
-            'Single extension passed: php'                                                   => [
-                'passedValue' => 'php',
-                'expected'    => [
-                    'php' => 'PHP',
-                ],
-            ],
-            // This would cause PHPCS to scan python files as PHP, which will probably cause very weird scan results,
-            // but that's the responsibility of the user.
-            'Single extension passed: py'                                                    => [
-                'passedValue' => 'py',
-                'expected'    => [
-                    'py' => 'PHP',
-                ],
-            ],
-            // This would likely result in a problem when PHPCS can't find a "PY" tokenizer class,
-            // but that's not our concern at this moment. Support for non-PHP tokenizers is being dropped soon anyway.
-            'Single extension passed with language: py/py'                                   => [
-                'passedValue' => 'py/py',
-                'expected'    => [
-                    'py' => 'PY',
-                ],
-            ],
-            'Multiple extensions passed: php,js,css'                                         => [
-                'passedValue' => 'php,js,css',
-                'expected'    => [
-                    'php' => 'PHP',
-                    'js'  => 'JS',
-                    'css' => 'CSS',
-                ],
-            ],
-            'Multiple extensions passed, some with language: php,inc/php,phpt/php,js'        => [
-                'passedValue' => 'php,inc/php,phpt/php,js',
-                'expected'    => [
-                    'php'  => 'PHP',
-                    'inc'  => 'PHP',
-                    'phpt' => 'PHP',
-                    'js'   => 'JS',
-                ],
-            ],
-            'File extensions are set case sensitively (and filtering is case sensitive too)' => [
-                'passedValue' => 'PHP,php',
-                'expected'    => [
-                    'PHP' => 'PHP',
-                    'php' => 'PHP',
-                ],
-            ],
-        ];
-
-    }//end dataValidExtensions()
+		$this->assertSame( $expected, $config->extensions );
+	}//end testValidExtensions()
 
 
-    /**
-     * Ensure that only the first argument is processed and others are ignored.
-     *
-     * @return void
-     */
-    public function testOnlySetOnce()
-    {
-        $config = new ConfigDouble(
-            [
-                '--extensions=php',
-                '--extensions=inc,module',
-            ]
-        );
+	/**
+	 * Data provider.
+	 *
+	 * @see self::testValidExtensions()
+	 *
+	 * @return array<string, array<string, string|array<string, string>>>
+	 */
+	public static function dataValidExtensions() {
+		return array(
+			// Passing an empty extensions list is not useful, as it will result in no files being scanned,
+			// but that's the responsibility of the user.
+			'Empty extensions list'                        => array(
+				'passedValue' => '',
+				'expected'    => array(),
+			),
+			'Single extension passed: php'                 => array(
+				'passedValue' => 'php',
+				'expected'    => array(
+					'php' => 'PHP',
+				),
+			),
+			// This would cause PHPCS to scan python files as PHP, which will probably cause very weird scan results,
+			// but that's the responsibility of the user.
+			'Single extension passed: py'                  => array(
+				'passedValue' => 'py',
+				'expected'    => array(
+					'py' => 'PHP',
+				),
+			),
+			// This would likely result in a problem when PHPCS can't find a "PY" tokenizer class,
+			// but that's not our concern at this moment. Support for non-PHP tokenizers is being dropped soon anyway.
+			'Single extension passed with language: py/py' => array(
+				'passedValue' => 'py/py',
+				'expected'    => array(
+					'py' => 'PY',
+				),
+			),
+			'Multiple extensions passed: php,js,css'       => array(
+				'passedValue' => 'php,js,css',
+				'expected'    => array(
+					'php' => 'PHP',
+					'js'  => 'JS',
+					'css' => 'CSS',
+				),
+			),
+			'Multiple extensions passed, some with language: php,inc/php,phpt/php,js' => array(
+				'passedValue' => 'php,inc/php,phpt/php,js',
+				'expected'    => array(
+					'php'  => 'PHP',
+					'inc'  => 'PHP',
+					'phpt' => 'PHP',
+					'js'   => 'JS',
+				),
+			),
+			'File extensions are set case sensitively (and filtering is case sensitive too)' => array(
+				'passedValue' => 'PHP,php',
+				'expected'    => array(
+					'PHP' => 'PHP',
+					'php' => 'PHP',
+				),
+			),
+		);
+	}//end dataValidExtensions()
 
-        $this->assertSame(['php' => 'PHP'], $config->extensions);
 
-    }//end testOnlySetOnce()
+	/**
+	 * Ensure that only the first argument is processed and others are ignored.
+	 *
+	 * @return void
+	 */
+	public function testOnlySetOnce() {
+		$config = new ConfigDouble(
+			array(
+				'--extensions=php',
+				'--extensions=inc,module',
+			)
+		);
 
-
+		$this->assertSame( array( 'php' => 'PHP' ), $config->extensions );
+	}//end testOnlySetOnce()
 }//end class

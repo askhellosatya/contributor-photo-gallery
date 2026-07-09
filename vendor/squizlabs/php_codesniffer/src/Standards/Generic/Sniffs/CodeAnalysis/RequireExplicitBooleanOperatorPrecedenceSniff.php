@@ -33,80 +33,74 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
-class RequireExplicitBooleanOperatorPrecedenceSniff implements Sniff
-{
-
-    /**
-     * Array of tokens this test searches for to find either a boolean
-     * operator or the start of the current (sub-)expression. Used for
-     * performance optimization purposes.
-     *
-     * @var array<int|string>
-     */
-    private $searchTargets = [];
+class RequireExplicitBooleanOperatorPrecedenceSniff implements Sniff {
 
 
-    /**
-     * Returns an array of tokens this test wants to listen for.
-     *
-     * @return array<int|string>
-     */
-    public function register()
-    {
-        $this->searchTargets = Tokens::$booleanOperators;
-        $this->searchTargets[T_INLINE_THEN] = T_INLINE_THEN;
-        $this->searchTargets[T_INLINE_ELSE] = T_INLINE_ELSE;
-
-        return Tokens::$booleanOperators;
-
-    }//end register()
+	/**
+	 * Array of tokens this test searches for to find either a boolean
+	 * operator or the start of the current (sub-)expression. Used for
+	 * performance optimization purposes.
+	 *
+	 * @var array<int|string>
+	 */
+	private $searchTargets = array();
 
 
-    /**
-     * Processes this test, when one of its tokens is encountered.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-     * @param int                         $stackPtr  The position of the current token
-     *                                               in the stack passed in $tokens.
-     *
-     * @return void
-     */
-    public function process(File $phpcsFile, $stackPtr)
-    {
-        $tokens = $phpcsFile->getTokens();
+	/**
+	 * Returns an array of tokens this test wants to listen for.
+	 *
+	 * @return array<int|string>
+	 */
+	public function register() {
+		$this->searchTargets                  = Tokens::$booleanOperators;
+		$this->searchTargets[ T_INLINE_THEN ] = T_INLINE_THEN;
+		$this->searchTargets[ T_INLINE_ELSE ] = T_INLINE_ELSE;
 
-        $start = $phpcsFile->findStartOfStatement($stackPtr);
-
-        $previous = $phpcsFile->findPrevious(
-            $this->searchTargets,
-            ($stackPtr - 1),
-            $start,
-            false,
-            null,
-            true
-        );
-
-        if ($previous === false) {
-            // No token found.
-            return;
-        }
-
-        if ($tokens[$previous]['code'] === $tokens[$stackPtr]['code']) {
-            // Identical operator found.
-            return;
-        }
-
-        if (in_array($tokens[$previous]['code'], [T_INLINE_THEN, T_INLINE_ELSE], true) === true) {
-            // Beginning of the expression found for the ternary conditional operator.
-            return;
-        }
-
-        // We found a mismatching operator, thus we must report the error.
-        $error  = 'Mixing different binary boolean operators within an expression';
-        $error .= ' without using parentheses to clarify precedence is not allowed.';
-        $phpcsFile->addError($error, $stackPtr, 'MissingParentheses');
-
-    }//end process()
+		return Tokens::$booleanOperators;
+	}//end register()
 
 
+	/**
+	 * Processes this test, when one of its tokens is encountered.
+	 *
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+	 * @param int                         $stackPtr  The position of the current token
+	 *                                               in the stack passed in $tokens.
+	 *
+	 * @return void
+	 */
+	public function process( File $phpcsFile, $stackPtr ) {
+		$tokens = $phpcsFile->getTokens();
+
+		$start = $phpcsFile->findStartOfStatement( $stackPtr );
+
+		$previous = $phpcsFile->findPrevious(
+			$this->searchTargets,
+			( $stackPtr - 1 ),
+			$start,
+			false,
+			null,
+			true
+		);
+
+		if ( $previous === false ) {
+			// No token found.
+			return;
+		}
+
+		if ( $tokens[ $previous ]['code'] === $tokens[ $stackPtr ]['code'] ) {
+			// Identical operator found.
+			return;
+		}
+
+		if ( in_array( $tokens[ $previous ]['code'], array( T_INLINE_THEN, T_INLINE_ELSE ), true ) === true ) {
+			// Beginning of the expression found for the ternary conditional operator.
+			return;
+		}
+
+		// We found a mismatching operator, thus we must report the error.
+		$error  = 'Mixing different binary boolean operators within an expression';
+		$error .= ' without using parentheses to clarify precedence is not allowed.';
+		$phpcsFile->addError( $error, $stackPtr, 'MissingParentheses' );
+	}//end process()
 }//end class

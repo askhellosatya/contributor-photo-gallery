@@ -17,155 +17,149 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use PHP_CodeSniffer\Util\Tokens;
 
-class AssignmentInConditionSniff implements Sniff
-{
-
-    /**
-     * Assignment tokens to trigger on.
-     *
-     * Set in the register() method.
-     *
-     * @var array<int|string, int|string>
-     */
-    protected $assignmentTokens = [];
-
-    /**
-     * The tokens that indicate the start of a condition.
-     *
-     * @var array<int|string, int|string>
-     */
-    protected $conditionStartTokens = [];
+class AssignmentInConditionSniff implements Sniff {
 
 
-    /**
-     * Registers the tokens that this sniff wants to listen for.
-     *
-     * @return array<int|string>
-     */
-    public function register()
-    {
-        $this->assignmentTokens = Tokens::$assignmentTokens;
-        unset($this->assignmentTokens[T_DOUBLE_ARROW]);
+	/**
+	 * Assignment tokens to trigger on.
+	 *
+	 * Set in the register() method.
+	 *
+	 * @var array<int|string, int|string>
+	 */
+	protected $assignmentTokens = array();
 
-        $starters = Tokens::$booleanOperators;
-        $starters[T_SEMICOLON]        = T_SEMICOLON;
-        $starters[T_OPEN_PARENTHESIS] = T_OPEN_PARENTHESIS;
-
-        $this->conditionStartTokens = $starters;
-
-        return [
-            T_IF,
-            T_ELSEIF,
-            T_FOR,
-            T_SWITCH,
-            T_CASE,
-            T_WHILE,
-            T_MATCH,
-        ];
-
-    }//end register()
+	/**
+	 * The tokens that indicate the start of a condition.
+	 *
+	 * @var array<int|string, int|string>
+	 */
+	protected $conditionStartTokens = array();
 
 
-    /**
-     * Processes this test, when one of its tokens is encountered.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
-     * @param int                         $stackPtr  The position of the current token
-     *                                               in the stack passed in $tokens.
-     *
-     * @return void
-     */
-    public function process(File $phpcsFile, $stackPtr)
-    {
-        $tokens = $phpcsFile->getTokens();
-        $token  = $tokens[$stackPtr];
+	/**
+	 * Registers the tokens that this sniff wants to listen for.
+	 *
+	 * @return array<int|string>
+	 */
+	public function register() {
+		$this->assignmentTokens = Tokens::$assignmentTokens;
+		unset( $this->assignmentTokens[ T_DOUBLE_ARROW ] );
 
-        // Find the condition opener/closer.
-        if ($token['code'] === T_FOR) {
-            if (isset($token['parenthesis_opener'], $token['parenthesis_closer']) === false) {
-                return;
-            }
+		$starters                       = Tokens::$booleanOperators;
+		$starters[ T_SEMICOLON ]        = T_SEMICOLON;
+		$starters[ T_OPEN_PARENTHESIS ] = T_OPEN_PARENTHESIS;
 
-            $semicolon = $phpcsFile->findNext(T_SEMICOLON, ($token['parenthesis_opener'] + 1), ($token['parenthesis_closer']));
-            if ($semicolon === false) {
-                return;
-            }
+		$this->conditionStartTokens = $starters;
 
-            $opener = $semicolon;
-
-            $semicolon = $phpcsFile->findNext(T_SEMICOLON, ($opener + 1), ($token['parenthesis_closer']));
-            if ($semicolon === false) {
-                return;
-            }
-
-            $closer = $semicolon;
-            unset($semicolon);
-        } else if ($token['code'] === T_CASE) {
-            if (isset($token['scope_opener']) === false) {
-                return;
-            }
-
-            $opener = $stackPtr;
-            $closer = $token['scope_opener'];
-        } else {
-            if (isset($token['parenthesis_opener'], $token['parenthesis_closer']) === false) {
-                return;
-            }
-
-            $opener = $token['parenthesis_opener'];
-            $closer = $token['parenthesis_closer'];
-        }//end if
-
-        $startPos = $opener;
-
-        do {
-            $hasAssignment = $phpcsFile->findNext($this->assignmentTokens, ($startPos + 1), $closer);
-            if ($hasAssignment === false) {
-                return;
-            }
-
-            // Examine whether the left side is a variable.
-            $hasVariable       = false;
-            $conditionStart    = $startPos;
-            $altConditionStart = $phpcsFile->findPrevious($this->conditionStartTokens, ($hasAssignment - 1), $startPos);
-            if ($altConditionStart !== false) {
-                $conditionStart = $altConditionStart;
-            }
-
-            for ($i = $hasAssignment; $i > $conditionStart; $i--) {
-                if (isset(Tokens::$emptyTokens[$tokens[$i]['code']]) === true) {
-                    continue;
-                }
-
-                // If this is a variable or array, we've seen all we need to see.
-                if ($tokens[$i]['code'] === T_VARIABLE || $tokens[$i]['code'] === T_CLOSE_SQUARE_BRACKET) {
-                    $hasVariable = true;
-                    break;
-                }
-
-                // If this is a function call or something, we are OK.
-                if ($tokens[$i]['code'] === T_CLOSE_PARENTHESIS) {
-                    break;
-                }
-            }
-
-            if ($hasVariable === true) {
-                $errorCode = 'Found';
-                if ($token['code'] === T_WHILE) {
-                    $errorCode = 'FoundInWhileCondition';
-                }
-
-                $phpcsFile->addWarning(
-                    'Variable assignment found within a condition. Did you mean to do a comparison ?',
-                    $hasAssignment,
-                    $errorCode
-                );
-            }
-
-            $startPos = $hasAssignment;
-        } while ($startPos < $closer);
-
-    }//end process()
+		return array(
+			T_IF,
+			T_ELSEIF,
+			T_FOR,
+			T_SWITCH,
+			T_CASE,
+			T_WHILE,
+			T_MATCH,
+		);
+	}//end register()
 
 
+	/**
+	 * Processes this test, when one of its tokens is encountered.
+	 *
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file being scanned.
+	 * @param int                         $stackPtr  The position of the current token
+	 *                                               in the stack passed in $tokens.
+	 *
+	 * @return void
+	 */
+	public function process( File $phpcsFile, $stackPtr ) {
+		$tokens = $phpcsFile->getTokens();
+		$token  = $tokens[ $stackPtr ];
+
+		// Find the condition opener/closer.
+		if ( $token['code'] === T_FOR ) {
+			if ( isset( $token['parenthesis_opener'], $token['parenthesis_closer'] ) === false ) {
+				return;
+			}
+
+			$semicolon = $phpcsFile->findNext( T_SEMICOLON, ( $token['parenthesis_opener'] + 1 ), ( $token['parenthesis_closer'] ) );
+			if ( $semicolon === false ) {
+				return;
+			}
+
+			$opener = $semicolon;
+
+			$semicolon = $phpcsFile->findNext( T_SEMICOLON, ( $opener + 1 ), ( $token['parenthesis_closer'] ) );
+			if ( $semicolon === false ) {
+				return;
+			}
+
+			$closer = $semicolon;
+			unset( $semicolon );
+		} elseif ( $token['code'] === T_CASE ) {
+			if ( isset( $token['scope_opener'] ) === false ) {
+				return;
+			}
+
+			$opener = $stackPtr;
+			$closer = $token['scope_opener'];
+		} else {
+			if ( isset( $token['parenthesis_opener'], $token['parenthesis_closer'] ) === false ) {
+				return;
+			}
+
+			$opener = $token['parenthesis_opener'];
+			$closer = $token['parenthesis_closer'];
+		}//end if
+
+		$startPos = $opener;
+
+		do {
+			$hasAssignment = $phpcsFile->findNext( $this->assignmentTokens, ( $startPos + 1 ), $closer );
+			if ( $hasAssignment === false ) {
+				return;
+			}
+
+			// Examine whether the left side is a variable.
+			$hasVariable       = false;
+			$conditionStart    = $startPos;
+			$altConditionStart = $phpcsFile->findPrevious( $this->conditionStartTokens, ( $hasAssignment - 1 ), $startPos );
+			if ( $altConditionStart !== false ) {
+				$conditionStart = $altConditionStart;
+			}
+
+			for ( $i = $hasAssignment; $i > $conditionStart; $i-- ) {
+				if ( isset( Tokens::$emptyTokens[ $tokens[ $i ]['code'] ] ) === true ) {
+					continue;
+				}
+
+				// If this is a variable or array, we've seen all we need to see.
+				if ( $tokens[ $i ]['code'] === T_VARIABLE || $tokens[ $i ]['code'] === T_CLOSE_SQUARE_BRACKET ) {
+					$hasVariable = true;
+					break;
+				}
+
+				// If this is a function call or something, we are OK.
+				if ( $tokens[ $i ]['code'] === T_CLOSE_PARENTHESIS ) {
+					break;
+				}
+			}
+
+			if ( $hasVariable === true ) {
+				$errorCode = 'Found';
+				if ( $token['code'] === T_WHILE ) {
+					$errorCode = 'FoundInWhileCondition';
+				}
+
+				$phpcsFile->addWarning(
+					'Variable assignment found within a condition. Did you mean to do a comparison ?',
+					$hasAssignment,
+					$errorCode
+				);
+			}
+
+			$startPos = $hasAssignment;
+		} while ( $startPos < $closer );
+	}//end process()
 }//end class

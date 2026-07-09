@@ -13,7 +13,7 @@ namespace PHP_CodeSniffer\Tests\Core\Runner;
 
 use PHP_CodeSniffer\Tests\Core\Config\AbstractRealConfigTestCase;
 
-abstract class AbstractRunnerTestCase extends AbstractRealConfigTestCase
-{
+abstract class AbstractRunnerTestCase extends AbstractRealConfigTestCase {
+
 
 }//end class

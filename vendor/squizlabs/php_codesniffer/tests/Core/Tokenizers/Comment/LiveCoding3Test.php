@@ -14,49 +14,43 @@ namespace PHP_CodeSniffer\Tests\Core\Tokenizers\Comment;
  *
  * @covers PHP_CodeSniffer\Tokenizers\Comment
  */
-final class LiveCoding3Test extends CommentTestCase
-{
+final class LiveCoding3Test extends CommentTestCase {
 
 
-    /**
-     * Data provider.
-     *
-     * @see testDocblockOpenerCloser()
-     *
-     * @return array<string, array<string, string|int|array<int>>>
-     */
-    public static function dataDocblockOpenerCloser()
-    {
-        return [
-            'live coding: unclosed docblock, no contents, no blank line at end of file' => [
-                'marker'       => '/* testLiveCoding */',
-                'closerOffset' => 1,
-                'expectedTags' => [],
-            ],
-        ];
 
-    }//end dataDocblockOpenerCloser()
+	/**
+	 * Data provider.
+	 *
+	 * @see testDocblockOpenerCloser()
+	 *
+	 * @return array<string, array<string, string|int|array<int>>>
+	 */
+	public static function dataDocblockOpenerCloser() {
+		return array(
+			'live coding: unclosed docblock, no contents, no blank line at end of file' => array(
+				'marker'       => '/* testLiveCoding */',
+				'closerOffset' => 1,
+				'expectedTags' => array(),
+			),
+		);
+	}//end dataDocblockOpenerCloser()
 
 
-    /**
-     * Verify tokenization of the DocBlock.
-     *
+	/**
+	 * Verify tokenization of the DocBlock.
+	 *
      * @phpcs:disable Squiz.Arrays.ArrayDeclaration.SpaceBeforeDoubleArrow -- Readability is better with alignment.
-     *
-     * @return void
-     */
-    public function testLiveCoding()
-    {
-        $expectedSequence = [
-            [T_DOC_COMMENT_OPEN_TAG   => '/**'],
-            [T_DOC_COMMENT_CLOSE_TAG  => ''],
-        ];
+	 *
+	 * @return void
+	 */
+	public function testLiveCoding() {
+		$expectedSequence = array(
+			array( T_DOC_COMMENT_OPEN_TAG => '/**' ),
+			array( T_DOC_COMMENT_CLOSE_TAG => '' ),
+		);
 
-        $target = $this->getTargetToken('/* '.__FUNCTION__.' */', T_DOC_COMMENT_OPEN_TAG);
+		$target = $this->getTargetToken( '/* ' . __FUNCTION__ . ' */', T_DOC_COMMENT_OPEN_TAG );
 
-        $this->checkTokenSequence($target, $expectedSequence);
-
-    }//end testLiveCoding()
-
-
+		$this->checkTokenSequence( $target, $expectedSequence );
+	}//end testLiveCoding()
 }//end class

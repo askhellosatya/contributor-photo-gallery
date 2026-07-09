@@ -16,52 +16,46 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers \PHP_CodeSniffer\Standards\Generic\Sniffs\PHP\DeprecatedFunctionsSniff
  */
-final class DeprecatedFunctionsUnitTest extends AbstractSniffUnitTest
-{
+final class DeprecatedFunctionsUnitTest extends AbstractSniffUnitTest {
 
 
-    /**
-     * Returns the lines where errors should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of errors that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getErrorList()
-    {
-        $errors = [];
 
-        if (PHP_VERSION_ID >= 70200 && PHP_VERSION_ID < 80000) {
-            $errors[3] = 1;
-        }
+	/**
+	 * Returns the lines where errors should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of errors that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getErrorList() {
+		$errors = array();
 
-        if (PHP_VERSION_ID >= 70300 && PHP_VERSION_ID < 80000) {
-            $errors[4] = 1;
-        }
+		if ( PHP_VERSION_ID >= 70200 && PHP_VERSION_ID < 80000 ) {
+			$errors[3] = 1;
+		}
 
-        if (PHP_VERSION_ID >= 80000) {
-            $errors[5] = 1;
-        }
+		if ( PHP_VERSION_ID >= 70300 && PHP_VERSION_ID < 80000 ) {
+			$errors[4] = 1;
+		}
 
-        return $errors;
+		if ( PHP_VERSION_ID >= 80000 ) {
+			$errors[5] = 1;
+		}
 
-    }//end getErrorList()
-
-
-    /**
-     * Returns the lines where warnings should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of warnings that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getWarningList()
-    {
-        return [];
-
-    }//end getWarningList()
+		return $errors;
+	}//end getErrorList()
 
 
+	/**
+	 * Returns the lines where warnings should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of warnings that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getWarningList() {
+		return array();
+	}//end getWarningList()
 }//end class

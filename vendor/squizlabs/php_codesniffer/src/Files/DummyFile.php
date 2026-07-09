@@ -17,66 +17,60 @@ namespace PHP_CodeSniffer\Files;
 use PHP_CodeSniffer\Config;
 use PHP_CodeSniffer\Ruleset;
 
-class DummyFile extends File
-{
+class DummyFile extends File {
 
 
-    /**
-     * Creates a DummyFile object and sets the content.
-     *
-     * @param string                   $content The content of the file.
-     * @param \PHP_CodeSniffer\Ruleset $ruleset The ruleset used for the run.
-     * @param \PHP_CodeSniffer\Config  $config  The config data for the run.
-     *
-     * @return void
-     */
-    public function __construct($content, Ruleset $ruleset, Config $config)
-    {
-        $this->setContent($content);
 
-        // See if a filename was defined in the content.
-        // This is done by including: phpcs_input_file: [file path]
-        // as the first line of content.
-        $path = 'STDIN';
-        if ($content !== '') {
-            if (substr($content, 0, 17) === 'phpcs_input_file:') {
-                $eolPos   = strpos($content, $this->eolChar);
-                $filename = trim(substr($content, 17, ($eolPos - 17)));
-                $content  = substr($content, ($eolPos + strlen($this->eolChar)));
-                $path     = $filename;
+	/**
+	 * Creates a DummyFile object and sets the content.
+	 *
+	 * @param string                   $content The content of the file.
+	 * @param \PHP_CodeSniffer\Ruleset $ruleset The ruleset used for the run.
+	 * @param \PHP_CodeSniffer\Config  $config  The config data for the run.
+	 *
+	 * @return void
+	 */
+	public function __construct( $content, Ruleset $ruleset, Config $config ) {
+		$this->setContent( $content );
 
-                $this->setContent($content);
-            }
-        }
+		// See if a filename was defined in the content.
+		// This is done by including: phpcs_input_file: [file path]
+		// as the first line of content.
+		$path = 'STDIN';
+		if ( $content !== '' ) {
+			if ( substr( $content, 0, 17 ) === 'phpcs_input_file:' ) {
+				$eolPos   = strpos( $content, $this->eolChar );
+				$filename = trim( substr( $content, 17, ( $eolPos - 17 ) ) );
+				$content  = substr( $content, ( $eolPos + strlen( $this->eolChar ) ) );
+				$path     = $filename;
 
-        // The CLI arg overrides anything passed in the content.
-        if ($config->stdinPath !== null) {
-            $path = $config->stdinPath;
-        }
+				$this->setContent( $content );
+			}
+		}
 
-        parent::__construct($path, $ruleset, $config);
+		// The CLI arg overrides anything passed in the content.
+		if ( $config->stdinPath !== null ) {
+			$path = $config->stdinPath;
+		}
 
-    }//end __construct()
-
-
-    /**
-     * Set the error, warning, and fixable counts for the file.
-     *
-     * @param int $errorCount   The number of errors found.
-     * @param int $warningCount The number of warnings found.
-     * @param int $fixableCount The number of fixable errors found.
-     * @param int $fixedCount   The number of errors that were fixed.
-     *
-     * @return void
-     */
-    public function setErrorCounts($errorCount, $warningCount, $fixableCount, $fixedCount)
-    {
-        $this->errorCount   = $errorCount;
-        $this->warningCount = $warningCount;
-        $this->fixableCount = $fixableCount;
-        $this->fixedCount   = $fixedCount;
-
-    }//end setErrorCounts()
+		parent::__construct( $path, $ruleset, $config );
+	}//end __construct()
 
 
+	/**
+	 * Set the error, warning, and fixable counts for the file.
+	 *
+	 * @param int $errorCount   The number of errors found.
+	 * @param int $warningCount The number of warnings found.
+	 * @param int $fixableCount The number of fixable errors found.
+	 * @param int $fixedCount   The number of errors that were fixed.
+	 *
+	 * @return void
+	 */
+	public function setErrorCounts( $errorCount, $warningCount, $fixableCount, $fixedCount ) {
+		$this->errorCount   = $errorCount;
+		$this->warningCount = $warningCount;
+		$this->fixableCount = $fixableCount;
+		$this->fixedCount   = $fixedCount;
+	}//end setErrorCounts()
 }//end class

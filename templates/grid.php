@@ -8,7 +8,7 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
-    exit; // Exit if accessed directly.
+	exit; // Exit if accessed directly.
 }
 
 // Expects $cpglry_photos, $cpglry_options (fallback cpglry_get_plugin_options), and $atts passed from renderer.

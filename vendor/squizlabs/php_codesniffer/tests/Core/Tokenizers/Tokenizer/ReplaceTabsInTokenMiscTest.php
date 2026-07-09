@@ -19,106 +19,98 @@ use PHPUnit\Framework\TestCase;
  *
  * @covers PHP_CodeSniffer\Tokenizers\Tokenizer::replaceTabsInToken
  */
-final class ReplaceTabsInTokenMiscTest extends TestCase
-{
+final class ReplaceTabsInTokenMiscTest extends TestCase {
 
 
-    /**
-     * Test that when no tab width is set or passed, the tab width will be set to 1.
-     *
-     * @return void
-     */
-    public function testTabWidthNotSet()
-    {
-        $config  = new ConfigDouble();
-        $ruleset = new Ruleset($config);
 
-        $content   = <<<EOD
+	/**
+	 * Test that when no tab width is set or passed, the tab width will be set to 1.
+	 *
+	 * @return void
+	 */
+	public function testTabWidthNotSet() {
+		$config  = new ConfigDouble();
+		$ruleset = new Ruleset( $config );
+
+		$content   = <<<'EOD'
 <?php
 		echo 'foo';
 EOD;
-        $phpcsFile = new DummyFile($content, $ruleset, $config);
-        $phpcsFile->parse();
+		$phpcsFile = new DummyFile( $content, $ruleset, $config );
+		$phpcsFile->parse();
 
-        $tokens = $phpcsFile->getTokens();
-        $target = $phpcsFile->findNext(T_WHITESPACE, 0);
+		$tokens = $phpcsFile->getTokens();
+		$target = $phpcsFile->findNext( T_WHITESPACE, 0 );
 
-        // Verify initial state.
-        $this->assertTrue(is_int($target), 'Target token was not found');
-        $this->assertSame('		', $tokens[$target]['content'], 'Content after initial parsing does not contain tabs');
-        $this->assertSame(2, $tokens[$target]['length'], 'Length after initial parsing is not as expected');
-        $this->assertArrayNotHasKey('orig_content', $tokens[$target], "Key 'orig_content' found in the initial token array.");
+		// Verify initial state.
+		$this->assertTrue( is_int( $target ), 'Target token was not found' );
+		$this->assertSame( '		', $tokens[ $target ]['content'], 'Content after initial parsing does not contain tabs' );
+		$this->assertSame( 2, $tokens[ $target ]['length'], 'Length after initial parsing is not as expected' );
+		$this->assertArrayNotHasKey( 'orig_content', $tokens[ $target ], "Key 'orig_content' found in the initial token array." );
 
-        $phpcsFile->tokenizer->replaceTabsInToken($tokens[$target]);
+		$phpcsFile->tokenizer->replaceTabsInToken( $tokens[ $target ] );
 
-        // Verify tab replacement.
-        $this->assertSame('  ', $tokens[$target]['content'], 'Content after tab replacement is not as expected');
-        $this->assertSame(2, $tokens[$target]['length'], 'Length after tab replacement is not as expected');
-        $this->assertArrayHasKey('orig_content', $tokens[$target], "Key 'orig_content' not found in the token array.");
+		// Verify tab replacement.
+		$this->assertSame( '  ', $tokens[ $target ]['content'], 'Content after tab replacement is not as expected' );
+		$this->assertSame( 2, $tokens[ $target ]['length'], 'Length after tab replacement is not as expected' );
+		$this->assertArrayHasKey( 'orig_content', $tokens[ $target ], "Key 'orig_content' not found in the token array." );
+	}//end testTabWidthNotSet()
 
-    }//end testTabWidthNotSet()
 
+	/**
+	 * Test that the length calculation handles text in non-ascii encodings correctly.
+	 *
+	 * @requires extension iconv
+	 *
+	 * @return void
+	 */
+	public function testLengthSettingRespectsEncoding() {
+		$config           = new ConfigDouble();
+		$config->tabWidth = 4;
+		$ruleset          = new Ruleset( $config );
 
-    /**
-     * Test that the length calculation handles text in non-ascii encodings correctly.
-     *
-     * @requires extension iconv
-     *
-     * @return void
-     */
-    public function testLengthSettingRespectsEncoding()
-    {
-        $config           = new ConfigDouble();
-        $config->tabWidth = 4;
-        $ruleset          = new Ruleset($config);
-
-        $content   = <<<EOD
+		$content   = <<<'EOD'
 <?php
 echo 'пасха		пасха';
 EOD;
-        $phpcsFile = new DummyFile($content, $ruleset, $config);
-        $phpcsFile->parse();
+		$phpcsFile = new DummyFile( $content, $ruleset, $config );
+		$phpcsFile->parse();
 
-        $tokens = $phpcsFile->getTokens();
-        $target = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, 0);
+		$tokens = $phpcsFile->getTokens();
+		$target = $phpcsFile->findNext( T_CONSTANT_ENCAPSED_STRING, 0 );
 
-        $this->assertTrue(is_int($target), 'Target token was not found');
-        $this->assertSame("'пасха     пасха'", $tokens[$target]['content'], 'Content is not as expected');
-        $this->assertSame(17, $tokens[$target]['length'], 'Length is not as expected');
-        $this->assertArrayHasKey('orig_content', $tokens[$target], "Key 'orig_content' not found in the token array.");
-        $this->assertSame("'пасха		пасха'", $tokens[$target]['orig_content'], 'Orig_content is not as expected');
+		$this->assertTrue( is_int( $target ), 'Target token was not found' );
+		$this->assertSame( "'пасха     пасха'", $tokens[ $target ]['content'], 'Content is not as expected' );
+		$this->assertSame( 17, $tokens[ $target ]['length'], 'Length is not as expected' );
+		$this->assertArrayHasKey( 'orig_content', $tokens[ $target ], "Key 'orig_content' not found in the token array." );
+		$this->assertSame( "'пасха		пасха'", $tokens[ $target ]['orig_content'], 'Orig_content is not as expected' );
+	}//end testLengthSettingRespectsEncoding()
 
-    }//end testLengthSettingRespectsEncoding()
 
+	/**
+	 * Test that the length calculation falls back to byte length if iconv detects an illegal character.
+	 *
+	 * @requires extension iconv
+	 *
+	 * @return void
+	 */
+	public function testLengthSettingFallsBackToBytesWhenTextContainsIllegalChars() {
+		$config           = new ConfigDouble();
+		$config->tabWidth = 4;
+		$ruleset          = new Ruleset( $config );
 
-    /**
-     * Test that the length calculation falls back to byte length if iconv detects an illegal character.
-     *
-     * @requires extension iconv
-     *
-     * @return void
-     */
-    public function testLengthSettingFallsBackToBytesWhenTextContainsIllegalChars()
-    {
-        $config           = new ConfigDouble();
-        $config->tabWidth = 4;
-        $ruleset          = new Ruleset($config);
-
-        $content   = <<<EOD
+		$content   = <<<EOD
 <?php
 echo "aa\xC3\xC3	\xC3\xB8aa";
 EOD;
-        $phpcsFile = new DummyFile($content, $ruleset, $config);
-        $phpcsFile->parse();
+		$phpcsFile = new DummyFile( $content, $ruleset, $config );
+		$phpcsFile->parse();
 
-        $tokens = $phpcsFile->getTokens();
-        $target = $phpcsFile->findNext(T_CONSTANT_ENCAPSED_STRING, 0);
+		$tokens = $phpcsFile->getTokens();
+		$target = $phpcsFile->findNext( T_CONSTANT_ENCAPSED_STRING, 0 );
 
-        $this->assertTrue(is_int($target), 'Target token was not found');
-        $this->assertSame(11, $tokens[$target]['length'], 'Length is not as expected');
-        $this->assertArrayHasKey('orig_content', $tokens[$target], "Key 'orig_content' not found in the token array.");
-
-    }//end testLengthSettingFallsBackToBytesWhenTextContainsIllegalChars()
-
-
+		$this->assertTrue( is_int( $target ), 'Target token was not found' );
+		$this->assertSame( 11, $tokens[ $target ]['length'], 'Length is not as expected' );
+		$this->assertArrayHasKey( 'orig_content', $tokens[ $target ], "Key 'orig_content' not found in the token array." );
+	}//end testLengthSettingFallsBackToBytesWhenTextContainsIllegalChars()
 }//end class

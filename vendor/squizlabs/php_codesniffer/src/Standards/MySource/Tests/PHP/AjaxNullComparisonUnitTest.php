@@ -16,45 +16,39 @@ use PHP_CodeSniffer\Tests\Standards\AbstractSniffUnitTest;
  *
  * @covers PHP_CodeSniffer\Standards\MySource\Sniffs\PHP\AjaxNullComparisonSniff
  */
-final class AjaxNullComparisonUnitTest extends AbstractSniffUnitTest
-{
+final class AjaxNullComparisonUnitTest extends AbstractSniffUnitTest {
 
 
-    /**
-     * Returns the lines where errors should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of errors that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getErrorList()
-    {
-        return [];
 
-    }//end getErrorList()
-
-
-    /**
-     * Returns the lines where warnings should occur.
-     *
-     * The key of the array should represent the line number and the value
-     * should represent the number of warnings that should occur on that line.
-     *
-     * @return array<int, int>
-     */
-    public function getWarningList()
-    {
-        return [
-            41  => 1,
-            53  => 1,
-            64  => 1,
-            77  => 1,
-            92  => 1,
-            122 => 1,
-        ];
-
-    }//end getWarningList()
+	/**
+	 * Returns the lines where errors should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of errors that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getErrorList() {
+		return array();
+	}//end getErrorList()
 
 
+	/**
+	 * Returns the lines where warnings should occur.
+	 *
+	 * The key of the array should represent the line number and the value
+	 * should represent the number of warnings that should occur on that line.
+	 *
+	 * @return array<int, int>
+	 */
+	public function getWarningList() {
+		return array(
+			41  => 1,
+			53  => 1,
+			64  => 1,
+			77  => 1,
+			92  => 1,
+			122 => 1,
+		);
+	}//end getWarningList()
 }//end class

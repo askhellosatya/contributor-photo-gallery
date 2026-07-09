@@ -11,16 +11,14 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\Sniff;
 use stdClass;
 
-class AllowedViaStdClassSniff extends stdClass implements Sniff
-{
+class AllowedViaStdClassSniff extends stdClass implements Sniff {
 
-    public function register()
-    {
-        return [T_WHITESPACE];
-    }
 
-    public function process(File $phpcsFile, $stackPtr)
-    {
-        // Do something.
-    }
+	public function register() {
+		return array( T_WHITESPACE );
+	}
+
+	public function process( File $phpcsFile, $stackPtr ) {
+		// Do something.
+	}
 }

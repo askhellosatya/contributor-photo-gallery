@@ -13,144 +13,134 @@ namespace PHP_CodeSniffer\Filters;
 
 use PHP_CodeSniffer\Util\Common;
 
-abstract class ExactMatch extends Filter
-{
-
-    /**
-     * A list of files to exclude.
-     *
-     * @var array
-     */
-    private $disallowedFiles = null;
-
-    /**
-     * A list of files to include.
-     *
-     * If the allowed files list is empty, only files in the disallowed files list will be excluded.
-     *
-     * @var array
-     */
-    private $allowedFiles = null;
+abstract class ExactMatch extends Filter {
 
 
-    /**
-     * Check whether the current element of the iterator is acceptable.
-     *
-     * If a file is both disallowed and allowed, it will be deemed unacceptable.
-     *
-     * @return bool
-     */
-    public function accept()
-    {
-        if (parent::accept() === false) {
-            return false;
-        }
+	/**
+	 * A list of files to exclude.
+	 *
+	 * @var array
+	 */
+	private $disallowedFiles = null;
 
-        if ($this->disallowedFiles === null) {
-            $this->disallowedFiles = $this->getDisallowedFiles();
-
-            // BC-layer.
-            if ($this->disallowedFiles === null) {
-                $this->disallowedFiles = $this->getBlacklist();
-            }
-        }
-
-        if ($this->allowedFiles === null) {
-            $this->allowedFiles = $this->getAllowedFiles();
-
-            // BC-layer.
-            if ($this->allowedFiles === null) {
-                $this->allowedFiles = $this->getWhitelist();
-            }
-        }
-
-        $filePath = Common::realpath($this->current());
-
-        // If a file is both disallowed and allowed, the disallowed files list takes precedence.
-        if (isset($this->disallowedFiles[$filePath]) === true) {
-            return false;
-        }
-
-        if (empty($this->allowedFiles) === true && empty($this->disallowedFiles) === false) {
-            // We are only checking the disallowed files list, so everything else should be allowed.
-            return true;
-        }
-
-        return isset($this->allowedFiles[$filePath]);
-
-    }//end accept()
+	/**
+	 * A list of files to include.
+	 *
+	 * If the allowed files list is empty, only files in the disallowed files list will be excluded.
+	 *
+	 * @var array
+	 */
+	private $allowedFiles = null;
 
 
-    /**
-     * Returns an iterator for the current entry.
-     *
-     * Ensures that the disallowed files list and the allowed files list are preserved so they don't have
-     * to be generated each time.
-     *
-     * @return \RecursiveIterator
-     */
-    public function getChildren()
-    {
-        $children = parent::getChildren();
-        $children->disallowedFiles = $this->disallowedFiles;
-        $children->allowedFiles    = $this->allowedFiles;
-        return $children;
+	/**
+	 * Check whether the current element of the iterator is acceptable.
+	 *
+	 * If a file is both disallowed and allowed, it will be deemed unacceptable.
+	 *
+	 * @return bool
+	 */
+	public function accept() {
+		if ( parent::accept() === false ) {
+			return false;
+		}
 
-    }//end getChildren()
+		if ( $this->disallowedFiles === null ) {
+			$this->disallowedFiles = $this->getDisallowedFiles();
 
+			// BC-layer.
+			if ( $this->disallowedFiles === null ) {
+				$this->disallowedFiles = $this->getBlacklist();
+			}
+		}
 
-    /**
-     * Get a list of file paths to exclude.
-     *
-     * @deprecated 3.9.0 Implement the `getDisallowedFiles()` method instead.
-     *                   The `getDisallowedFiles()` method will be made abstract and therefore required
-     *                   in v4.0 and this method will be removed.
-     *                   If both methods are implemented, the new `getDisallowedFiles()` method will take precedence.
-     *
-     * @return array
-     */
-    abstract protected function getBlacklist();
+		if ( $this->allowedFiles === null ) {
+			$this->allowedFiles = $this->getAllowedFiles();
 
+			// BC-layer.
+			if ( $this->allowedFiles === null ) {
+				$this->allowedFiles = $this->getWhitelist();
+			}
+		}
 
-    /**
-     * Get a list of file paths to include.
-     *
-     * @deprecated 3.9.0 Implement the `getAllowedFiles()` method instead.
-     *                   The `getAllowedFiles()` method will be made abstract and therefore required
-     *                   in v4.0 and this method will be removed.
-     *                   If both methods are implemented, the new `getAllowedFiles()` method will take precedence.
-     *
-     * @return array
-     */
-    abstract protected function getWhitelist();
+		$filePath = Common::realpath( $this->current() );
 
+		// If a file is both disallowed and allowed, the disallowed files list takes precedence.
+		if ( isset( $this->disallowedFiles[ $filePath ] ) === true ) {
+			return false;
+		}
 
-    /**
-     * Get a list of file paths to exclude.
-     *
-     * @since 3.9.0 Replaces the deprecated `getBlacklist()` method.
-     *
-     * @return array|null
-     */
-    protected function getDisallowedFiles()
-    {
-        return null;
+		if ( empty( $this->allowedFiles ) === true && empty( $this->disallowedFiles ) === false ) {
+			// We are only checking the disallowed files list, so everything else should be allowed.
+			return true;
+		}
 
-    }//end getDisallowedFiles()
+		return isset( $this->allowedFiles[ $filePath ] );
+	}//end accept()
 
 
-    /**
-     * Get a list of file paths to include.
-     *
-     * @since 3.9.0 Replaces the deprecated `getWhitelist()` method.
-     *
-     * @return array|null
-     */
-    protected function getAllowedFiles()
-    {
-        return null;
+	/**
+	 * Returns an iterator for the current entry.
+	 *
+	 * Ensures that the disallowed files list and the allowed files list are preserved so they don't have
+	 * to be generated each time.
+	 *
+	 * @return \RecursiveIterator
+	 */
+	public function getChildren() {
+		$children                  = parent::getChildren();
+		$children->disallowedFiles = $this->disallowedFiles;
+		$children->allowedFiles    = $this->allowedFiles;
+		return $children;
+	}//end getChildren()
 
-    }//end getAllowedFiles()
+
+	/**
+	 * Get a list of file paths to exclude.
+	 *
+	 * @deprecated 3.9.0 Implement the `getDisallowedFiles()` method instead.
+	 *                   The `getDisallowedFiles()` method will be made abstract and therefore required
+	 *                   in v4.0 and this method will be removed.
+	 *                   If both methods are implemented, the new `getDisallowedFiles()` method will take precedence.
+	 *
+	 * @return array
+	 */
+	abstract protected function getBlacklist();
 
 
+	/**
+	 * Get a list of file paths to include.
+	 *
+	 * @deprecated 3.9.0 Implement the `getAllowedFiles()` method instead.
+	 *                   The `getAllowedFiles()` method will be made abstract and therefore required
+	 *                   in v4.0 and this method will be removed.
+	 *                   If both methods are implemented, the new `getAllowedFiles()` method will take precedence.
+	 *
+	 * @return array
+	 */
+	abstract protected function getWhitelist();
+
+
+	/**
+	 * Get a list of file paths to exclude.
+	 *
+	 * @since 3.9.0 Replaces the deprecated `getBlacklist()` method.
+	 *
+	 * @return array|null
+	 */
+	protected function getDisallowedFiles() {
+		return null;
+	}//end getDisallowedFiles()
+
+
+	/**
+	 * Get a list of file paths to include.
+	 *
+	 * @since 3.9.0 Replaces the deprecated `getWhitelist()` method.
+	 *
+	 * @return array|null
+	 */
+	protected function getAllowedFiles() {
+		return null;
+	}//end getAllowedFiles()
 }//end class

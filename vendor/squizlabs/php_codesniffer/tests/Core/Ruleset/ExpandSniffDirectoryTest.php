@@ -18,50 +18,46 @@ use PHPUnit\Framework\TestCase;
  *
  * @covers \PHP_CodeSniffer\Ruleset::expandSniffDirectory
  */
-final class ExpandSniffDirectoryTest extends TestCase
-{
+final class ExpandSniffDirectoryTest extends TestCase {
 
 
-    /**
-     * Test finding sniff files based on a given directory.
-     *
-     * This test verifies that:
-     * - Hidden (sub)directories are ignored, but the given directory is allowed to be within a hidden directory.
-     * - Hidden files are ignored.
-     * - Files without a "php" extension are ignored.
-     * - Files without a "Sniff" suffix in the file name are ignored.
-     *
-     * Note: the "[Another]AbstractSniff" files will be found and included in the return value
-     * from `Ruleset::expandSniffDirectory()`.
-     * Those are filtered out later in the `Ruleset::registerSniffs()` method.
-     *
-     * @return void
-     */
-    public function testExpandSniffDirectory()
-    {
-        // Set up the ruleset.
-        $standard = __DIR__.'/ExpandSniffDirectoryTest.xml';
-        $config   = new ConfigDouble(["--standard=$standard"]);
-        $ruleset  = new Ruleset($config);
 
-        $expectedPathToRuleset = __DIR__.'/Fixtures/DirectoryExpansion/.hiddenAbove/src/MyStandard/ruleset.xml';
-        $expectedPathToRuleset = realpath($expectedPathToRuleset);
-        $this->assertNotFalse($expectedPathToRuleset, 'Ruleset file could not be found');
-        $this->assertContains($expectedPathToRuleset, $ruleset->paths, 'Ruleset file not included in the "seen ruleset paths"');
+	/**
+	 * Test finding sniff files based on a given directory.
+	 *
+	 * This test verifies that:
+	 * - Hidden (sub)directories are ignored, but the given directory is allowed to be within a hidden directory.
+	 * - Hidden files are ignored.
+	 * - Files without a "php" extension are ignored.
+	 * - Files without a "Sniff" suffix in the file name are ignored.
+	 *
+	 * Note: the "[Another]AbstractSniff" files will be found and included in the return value
+	 * from `Ruleset::expandSniffDirectory()`.
+	 * Those are filtered out later in the `Ruleset::registerSniffs()` method.
+	 *
+	 * @return void
+	 */
+	public function testExpandSniffDirectory() {
+		// Set up the ruleset.
+		$standard = __DIR__ . '/ExpandSniffDirectoryTest.xml';
+		$config   = new ConfigDouble( array( "--standard=$standard" ) );
+		$ruleset  = new Ruleset( $config );
 
-        $expectedSniffCodes = [
-            'MyStandard.CategoryA.FindMe' => 'MyStandard\\Sniffs\\CategoryA\\FindMeSniff',
-            'MyStandard.CategoryB.FindMe' => 'MyStandard\\Sniffs\\CategoryB\\FindMeSniff',
-        ];
+		$expectedPathToRuleset = __DIR__ . '/Fixtures/DirectoryExpansion/.hiddenAbove/src/MyStandard/ruleset.xml';
+		$expectedPathToRuleset = realpath( $expectedPathToRuleset );
+		$this->assertNotFalse( $expectedPathToRuleset, 'Ruleset file could not be found' );
+		$this->assertContains( $expectedPathToRuleset, $ruleset->paths, 'Ruleset file not included in the "seen ruleset paths"' );
 
-        // Sort the value to make the tests stable as different OSes will read directories
-        // in a different order and the order is not relevant for these tests. Just the values.
-        $actual = $ruleset->sniffCodes;
-        ksort($actual);
+		$expectedSniffCodes = array(
+			'MyStandard.CategoryA.FindMe' => 'MyStandard\\Sniffs\\CategoryA\\FindMeSniff',
+			'MyStandard.CategoryB.FindMe' => 'MyStandard\\Sniffs\\CategoryB\\FindMeSniff',
+		);
 
-        $this->assertSame($expectedSniffCodes, $actual, 'Registered sniffs do not match expectation');
+		// Sort the value to make the tests stable as different OSes will read directories
+		// in a different order and the order is not relevant for these tests. Just the values.
+		$actual = $ruleset->sniffCodes;
+		ksort( $actual );
 
-    }//end testExpandSniffDirectory()
-
-
+		$this->assertSame( $expectedSniffCodes, $actual, 'Registered sniffs do not match expectation' );
+	}//end testExpandSniffDirectory()
 }//end class

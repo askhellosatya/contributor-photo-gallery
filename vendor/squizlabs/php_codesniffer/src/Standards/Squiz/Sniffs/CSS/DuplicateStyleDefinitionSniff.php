@@ -15,113 +15,101 @@ use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Sniffs\DeprecatedSniff;
 use PHP_CodeSniffer\Sniffs\Sniff;
 
-class DuplicateStyleDefinitionSniff implements Sniff, DeprecatedSniff
-{
-
-    /**
-     * A list of tokenizers this sniff supports.
-     *
-     * @var array
-     */
-    public $supportedTokenizers = ['CSS'];
+class DuplicateStyleDefinitionSniff implements Sniff, DeprecatedSniff {
 
 
-    /**
-     * Returns the token types that this sniff is interested in.
-     *
-     * @return array<int|string>
-     */
-    public function register()
-    {
-        return [T_OPEN_CURLY_BRACKET];
-
-    }//end register()
+	/**
+	 * A list of tokenizers this sniff supports.
+	 *
+	 * @var array
+	 */
+	public $supportedTokenizers = array( 'CSS' );
 
 
-    /**
-     * Processes the tokens that this sniff is interested in.
-     *
-     * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
-     * @param int                         $stackPtr  The position in the stack where
-     *                                               the token was found.
-     *
-     * @return void
-     */
-    public function process(File $phpcsFile, $stackPtr)
-    {
-        $tokens = $phpcsFile->getTokens();
-
-        if (isset($tokens[$stackPtr]['bracket_closer']) === false) {
-            // Syntax error or live coding, bow out.
-            return;
-        }
-
-        // Find the content of each style definition name.
-        $styleNames = [];
-
-        $next = $stackPtr;
-        $end  = $tokens[$stackPtr]['bracket_closer'];
-
-        do {
-            $next = $phpcsFile->findNext([T_STYLE, T_OPEN_CURLY_BRACKET], ($next + 1), $end);
-            if ($next === false) {
-                // Class definition is empty.
-                break;
-            }
-
-            if ($tokens[$next]['code'] === T_OPEN_CURLY_BRACKET) {
-                $next = $tokens[$next]['bracket_closer'];
-                continue;
-            }
-
-            $name = $tokens[$next]['content'];
-            if (isset($styleNames[$name]) === true) {
-                $first = $styleNames[$name];
-                $error = 'Duplicate style definition found; first defined on line %s';
-                $data  = [$tokens[$first]['line']];
-                $phpcsFile->addError($error, $next, 'Found', $data);
-            } else {
-                $styleNames[$name] = $next;
-            }
-        } while ($next !== false);
-
-    }//end process()
+	/**
+	 * Returns the token types that this sniff is interested in.
+	 *
+	 * @return array<int|string>
+	 */
+	public function register() {
+		return array( T_OPEN_CURLY_BRACKET );
+	}//end register()
 
 
-    /**
-     * Provide the version number in which the sniff was deprecated.
-     *
-     * @return string
-     */
-    public function getDeprecationVersion()
-    {
-        return 'v3.9.0';
+	/**
+	 * Processes the tokens that this sniff is interested in.
+	 *
+	 * @param \PHP_CodeSniffer\Files\File $phpcsFile The file where the token was found.
+	 * @param int                         $stackPtr  The position in the stack where
+	 *                                               the token was found.
+	 *
+	 * @return void
+	 */
+	public function process( File $phpcsFile, $stackPtr ) {
+		$tokens = $phpcsFile->getTokens();
 
-    }//end getDeprecationVersion()
+		if ( isset( $tokens[ $stackPtr ]['bracket_closer'] ) === false ) {
+			// Syntax error or live coding, bow out.
+			return;
+		}
+
+		// Find the content of each style definition name.
+		$styleNames = array();
+
+		$next = $stackPtr;
+		$end  = $tokens[ $stackPtr ]['bracket_closer'];
+
+		do {
+			$next = $phpcsFile->findNext( array( T_STYLE, T_OPEN_CURLY_BRACKET ), ( $next + 1 ), $end );
+			if ( $next === false ) {
+				// Class definition is empty.
+				break;
+			}
+
+			if ( $tokens[ $next ]['code'] === T_OPEN_CURLY_BRACKET ) {
+				$next = $tokens[ $next ]['bracket_closer'];
+				continue;
+			}
+
+			$name = $tokens[ $next ]['content'];
+			if ( isset( $styleNames[ $name ] ) === true ) {
+				$first = $styleNames[ $name ];
+				$error = 'Duplicate style definition found; first defined on line %s';
+				$data  = array( $tokens[ $first ]['line'] );
+				$phpcsFile->addError( $error, $next, 'Found', $data );
+			} else {
+				$styleNames[ $name ] = $next;
+			}
+		} while ( $next !== false );
+	}//end process()
 
 
-    /**
-     * Provide the version number in which the sniff will be removed.
-     *
-     * @return string
-     */
-    public function getRemovalVersion()
-    {
-        return 'v4.0.0';
-
-    }//end getRemovalVersion()
+	/**
+	 * Provide the version number in which the sniff was deprecated.
+	 *
+	 * @return string
+	 */
+	public function getDeprecationVersion() {
+		return 'v3.9.0';
+	}//end getDeprecationVersion()
 
 
-    /**
-     * Provide a custom message to display with the deprecation.
-     *
-     * @return string
-     */
-    public function getDeprecationMessage()
-    {
-        return 'Support for scanning CSS files will be removed completely in v4.0.0.';
-
-    }//end getDeprecationMessage()
+	/**
+	 * Provide the version number in which the sniff will be removed.
+	 *
+	 * @return string
+	 */
+	public function getRemovalVersion() {
+		return 'v4.0.0';
+	}//end getRemovalVersion()
 
 
+	/**
+	 * Provide a custom message to display with the deprecation.
+	 *
+	 * @return string
+	 */
+	public function getDeprecationMessage() {
+		return 'Support for scanning CSS files will be removed completely in v4.0.0.';
+	}//end getDeprecationMessage()
 }//end class

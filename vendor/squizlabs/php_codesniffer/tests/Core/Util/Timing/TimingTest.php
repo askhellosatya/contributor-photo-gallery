@@ -24,98 +24,84 @@ use PHPUnit\Framework\TestCase;
  * @runTestsInSeparateProcesses
  * @preserveGlobalState         disabled
  */
-final class TimingTest extends TestCase
-{
+final class TimingTest extends TestCase {
 
 
-    /**
-     * Verify that getDuration() returns 0 when the timer wasn't started.
-     *
-     * @return void
-     */
-    public function testGetDurationWithoutStartReturnsZero()
-    {
-        $this->assertSame(0, Timing::getDuration());
 
-    }//end testGetDurationWithoutStartReturnsZero()
-
-
-    /**
-     * Verify that getDuration() returns the time in milliseconds.
-     *
-     * @return void
-     */
-    public function testGetDurationWithStartReturnsMilliseconds()
-    {
-        Timing::startTiming();
-        usleep(1500);
-        $duration = Timing::getDuration();
-
-        $this->assertTrue(is_float($duration));
-
-    }//end testGetDurationWithStartReturnsMilliseconds()
+	/**
+	 * Verify that getDuration() returns 0 when the timer wasn't started.
+	 *
+	 * @return void
+	 */
+	public function testGetDurationWithoutStartReturnsZero() {
+		$this->assertSame( 0, Timing::getDuration() );
+	}//end testGetDurationWithoutStartReturnsZero()
 
 
-    /**
-     * Verify that printRunTime() doesn't print anything if the timer wasn't started.
-     *
-     * @return void
-     */
-    public function testTimeIsNotPrintedIfTimerWasNeverStarted()
-    {
-        $this->expectOutputString('');
-        Timing::printRunTime();
+	/**
+	 * Verify that getDuration() returns the time in milliseconds.
+	 *
+	 * @return void
+	 */
+	public function testGetDurationWithStartReturnsMilliseconds() {
+		Timing::startTiming();
+		usleep( 1500 );
+		$duration = Timing::getDuration();
 
-    }//end testTimeIsNotPrintedIfTimerWasNeverStarted()
-
-
-    /**
-     * Verify that printRunTime() doesn't print anything if the timer wasn't started.
-     *
-     * @return void
-     */
-    public function testTimeIsNotPrintedIfTimerWasNeverStartedEvenWhenForced()
-    {
-        $this->expectOutputString('');
-        Timing::printRunTime(true);
-
-    }//end testTimeIsNotPrintedIfTimerWasNeverStartedEvenWhenForced()
+		$this->assertTrue( is_float( $duration ) );
+	}//end testGetDurationWithStartReturnsMilliseconds()
 
 
-    /**
-     * Verify that printRunTime() when called multiple times only prints the runtime information once.
-     *
-     * @return void
-     */
-    public function testTimeIsPrintedOnlyOnce()
-    {
-        $this->expectOutputRegex('`^Time: [0-9]+ms; Memory: [0-9\.]+MB'.PHP_EOL.PHP_EOL.'$`');
-
-        Timing::startTiming();
-        usleep(2000);
-        Timing::printRunTime();
-        Timing::printRunTime();
-        Timing::printRunTime();
-
-    }//end testTimeIsPrintedOnlyOnce()
+	/**
+	 * Verify that printRunTime() doesn't print anything if the timer wasn't started.
+	 *
+	 * @return void
+	 */
+	public function testTimeIsNotPrintedIfTimerWasNeverStarted() {
+		$this->expectOutputString( '' );
+		Timing::printRunTime();
+	}//end testTimeIsNotPrintedIfTimerWasNeverStarted()
 
 
-    /**
-     * Verify that printRunTime() when called multiple times prints the runtime information multiple times if forced.
-     *
-     * @return void
-     */
-    public function testTimeIsPrintedMultipleTimesOnlyIfForced()
-    {
-        $this->expectOutputRegex('`^(Time: [0-9]+ms; Memory: [0-9\.]+MB'.PHP_EOL.PHP_EOL.'){3}$`');
-
-        Timing::startTiming();
-        usleep(2000);
-        Timing::printRunTime(true);
-        Timing::printRunTime(true);
-        Timing::printRunTime(true);
-
-    }//end testTimeIsPrintedMultipleTimesOnlyIfForced()
+	/**
+	 * Verify that printRunTime() doesn't print anything if the timer wasn't started.
+	 *
+	 * @return void
+	 */
+	public function testTimeIsNotPrintedIfTimerWasNeverStartedEvenWhenForced() {
+		$this->expectOutputString( '' );
+		Timing::printRunTime( true );
+	}//end testTimeIsNotPrintedIfTimerWasNeverStartedEvenWhenForced()
 
 
+	/**
+	 * Verify that printRunTime() when called multiple times only prints the runtime information once.
+	 *
+	 * @return void
+	 */
+	public function testTimeIsPrintedOnlyOnce() {
+		$this->expectOutputRegex( '`^Time: [0-9]+ms; Memory: [0-9\.]+MB' . PHP_EOL . PHP_EOL . '$`' );
+
+		Timing::startTiming();
+		usleep( 2000 );
+		Timing::printRunTime();
+		Timing::printRunTime();
+		Timing::printRunTime();
+	}//end testTimeIsPrintedOnlyOnce()
+
+
+	/**
+	 * Verify that printRunTime() when called multiple times prints the runtime information multiple times if forced.
+	 *
+	 * @return void
+	 */
+	public function testTimeIsPrintedMultipleTimesOnlyIfForced() {
+		$this->expectOutputRegex( '`^(Time: [0-9]+ms; Memory: [0-9\.]+MB' . PHP_EOL . PHP_EOL . '){3}$`' );
+
+		Timing::startTiming();
+		usleep( 2000 );
+		Timing::printRunTime( true );
+		Timing::printRunTime( true );
+		Timing::printRunTime( true );
+	}//end testTimeIsPrintedMultipleTimesOnlyIfForced()
 }//end class

@@ -9,11 +9,10 @@ namespace Fixtures\TestStandard\Sniffs\InvalidSniffError;
 
 use PHP_CodeSniffer\Files\File;
 
-final class NoImplementsNoRegisterSniff
-{
+final class NoImplementsNoRegisterSniff {
 
-    public function process(File $phpcsFile, $stackPtr)
-    {
-        // Do something.
-    }
+
+	public function process( File $phpcsFile, $stackPtr ) {
+		// Do something.
+	}
 }
