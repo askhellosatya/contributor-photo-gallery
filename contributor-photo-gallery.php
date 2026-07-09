@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Contributor Photo Gallery
- * Plugin URI: https://wordpress.org/plugins/contributor-photo-gallery/  
+ * Plugin URI: https://wordpress.org/plugins/contributor-photo-gallery/
  * Description: Showcase your contributions to WordPress.org/photos with elegant and responsive photo galleries.
  * Version: 2.6.1
  * Requires at least: 5.8
@@ -136,7 +136,7 @@ add_action(
 		}
 
 		if ( empty( $_POST['settings'] ) ) {
-            wp_send_json_error( array( 'html' => '<div class="cpg-preview-error">No settings provided.</div>' ), 400 );
+			wp_send_json_error( array( 'html' => '<div class="cpg-preview-error">No settings provided.</div>' ), 400 );
 			return;
 		}
 
@@ -145,7 +145,7 @@ add_action(
 		$options = $form_data['cpglry_options'] ?? array();
 
 		if ( empty( $options['default_user_id'] ) ) {
-            wp_send_json_error( array( 'html' => '<div class="cpg-preview-error">Please set a User ID first.</div>' ), 400 );
+			wp_send_json_error( array( 'html' => '<div class="cpg-preview-error">Please set a User ID first.</div>' ), 400 );
 			return;
 		}
 
@@ -162,12 +162,12 @@ add_action(
 		$photos = CPGLRY_API::get_photos( $user_id, 1, 3600 );
 
 		if ( is_wp_error( $photos ) ) {
-            wp_send_json_error( array( 'html' => '<div class="cpg-preview-error">' . esc_html( $photos->get_error_message() ) . '</div>' ), 500 );
+			wp_send_json_error( array( 'html' => '<div class="cpg-preview-error">' . esc_html( $photos->get_error_message() ) . '</div>' ), 500 );
 			return;
 		}
 
 		if ( empty( $photos ) ) {
-            wp_send_json_error( array( 'html' => '<div class="cpg-preview-error">No photos found for this user.</div>' ), 404 );
+			wp_send_json_error( array( 'html' => '<div class="cpg-preview-error">No photos found for this user.</div>' ), 404 );
 			return;
 		}
 

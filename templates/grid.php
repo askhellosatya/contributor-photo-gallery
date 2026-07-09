@@ -24,7 +24,7 @@ $cpglry_caption_color = isset( $cpglry_options['caption_text_color'] ) ? $cpglry
 $cpglry_css_vars = array();
 
 // Normalize hex color for comparison, simple lower-case trim helper
-$cpglry_normalize_hex = function( $c ) {
+$cpglry_normalize_hex = function ( $c ) {
 	$c = trim( (string) $c );
 	$c = strtolower( $c );
 	// expand short hex like #fff to #ffffff if needed, or return as-is
@@ -53,10 +53,22 @@ if ( ! empty( $cpglry_options['card_border_style'] ) && $cpglry_options['card_bo
 
 // shadow presets
 $cpglry_shadow_styles = array(
-	'none'   => array( 'base' => 'none', 'hover' => 'none' ),
-	'subtle' => array( 'base' => '0 1px 4px rgba(0,0,0,0.12)', 'hover' => '0 4px 12px rgba(0,0,0,0.16)' ),
-	'medium' => array( 'base' => '0 4px 14px rgba(0,0,0,0.16)', 'hover' => '0 8px 22px rgba(0,0,0,0.22)' ),
-	'strong' => array( 'base' => '0 10px 28px rgba(0,0,0,0.22)', 'hover' => '0 14px 36px rgba(0,0,0,0.28)' ),
+	'none'   => array(
+		'base'  => 'none',
+		'hover' => 'none',
+	),
+	'subtle' => array(
+		'base'  => '0 1px 4px rgba(0,0,0,0.12)',
+		'hover' => '0 4px 12px rgba(0,0,0,0.16)',
+	),
+	'medium' => array(
+		'base'  => '0 4px 14px rgba(0,0,0,0.16)',
+		'hover' => '0 8px 22px rgba(0,0,0,0.22)',
+	),
+	'strong' => array(
+		'base'  => '0 10px 28px rgba(0,0,0,0.22)',
+		'hover' => '0 14px 36px rgba(0,0,0,0.28)',
+	),
 );
 
 if ( ! empty( $cpglry_options['card_shadow_style'] ) && isset( $cpglry_shadow_styles[ $cpglry_options['card_shadow_style'] ] ) ) {
@@ -71,14 +83,14 @@ if ( ! empty( $cpglry_caption_color ) ) {
 // Build style value (not attribute)
 $cpglry_style_value = '';
 if ( ! empty( $cpglry_css_vars ) ) {
-    $cpglry_style_value = implode( '; ', $cpglry_css_vars );
+	$cpglry_style_value = implode( '; ', $cpglry_css_vars );
 }
 
 $cpglry_caption_class = ! $cpglry_show_captions ? ' cpg-no-captions' : '';
 
 // echo container, escape style value at the point of output
 echo '<div class="cpg-gallery-grid columns-' . esc_attr( $cpglry_columns ) . esc_attr( $cpglry_caption_class ) . '" data-cpg-columns="' . esc_attr( $cpglry_columns ) . '"'
-    . ( $cpglry_style_value ? ' style="' . esc_attr( $cpglry_style_value ) . '"' : '' ) . '>';
+	. ( $cpglry_style_value ? ' style="' . esc_attr( $cpglry_style_value ) . '"' : '' ) . '>';
 
 foreach ( $cpglry_photos as $cpglry_photo ) {
 	$cpglry_image_url = '';
@@ -109,7 +121,7 @@ foreach ( $cpglry_photos as $cpglry_photo ) {
 
 	if ( $cpglry_image_url ) {
 		$cpglry_open_in_new = isset( $cpglry_options['open_in_new_tab'] ) ? (bool) $cpglry_options['open_in_new_tab'] : true;
-		$cpglry_target = $cpglry_open_in_new ? '_blank' : '';
+		$cpglry_target      = $cpglry_open_in_new ? '_blank' : '';
 		// include noreferrer as recommended when opening new tab
 		$cpglry_rel = $cpglry_open_in_new ? 'noopener noreferrer' : '';
 

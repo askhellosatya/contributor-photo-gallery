@@ -85,6 +85,5 @@ class CPGLRY_API {
 		}
 
 		return false;
-    }
-
+	}
 }
