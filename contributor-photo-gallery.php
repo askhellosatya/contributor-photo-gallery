@@ -136,7 +136,7 @@ add_action(
 		}
 
 		if ( empty( $_POST['settings'] ) ) {
-			wp_send_json_error( '<div class="cpg-preview-error">No settings provided.</div>' );
+            wp_send_json_error( array( 'html' => '<div class="cpg-preview-error">No settings provided.</div>' ), 400 );
 			return;
 		}
 
@@ -145,7 +145,7 @@ add_action(
 		$options = $form_data['cpglry_options'] ?? array();
 
 		if ( empty( $options['default_user_id'] ) ) {
-			wp_send_json_error( '<div class="cpg-preview-error">Please set a User ID first.</div>' );
+            wp_send_json_error( array( 'html' => '<div class="cpg-preview-error">Please set a User ID first.</div>' ), 400 );
 			return;
 		}
 
@@ -162,12 +162,12 @@ add_action(
 		$photos = CPGLRY_API::get_photos( $user_id, 1, 3600 );
 
 		if ( is_wp_error( $photos ) ) {
-			wp_send_json_error( '<div class="cpg-preview-error">' . esc_html( $photos->get_error_message() ) . '</div>' );
+            wp_send_json_error( array( 'html' => '<div class="cpg-preview-error">' . esc_html( $photos->get_error_message() ) . '</div>' ), 500 );
 			return;
 		}
 
 		if ( empty( $photos ) ) {
-			wp_send_json_error( '<div class="cpg-preview-error">No photos found for this user.</div>' );
+            wp_send_json_error( array( 'html' => '<div class="cpg-preview-error">No photos found for this user.</div>' ), 404 );
 			return;
 		}
 

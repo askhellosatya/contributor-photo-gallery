@@ -43,42 +43,48 @@ class CPGLRY_API {
 	 * @return int|false
 	 */
 	public static function get_photo_directory_user_id( $username ) {
+		// sanitize username and build a stable transient key
+		$username = sanitize_text_field( (string) $username );
+		if ( $username === '' ) {
+			return false;
+		}
 
-        $transient_key = 'cpglry_author_id_' . $username;
+		$transient_key = 'cpglry_author_id_' . md5( $username );
 
-        $user_id = get_transient( $transient_key );
+		$user_id = get_transient( $transient_key );
 
-        if ( false !== $user_id ) {
-            return $user_id;
-        }
+		if ( false !== $user_id ) {
+			return $user_id;
+		}
 
-        $response = wp_remote_get(
-            'https://wordpress.org/photos/author/' . $username . '/'
-        );
+		$url = 'https://wordpress.org/photos/author/' . rawurlencode( $username ) . '/';
 
-        if ( is_wp_error( $response ) ) {
-            return false;
-        }
+		$response = wp_safe_remote_get( $url, array( 'timeout' => 15 ) );
 
-        $content = wp_remote_retrieve_body( $response );
+		if ( is_wp_error( $response ) ) {
+			return false;
+		}
 
-        preg_match(
-            '/<body.*class=".*author-(\d+).*">/i',
-            $content,
-            $matches
-        );
+		$code = wp_remote_retrieve_response_code( $response );
+		if ( 200 !== intval( $code ) ) {
+			return false;
+		}
 
-        if ( ! empty( $matches[1] ) ) {
-            set_transient(
-                $transient_key,
-                $matches[1],
-                WEEK_IN_SECONDS
-            );
+		$content = wp_remote_retrieve_body( $response );
+		if ( empty( $content ) || ! is_string( $content ) ) {
+			return false;
+		}
 
-            return absint( $matches[1] );
-        }
+		// Look for author-<id> class anywhere in the returned HTML
+		if ( preg_match( '/author-(\d+)/i', $content, $matches ) ) {
+			$found = absint( $matches[1] );
+			if ( $found ) {
+				set_transient( $transient_key, $found, WEEK_IN_SECONDS );
+				return $found;
+			}
+		}
 
-        return false;
+		return false;
     }
 
 }

@@ -486,11 +486,22 @@
             );
           }
         } else {
-          var msg =
-            response && response.data
-              ? response.data
-              : "Failed to update preview";
-          $preview.html('<div class="cpg-error">' + msg + "</div>");
+          // Prefer structured HTML payloads, then message, then fallbacks
+          if (response && response.data) {
+            if (response.data.html) {
+              $preview.html(response.data.html);
+              return;
+            }
+            if (response.data.message) {
+              $preview.html('<div class="cpg-error">' + response.data.message + "</div>");
+              return;
+            }
+            if (typeof response.data === 'string') {
+              $preview.html('<div class="cpg-error">' + response.data + "</div>");
+              return;
+            }
+          }
+          $preview.html('<div class="cpg-error">Failed to update preview</div>');
         }
       }
     ).fail(function () {
@@ -572,7 +583,7 @@
 
   // Dismiss setup notice
   function dismissSetupNotice() {
-    $(document).on('click', '.cpg-setup-notice-dismiss', function (e) {
+  $(document).on('click', '.cpg-setup-notice-dismiss', function (e) {
         e.preventDefault();
 
         var $el = $(this);
@@ -586,12 +597,12 @@
         });
 
         $.ajax({
-            url: "<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>",
-            type: "POST",
-            data: {
-                action: "cpglry_dismiss_setup_notice",
-                nonce: $notice.data('cpg-nonce') || ""
-            }
+          url: wpcpgAdmin.ajaxurl,
+          type: "POST",
+          data: {
+            action: "cpglry_dismiss_setup_notice",
+            nonce: $notice.data('cpg-nonce') || ""
+          }
         });
     });
 
@@ -602,12 +613,12 @@
         if (!$wrap.length) return;
 
         $.ajax({
-            url: "<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>",
-            type: "POST",
-            data: {
-                action: $wrap.data('cpg-action') || 'cpglry_dismiss_setup_notice',
-                nonce: $wrap.data('cpg-nonce') || ''
-            }
+          url: wpcpgAdmin.ajaxurl,
+          type: "POST",
+          data: {
+            action: $wrap.data('cpg-action') || 'cpglry_dismiss_setup_notice',
+            nonce: $wrap.data('cpg-nonce') || ''
+          }
         });
     });
 
