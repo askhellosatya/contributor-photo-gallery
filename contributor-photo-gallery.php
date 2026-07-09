@@ -29,10 +29,10 @@ define( 'CPGLRY_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
  * Includes
  */
 require_once CPGLRY_PLUGIN_PATH . 'includes/helpers.php';
-require_once CPGLRY_PLUGIN_PATH . 'includes/class-frontend.php';
-require_once CPGLRY_PLUGIN_PATH . 'includes/class-admin.php';
-require_once CPGLRY_PLUGIN_PATH . 'includes/class-cache.php';
-require_once CPGLRY_PLUGIN_PATH . 'includes/class-api.php';
+require_once CPGLRY_PLUGIN_PATH . 'includes/class-cpglry-frontend.php';
+require_once CPGLRY_PLUGIN_PATH . 'includes/class-cpglry-admin.php';
+require_once CPGLRY_PLUGIN_PATH . 'includes/class-cpglry-cache.php';
+require_once CPGLRY_PLUGIN_PATH . 'includes/class-cpglry-api.php';
 
 /*
  * Init
