@@ -66,7 +66,7 @@ class CPGLRY_Frontend {
 			'cp_gallery'
 		);
 
-		$user_id  = sanitize_text_field( $atts['user_id'] ?: $cpglry_options['default_user_id'] );
+		$user_id  = sanitize_text_field( ! empty( $atts['user_id'] ) ? $atts['user_id'] : $cpglry_options['default_user_id'] );
 		$per_page = max( 1, min( 50, intval( $atts['per_page'] ) ) );
 		// Ensure columns is a proper integer and in allowed range
 		$columns = max( 1, min( 6, intval( $atts['columns'] ?? $cpglry_options['default_columns'] ) ) );

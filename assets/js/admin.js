@@ -112,9 +112,9 @@
         $(this).remove();
       });
 
-      $.post(wpcpgAdmin.ajaxurl, {
+      $.post(wpcpgadmin.ajaxurl, {
         action: "cpglry_dismiss_new_shortcode_notice",
-        nonce: wpcpgAdmin.nonce,
+        nonce: wpcpgadmin.nonce,
       });
     });
 
@@ -260,10 +260,10 @@
         );
 
       $.post(
-        wpcpgAdmin.ajaxurl,
+        wpcpgadmin.ajaxurl,
         {
           action: "wpcpglry_clear_cache",
-          nonce: wpcpgAdmin.nonce,
+          nonce: wpcpgadmin.nonce,
         },
         function (resp) {
           if (resp && resp.success) {
@@ -439,13 +439,13 @@
       if (validateUserId(userId)) {
         updateValidationStatus(
           true,
-          (wpcpgAdmin && wpcpgAdmin.i18n && wpcpgAdmin.i18n.valid_userid) || "Valid WordPress.org username or User ID",
+          (wpcpgadmin && wpcpgadmin.i18n && wpcpgadmin.i18n.valid_userid) || "Valid WordPress.org username or User ID",
           "valid"
         );
       } else {
         updateValidationStatus(
           false,
-          (wpcpgAdmin && wpcpgAdmin.i18n && wpcpgAdmin.i18n.invalid_userid) || "Enter a valid WordPress.org username or User ID (must be numeric, greater than 0, and up to 10 digits).",
+          (wpcpgadmin && wpcpgadmin.i18n && wpcpgadmin.i18n.invalid_userid) || "Enter a valid WordPress.org username or User ID (must be numeric, greater than 0, and up to 10 digits).",
           "invalid"
         );
       }
@@ -467,11 +467,11 @@
     );
 
     $.post(
-      wpcpgAdmin.ajaxurl,
+      wpcpgadmin.ajaxurl,
       {
         action: "cpglry_refresh_preview",
         settings: formData,
-        nonce: wpcpgAdmin.nonce,
+        nonce: wpcpgadmin.nonce,
       },
       function (response) {
         if (response && response.success) {
@@ -520,9 +520,9 @@
         $notice.fadeOut(200, function () {
           $(this).remove();
         });
-        $.post(wpcpgAdmin.ajaxurl, {
+        $.post(wpcpgadmin.ajaxurl, {
           action: "cpglry_dismiss_shortcode_notice",
-          nonce: wpcpgAdmin.nonce,
+          nonce: wpcpgadmin.nonce,
         });
       }
     });
@@ -597,7 +597,7 @@
         });
 
         $.ajax({
-          url: wpcpgAdmin.ajaxurl,
+          url: wpcpgadmin.ajaxurl,
           type: "POST",
           data: {
             action: "cpglry_dismiss_setup_notice",
@@ -613,7 +613,7 @@
         if (!$wrap.length) return;
 
         $.ajax({
-          url: wpcpgAdmin.ajaxurl,
+          url: wpcpgadmin.ajaxurl,
           type: "POST",
           data: {
             action: $wrap.data('cpg-action') || 'cpglry_dismiss_setup_notice',

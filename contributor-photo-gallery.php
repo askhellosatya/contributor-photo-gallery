@@ -156,7 +156,8 @@ add_action(
 		// sanitize a couple values we will use
 		$user_id       = sanitize_text_field( $options['default_user_id'] );
 		$show_captions = ! empty( $options['show_captions'] ) ? 1 : 0;
-		$caption_color = sanitize_hex_color( $options['caption_text_color'] ?? $defaults['caption_text_color'] ) ?: $defaults['caption_text_color'];
+		$tmp_caption_color = sanitize_hex_color( $options['caption_text_color'] ?? $defaults['caption_text_color'] );
+		$caption_color = $tmp_caption_color ? $tmp_caption_color : $defaults['caption_text_color'];
 
 		// Get one photo for preview
 		$photos = CPGLRY_API::get_photos( $user_id, 1, 3600 );
@@ -175,13 +176,14 @@ add_action(
 
 		// Build CSS variables for dynamic styling
 		$css_vars = array();
-		if ( ! empty( $options['card_bg_color'] ) && $options['card_bg_color'] !== '#ffffff' ) {
+		if ( ! empty( $options['card_bg_color'] ) && '#ffffff' !== $options['card_bg_color'] ) {
 			$css_vars[] = '--cpg-card-bg: ' . esc_attr( $options['card_bg_color'] );
 		}
 
 		if ( ! empty( $options['card_border_style'] ) && $options['card_border_style'] !== 'none' ) {
 			$border_width = absint( $options['card_border_width'] ?? 1 );
-			$border_color = sanitize_hex_color( $options['card_border_color'] ?? '#e5e5e5' ) ?: '#e5e5e5';
+			$tmp_border_color = sanitize_hex_color( $options['card_border_color'] ?? '#e5e5e5' );
+			$border_color = $tmp_border_color ? $tmp_border_color : '#e5e5e5';
 			$css_vars[]   = '--cpg-card-border: ' . esc_attr( $border_width ) . 'px ' . esc_attr( $options['card_border_style'] ) . ' ' . esc_attr( $border_color );
 		}
 

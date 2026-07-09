@@ -1,9 +1,17 @@
 <?php
+/**
+ * Grid template for Contributor Photo Gallery.
+ *
+ * Expects: $cpglry_photos, $cpglry_options (fallback cpglry_get_plugin_options), and $atts passed from renderer.
+ *
+ * @package ContributorPhotoGallery
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+    exit; // Exit if accessed directly.
 }
 
-// expects $cpglry_photos, $cpglry_options (fallback cpglry_get_plugin_options), and $atts passed from renderer
+// Expects $cpglry_photos, $cpglry_options (fallback cpglry_get_plugin_options), and $atts passed from renderer.
 if ( ! isset( $cpglry_options ) ) {
 	$cpglry_options = cpglry_get_plugin_options();
 }
