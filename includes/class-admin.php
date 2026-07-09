@@ -110,8 +110,17 @@ class CPGLRY_Admin {
 			array(
 				'ajaxurl' => admin_url( 'admin-ajax.php' ),
 				'nonce'   => wp_create_nonce( 'wpcpglry_admin_nonce' ),
+				'i18n'    => array(
+					'valid_userid'   => __( 'Valid WordPress.org username or User ID', 'contributor-photo-gallery' ),
+					'invalid_userid' => __( 'Enter a valid WordPress.org username or User ID (must be numeric, greater than 0, and up to 10 digits).', 'contributor-photo-gallery' ),
+				),
 			)
 		);
+
+		// Enable JS translations for this script (if WordPress i18n PO/MO exist)
+		if ( function_exists( 'wp_set_script_translations' ) ) {
+			wp_set_script_translations( 'cpg-admin', 'contributor-photo-gallery' );
+		}
 	}
 
 	/**

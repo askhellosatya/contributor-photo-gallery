@@ -439,13 +439,13 @@
       if (validateUserId(userId)) {
         updateValidationStatus(
           true,
-          "Valid WordPress.org username or User ID",
+          (wpcpgAdmin && wpcpgAdmin.i18n && wpcpgAdmin.i18n.valid_userid) || "Valid WordPress.org username or User ID",
           "valid"
         );
       } else {
         updateValidationStatus(
           false,
-          "Enter a valid WordPress.org username or User ID (must be numeric, greater than 0, and up to 10 digits).",
+          (wpcpgAdmin && wpcpgAdmin.i18n && wpcpgAdmin.i18n.invalid_userid) || "Enter a valid WordPress.org username or User ID (must be numeric, greater than 0, and up to 10 digits).",
           "invalid"
         );
       }
@@ -583,7 +583,7 @@
 
   // Dismiss setup notice
   function dismissSetupNotice() {
-  $(document).on('click', '.cpg-setup-notice-dismiss', function (e) {
+    $(document).on('click', '.cpg-setup-notice-dismiss', function (e) {
         e.preventDefault();
 
         var $el = $(this);
