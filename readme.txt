@@ -1,5 +1,5 @@
 === Contributor Photo Gallery ===
-Contributors: hellosatya, bhargavbhandari90, sajidansari65, phantomcluster, mkrndmane
+Contributors: hellosatya, bhargavbhandari90, sajidansari65, phantomcluster, mkrndmane, alkesh7
 Tags: gallery, photography, portfolio, shortcode, responsive
 Donate link: https://paypal.me/hellosatya
 Requires at least: 5.8

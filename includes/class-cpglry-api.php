@@ -1,4 +1,11 @@
 <?php
+/**
+ * API helpers for Contributor Photo Gallery.
+ *
+ * Contains methods for fetching photos and resolving author IDs from WordPress.org/photos.
+ *
+ * @package ContributorPhotoGallery
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -43,7 +50,7 @@ class CPGLRY_API {
 	 * @return int|false
 	 */
 	public static function get_photo_directory_user_id( $username ) {
-		// sanitize username and build a stable transient key
+		// Sanitize username and build a stable transient key.
 		$username = sanitize_text_field( (string) $username );
 		if ( $username === '' ) {
 			return false;
@@ -75,7 +82,7 @@ class CPGLRY_API {
 			return false;
 		}
 
-		// Look for author-<id> class anywhere in the returned HTML
+		// Look for author-<id> class anywhere in the returned HTML.
 		if ( preg_match( '/author-(\d+)/i', $content, $matches ) ) {
 			$found = absint( $matches[1] );
 			if ( $found ) {

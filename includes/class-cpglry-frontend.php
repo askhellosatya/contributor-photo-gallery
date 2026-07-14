@@ -1,4 +1,12 @@
 <?php
+/**
+ * Frontend renderer for Contributor Photo Gallery.
+ *
+ * Enqueues frontend assets and renders shortcode output.
+ *
+ * @package ContributorPhotoGallery
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -9,12 +17,10 @@ class CPGLRY_Frontend {
 	}
 
 	public function enqueue_frontend_assets() {
-		// Enqueue the main frontend stylesheet
+		// Enqueue the main frontend stylesheet.
 		wp_enqueue_style( 'cpg-frontend', CPGLRY_PLUGIN_URL . 'assets/css/frontend.css', array(), CPGLRY_VERSION );
 
 		// Add small, critical inline CSS to guarantee columns behavior.
-		// This ensures .cpg-gallery-grid.columns-N becomes a grid even if a theme
-		// has conflicting rules. We keep rules minimal and scoped to plugin classes.
 		$inline = '
             /* Contributor Photo Gallery - critical grid rules */
             .cpg-gallery-grid { display: grid; gap: 1rem; box-sizing: border-box; }
@@ -26,7 +32,6 @@ class CPGLRY_Frontend {
             .cpg-gallery-grid.columns-5 { grid-template-columns: repeat(5, 1fr); }
             .cpg-gallery-grid.columns-6 { grid-template-columns: repeat(6, 1fr); }
 
-            /* More specific fallback in case theme uses generic image/grid rules */
             body .cpg-gallery-grid.columns-1 { display: grid !important; grid-template-columns: repeat(1,1fr) }
             body .cpg-gallery-grid.columns-2 { display: grid !important; grid-template-columns: repeat(2,1fr) }
             body .cpg-gallery-grid.columns-3 { display: grid !important; grid-template-columns: repeat(3,1fr) }
@@ -34,7 +39,6 @@ class CPGLRY_Frontend {
             body .cpg-gallery-grid.columns-5 { display: grid !important; grid-template-columns: repeat(5,1fr) }
             body .cpg-gallery-grid.columns-6 { display: grid !important; grid-template-columns: repeat(6,1fr) }
 
-            /* Small responsive fallback: ensure single column on very small screens */
             @media (max-width: 480px) {
                 .cpg-gallery-grid.columns-2,
                 .cpg-gallery-grid.columns-3,
@@ -51,11 +55,14 @@ class CPGLRY_Frontend {
 	/**
 	 * Static helper used by the global shortcode handler in the main plugin file.
 	 * Renders the gallery using templates/grid.php which expects $cpglry_photos and $cpglry_options.
+	 *
+	 * @param array $atts Shortcode attributes.
+	 * @return string
 	 */
 	public static function render_shortcode( $atts = array() ) {
 		$cpglry_options = cpglry_get_plugin_options();
 
-		// shortcode attrs override options
+		// Shortcode attrs override options.
 		$atts = shortcode_atts(
 			array(
 				'per_page' => $cpglry_options['default_per_page'],
@@ -68,8 +75,7 @@ class CPGLRY_Frontend {
 
 		$user_id  = sanitize_text_field( ! empty( $atts['user_id'] ) ? $atts['user_id'] : $cpglry_options['default_user_id'] );
 		$per_page = max( 1, min( 50, intval( $atts['per_page'] ) ) );
-		// Ensure columns is a proper integer and in allowed range
-		$columns = max( 1, min( 6, intval( $atts['columns'] ?? $cpglry_options['default_columns'] ) ) );
+		$columns  = max( 1, min( 6, intval( $atts['columns'] ?? $cpglry_options['default_columns'] ) ) );
 
 		if ( empty( $user_id ) ) {
 			return '<div class="cpg-shortcode-error">Please configure a User ID in the plugin settings.</div>';
@@ -81,10 +87,8 @@ class CPGLRY_Frontend {
 			return '<div class="cpg-shortcode-error">' . esc_html( $cpglry_photos->get_error_message() ) . '</div>';
 		}
 
-		// Ensure template receives the resolved $atts['columns'] as integer
 		$atts['columns'] = $columns;
 
-		// Load the grid template - it uses $cpglry_photos, $cpglry_options and $atts
 		ob_start();
 		include CPGLRY_PLUGIN_PATH . 'templates/grid.php';
 		return ob_get_clean();
