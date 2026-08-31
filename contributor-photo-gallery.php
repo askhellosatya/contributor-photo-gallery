@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Contributor Photo Gallery
- * Plugin URI: https://wordpress.org/plugins/contributor-photo-gallery/  
+ * Plugin URI: https://wordpress.org/plugins/contributor-photo-gallery/
  * Description: Showcase your contributions to WordPress.org/photos with elegant and responsive photo galleries.
  * Version: 2.6.1
  * Requires at least: 5.8
@@ -29,10 +29,10 @@ define( 'CPGLRY_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
  * Includes
  */
 require_once CPGLRY_PLUGIN_PATH . 'includes/helpers.php';
-require_once CPGLRY_PLUGIN_PATH . 'includes/class-frontend.php';
-require_once CPGLRY_PLUGIN_PATH . 'includes/class-admin.php';
-require_once CPGLRY_PLUGIN_PATH . 'includes/class-cache.php';
-require_once CPGLRY_PLUGIN_PATH . 'includes/class-api.php';
+require_once CPGLRY_PLUGIN_PATH . 'includes/class-cpglry-frontend.php';
+require_once CPGLRY_PLUGIN_PATH . 'includes/class-cpglry-admin.php';
+require_once CPGLRY_PLUGIN_PATH . 'includes/class-cpglry-cache.php';
+require_once CPGLRY_PLUGIN_PATH . 'includes/class-cpglry-api.php';
 
 /*
  * Init
@@ -136,7 +136,7 @@ add_action(
 		}
 
 		if ( empty( $_POST['settings'] ) ) {
-			wp_send_json_error( '<div class="cpg-preview-error">No settings provided.</div>' );
+			wp_send_json_error( array( 'html' => '<div class="cpg-preview-error">No settings provided.</div>' ), 400 );
 			return;
 		}
 
@@ -145,7 +145,7 @@ add_action(
 		$options = $form_data['cpglry_options'] ?? array();
 
 		if ( empty( $options['default_user_id'] ) ) {
-			wp_send_json_error( '<div class="cpg-preview-error">Please set a User ID first.</div>' );
+			wp_send_json_error( array( 'html' => '<div class="cpg-preview-error">Please set a User ID first.</div>' ), 400 );
 			return;
 		}
 
@@ -154,20 +154,21 @@ add_action(
 		$options  = wp_parse_args( $options, $defaults );
 
 		// sanitize a couple values we will use
-		$user_id       = sanitize_text_field( $options['default_user_id'] );
-		$show_captions = ! empty( $options['show_captions'] ) ? 1 : 0;
-		$caption_color = sanitize_hex_color( $options['caption_text_color'] ?? $defaults['caption_text_color'] ) ?: $defaults['caption_text_color'];
+		$user_id           = sanitize_text_field( $options['default_user_id'] );
+		$show_captions     = ! empty( $options['show_captions'] ) ? 1 : 0;
+		$tmp_caption_color = sanitize_hex_color( $options['caption_text_color'] ?? $defaults['caption_text_color'] );
+		$caption_color     = $tmp_caption_color ? $tmp_caption_color : $defaults['caption_text_color'];
 
 		// Get one photo for preview
 		$photos = CPGLRY_API::get_photos( $user_id, 1, 3600 );
 
 		if ( is_wp_error( $photos ) ) {
-			wp_send_json_error( '<div class="cpg-preview-error">' . esc_html( $photos->get_error_message() ) . '</div>' );
+			wp_send_json_error( array( 'html' => '<div class="cpg-preview-error">' . esc_html( $photos->get_error_message() ) . '</div>' ), 500 );
 			return;
 		}
 
 		if ( empty( $photos ) ) {
-			wp_send_json_error( '<div class="cpg-preview-error">No photos found for this user.</div>' );
+			wp_send_json_error( array( 'html' => '<div class="cpg-preview-error">No photos found for this user.</div>' ), 404 );
 			return;
 		}
 
@@ -175,14 +176,15 @@ add_action(
 
 		// Build CSS variables for dynamic styling
 		$css_vars = array();
-		if ( ! empty( $options['card_bg_color'] ) && $options['card_bg_color'] !== '#ffffff' ) {
+		if ( ! empty( $options['card_bg_color'] ) && '#ffffff' !== $options['card_bg_color'] ) {
 			$css_vars[] = '--cpg-card-bg: ' . esc_attr( $options['card_bg_color'] );
 		}
 
 		if ( ! empty( $options['card_border_style'] ) && $options['card_border_style'] !== 'none' ) {
-			$border_width = absint( $options['card_border_width'] ?? 1 );
-			$border_color = sanitize_hex_color( $options['card_border_color'] ?? '#e5e5e5' ) ?: '#e5e5e5';
-			$css_vars[]   = '--cpg-card-border: ' . esc_attr( $border_width ) . 'px ' . esc_attr( $options['card_border_style'] ) . ' ' . esc_attr( $border_color );
+			$border_width     = absint( $options['card_border_width'] ?? 1 );
+			$tmp_border_color = sanitize_hex_color( $options['card_border_color'] ?? '#e5e5e5' );
+			$border_color     = $tmp_border_color ? $tmp_border_color : '#e5e5e5';
+			$css_vars[]       = '--cpg-card-border: ' . esc_attr( $border_width ) . 'px ' . esc_attr( $options['card_border_style'] ) . ' ' . esc_attr( $border_color );
 		}
 
 		$shadow_map = array(

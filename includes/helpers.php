@@ -1,10 +1,18 @@
 <?php
+/**
+ * Helper functions for Contributor Photo Gallery.
+ *
+ * Provides default options and procedural compatibility wrappers.
+ *
+ * @package ContributorPhotoGallery
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * Default plugin options
+ * Default plugin options.
  */
 function cpglry_get_default_options() {
 	return array(
@@ -37,4 +45,19 @@ function cpglry_get_plugin_options() {
 		$opts = array();
 	}
 	return wp_parse_args( $opts, $defaults );
+}
+
+
+/**
+ * Backwards-compatible procedural wrapper for clearing photo cache.
+ *
+ * Some older code may call this function directly; it delegates to the
+ * CPGLRY_Cache class implementation.
+ */
+if ( ! function_exists( 'cpglry_clear_photo_cache' ) ) {
+	function cpglry_clear_photo_cache() {
+		if ( class_exists( 'CPGLRY_Cache' ) && method_exists( 'CPGLRY_Cache', 'clear' ) ) {
+			CPGLRY_Cache::clear();
+		}
+	}
 }

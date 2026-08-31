@@ -112,9 +112,9 @@
         $(this).remove();
       });
 
-      $.post(wpcpgAdmin.ajaxurl, {
+      $.post(wpcpgadmin.ajaxurl, {
         action: "cpglry_dismiss_new_shortcode_notice",
-        nonce: wpcpgAdmin.nonce,
+        nonce: wpcpgadmin.nonce,
       });
     });
 
@@ -260,10 +260,10 @@
         );
 
       $.post(
-        wpcpgAdmin.ajaxurl,
+        wpcpgadmin.ajaxurl,
         {
           action: "wpcpglry_clear_cache",
-          nonce: wpcpgAdmin.nonce,
+          nonce: wpcpgadmin.nonce,
         },
         function (resp) {
           if (resp && resp.success) {
@@ -439,13 +439,13 @@
       if (validateUserId(userId)) {
         updateValidationStatus(
           true,
-          "Valid WordPress.org username or User ID",
+          (wpcpgadmin && wpcpgadmin.i18n && wpcpgadmin.i18n.valid_userid) || "Valid WordPress.org username or User ID",
           "valid"
         );
       } else {
         updateValidationStatus(
           false,
-          "Enter a valid WordPress.org username or User ID (must be numeric, greater than 0, and up to 10 digits).",
+          (wpcpgadmin && wpcpgadmin.i18n && wpcpgadmin.i18n.invalid_userid) || "Enter a valid WordPress.org username or User ID (must be numeric, greater than 0, and up to 10 digits).",
           "invalid"
         );
       }
@@ -467,11 +467,11 @@
     );
 
     $.post(
-      wpcpgAdmin.ajaxurl,
+      wpcpgadmin.ajaxurl,
       {
         action: "cpglry_refresh_preview",
         settings: formData,
-        nonce: wpcpgAdmin.nonce,
+        nonce: wpcpgadmin.nonce,
       },
       function (response) {
         if (response && response.success) {
@@ -486,11 +486,22 @@
             );
           }
         } else {
-          var msg =
-            response && response.data
-              ? response.data
-              : "Failed to update preview";
-          $preview.html('<div class="cpg-error">' + msg + "</div>");
+          // Prefer structured HTML payloads, then message, then fallbacks
+          if (response && response.data) {
+            if (response.data.html) {
+              $preview.html(response.data.html);
+              return;
+            }
+            if (response.data.message) {
+              $preview.html('<div class="cpg-error">' + response.data.message + "</div>");
+              return;
+            }
+            if (typeof response.data === 'string') {
+              $preview.html('<div class="cpg-error">' + response.data + "</div>");
+              return;
+            }
+          }
+          $preview.html('<div class="cpg-error">Failed to update preview</div>');
         }
       }
     ).fail(function () {
@@ -509,9 +520,9 @@
         $notice.fadeOut(200, function () {
           $(this).remove();
         });
-        $.post(wpcpgAdmin.ajaxurl, {
+        $.post(wpcpgadmin.ajaxurl, {
           action: "cpglry_dismiss_shortcode_notice",
-          nonce: wpcpgAdmin.nonce,
+          nonce: wpcpgadmin.nonce,
         });
       }
     });
@@ -586,12 +597,12 @@
         });
 
         $.ajax({
-            url: "<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>",
-            type: "POST",
-            data: {
-                action: "cpglry_dismiss_setup_notice",
-                nonce: $notice.data('cpg-nonce') || ""
-            }
+          url: wpcpgadmin.ajaxurl,
+          type: "POST",
+          data: {
+            action: "cpglry_dismiss_setup_notice",
+            nonce: $notice.data('cpg-nonce') || ""
+          }
         });
     });
 
@@ -602,12 +613,12 @@
         if (!$wrap.length) return;
 
         $.ajax({
-            url: "<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>",
-            type: "POST",
-            data: {
-                action: $wrap.data('cpg-action') || 'cpglry_dismiss_setup_notice',
-                nonce: $wrap.data('cpg-nonce') || ''
-            }
+          url: wpcpgadmin.ajaxurl,
+          type: "POST",
+          data: {
+            action: $wrap.data('cpg-action') || 'cpglry_dismiss_setup_notice',
+            nonce: $wrap.data('cpg-nonce') || ''
+          }
         });
     });
 

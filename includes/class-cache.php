@@ -33,12 +33,5 @@ class CPGLRY_Cache {
 	}
 }
 
-/**
- * Backwards-compatible procedural wrapper.
- * Some older code or external integrations might call cpglry_clear_photo_cache().
- */
-if ( ! function_exists( 'cpglry_clear_photo_cache' ) ) {
-	function cpglry_clear_photo_cache() {
-		cpglry_Cache::clear();
-	}
-}
+// Procedural wrappers have been moved to includes/helpers.php to keep this file
+// focused on the OO implementation.
