@@ -6,6 +6,13 @@ docker-compose.yml
 Dockerfile
 .docker
 
+.git
+.gitattributes
+.wordpress-org
+package.json
+webpack.config.js
+*.zip
+
 .env
 .gitignore
 .distignore
