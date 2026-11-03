@@ -439,7 +439,7 @@ class CPGLRY_Admin {
 		<div class="cpg-field-container">
 			<div class="cpg-color-group">
 				<input type="color" id="card_bg_color" name="cpglry_options[card_bg_color]" value="<?php echo esc_attr( $bg_color ); ?>" class="cpg-color-picker" />
-				<input type="text" id="card_bg_color_text" value="<?php echo esc_attr( $bg_color ); ?>" class="cpg-color-text" placeholder="#ffffff" />
+				<input type="text" id="card_bg_color_text" value="<?php echo esc_attr( $bg_color ); ?>" class="cpg-color-text" placeholder="#ffffff" maxlength="7" spellcheck="false" aria-label="<?php esc_attr_e( 'Background color hex value', 'contributor-photo-gallery' ); ?>" />
 				<button type="button" class="cpg-color-reset" data-default="#ffffff"><?php esc_html_e( 'Reset', 'contributor-photo-gallery' ); ?></button>
 			</div>
 			<p class="cpg-field-desc"><?php esc_html_e( 'Background color for photo cards.', 'contributor-photo-gallery' ); ?></p>
@@ -555,7 +555,8 @@ class CPGLRY_Admin {
 		<div class="cpg-field-container">
 			<div class="cpg-color-group">
 				<input type="color" id="caption_text_color" name="cpglry_options[caption_text_color]" value="<?php echo esc_attr( $color ); ?>" class="cpg-color-picker" />
-				<input type="text" id="caption_text_color_text" value="<?php echo esc_attr( $color ); ?>" class="cpg-color-text" />
+				<input type="text" id="caption_text_color_text" value="<?php echo esc_attr( $color ); ?>" class="cpg-color-text" placeholder="#0f1724" maxlength="7" spellcheck="false" aria-label="<?php esc_attr_e( 'Caption text color hex value', 'contributor-photo-gallery' ); ?>" />
+				<button type="button" class="cpg-color-reset" data-default="#0f1724"><?php esc_html_e( 'Reset', 'contributor-photo-gallery' ); ?></button>
 			</div>
 			<p class="cpg-field-desc"><?php esc_html_e( 'Customize caption font color for better contrast or branding.', 'contributor-photo-gallery' ); ?></p>
 		</div>
