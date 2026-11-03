@@ -1,0 +1,38 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "contributor-photo-gallery/gallery",
+	"title": "Contributor Photo Gallery",
+	"category": "media",
+	"icon": "format-gallery",
+	"description": "Show your WordPress.org/photos contributions in a responsive grid.",
+	"keywords": [ "photos", "wordpress.org", "contributor", "gallery", "grid" ],
+	"textdomain": "contributor-photo-gallery",
+	"attributes": {
+		"userId": {
+			"type": "string",
+			"default": ""
+		},
+		"perPage": {
+			"type": "number"
+		},
+		"columns": {
+			"type": "number"
+		}
+	},
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ],
+		"spacing": {
+			"margin": true
+		}
+	},
+	"example": {
+		"attributes": {
+			"perPage": 6,
+			"columns": 3
+		}
+	},
+	"editorScript": "cpglry-block-editor",
+	"style": "cpg-frontend"
+}
