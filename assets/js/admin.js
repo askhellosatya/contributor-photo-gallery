@@ -9,6 +9,7 @@
     initRangeSliders();
     initColumnSelection();
     initStylingControls();
+    initColorFields();
     initUserIdValidation();
     initSaveSettingsFeedback();
     initNoticeDismissal();
@@ -386,6 +387,87 @@
       '.cpg-color-picker, .cpg-style-selector select, .cpg-style-selector input[type="checkbox"]'
     ).on("change", function () {
       if ($("#default_user_id").val().trim() !== "") requestPreview();
+    });
+  }
+
+  // Keep each color picker and its hex text field in sync.
+  // Only the picker has a `name`, so typed hex values must be copied into it
+  // or they are never submitted (#28). Also wires up the Reset button (#26).
+  function initColorFields() {
+    var HEX_PATTERN = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i;
+
+    function normalizeHex(value) {
+      value = String(value || "").trim();
+      if (value !== "" && value.charAt(0) !== "#") value = "#" + value;
+      if (!HEX_PATTERN.test(value)) return null;
+      if (value.length === 4) {
+        value =
+          "#" +
+          value.charAt(1) + value.charAt(1) +
+          value.charAt(2) + value.charAt(2) +
+          value.charAt(3) + value.charAt(3);
+      }
+      return value.toLowerCase();
+    }
+
+    function setColor($group, hex) {
+      $group.find(".cpg-color-picker").val(hex).trigger("change");
+      $group.find(".cpg-color-text").val(hex).removeClass("cpg-color-invalid");
+    }
+
+    $(".cpg-color-group").each(function () {
+      var $group = $(this);
+      var $picker = $group.find(".cpg-color-picker");
+      var $text = $group.find(".cpg-color-text");
+      if (!$picker.length || !$text.length) return;
+
+      // Picker -> text.
+      $picker.on("input change", function () {
+        $text.val($picker.val()).removeClass("cpg-color-invalid");
+      });
+
+      // Text -> picker, as soon as the value is a valid hex color.
+      $text.on("input", function () {
+        var hex = normalizeHex($text.val());
+        if (hex) {
+          $text.removeClass("cpg-color-invalid");
+          if ($picker.val() !== hex) $picker.val(hex).trigger("change");
+        } else {
+          $text.addClass("cpg-color-invalid");
+        }
+      });
+
+      // On blur, fall back to the picker's value if the text is invalid.
+      $text.on("blur", function () {
+        var hex = normalizeHex($text.val());
+        $text.val(hex || $picker.val()).removeClass("cpg-color-invalid");
+      });
+
+      // Pressing Enter in the text field should not submit a stale value.
+      $text.on("keydown", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          $text.trigger("blur");
+        }
+      });
+
+      // Reset to the field's default color.
+      $group.find(".cpg-color-reset").on("click", function (e) {
+        e.preventDefault();
+        var hex = normalizeHex($(this).data("default"));
+        if (hex) setColor($group, hex);
+      });
+    });
+
+    // Final safety net: copy any valid typed values into the pickers on submit.
+    $(".cpg-color-text").closest("form").on("submit", function () {
+      $(this)
+        .find(".cpg-color-group")
+        .each(function () {
+          var $group = $(this);
+          var hex = normalizeHex($group.find(".cpg-color-text").val());
+          if (hex) $group.find(".cpg-color-picker").val(hex);
+        });
     });
   }
 

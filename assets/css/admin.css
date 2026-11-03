@@ -1552,6 +1552,11 @@ cursor: pointer;
 font-size: 14px;
 }
 
+.toplevel_page_contributor-photo-gallery .cpg-color-text.cpg-color-invalid {
+border-color: #d63638;
+box-shadow: 0 0 0 1px #d63638;
+}
+
 /* Add a small gap below the group for helper text */
 .toplevel_page_contributor-photo-gallery .cpg-color-group + .cpg-field-desc {
 margin-top: 10px;
