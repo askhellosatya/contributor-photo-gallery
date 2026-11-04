@@ -12,6 +12,18 @@ class CPGLRY_Frontend {
 		// Enqueue the main frontend stylesheet
 		wp_enqueue_style( 'cpg-frontend', CPGLRY_PLUGIN_URL . 'assets/css/frontend.css', array(), CPGLRY_VERSION );
 
+		// The block may already have attached the critical CSS on init.
+		if ( ! wp_styles()->get_data( 'cpg-frontend', 'after' ) ) {
+			wp_add_inline_style( 'cpg-frontend', self::get_critical_css() );
+		}
+	}
+
+	/**
+	 * Small, critical grid CSS shared by the shortcode and the block editor preview.
+	 *
+	 * @return string
+	 */
+	public static function get_critical_css() {
 		// Add small, critical inline CSS to guarantee columns behavior.
 		// This ensures .cpg-gallery-grid.columns-N becomes a grid even if a theme
 		// has conflicting rules. We keep rules minimal and scoped to plugin classes.
@@ -45,7 +57,7 @@ class CPGLRY_Frontend {
                 }
             }
         ';
-		wp_add_inline_style( 'cpg-frontend', $inline );
+		return $inline;
 	}
 
 	/**

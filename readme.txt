@@ -54,6 +54,18 @@ Lightweight, privacy-friendly, and compatible with any WordPress theme, Contribu
 == Special Thanks ==
 Special thanks to snilesh for his open-source WordPress.org photo contribution, which we are proud to feature in our plugin's identity and marketing visuals.
 
+== Block ==
+
+Add the **Contributor Photo Gallery** block from the Media category in the block editor.
+
+- Live preview of your photos right in the editor.
+- Sidebar controls for the WordPress.org username or user ID, number of photos (1-50) and columns (1-6).
+- Leave the user empty to use the default from plugin settings.
+- Supports wide and full alignment and margin controls.
+- Existing `[cp_gallery]` and `[wpcontrib_photos]` shortcode blocks can be converted with Transform to.
+
+Card styles, colors, borders and shadows still come from the plugin settings, so the block and shortcode always match.
+
 == Shortcodes ==
 
 **Primary Shortcode:**
@@ -80,7 +92,7 @@ Note: The settings screen accepts either a username or a numeric ID. The `user_i
 2. Activate through the "Plugins" menu.
 3. Go to **Settings > Contributor Photo Gallery** and enter your WordPress.org username or numeric User ID.
 4. Adjust styling (card style, borders, shadows, caption color) and save.
-5. Add `[cp_gallery]` to any page, post, or widget.
+5. Add the **Contributor Photo Gallery** block, or the `[cp_gallery]` shortcode, to any page, post, or widget.
 
 == Frequently Asked Questions ==
 
@@ -122,6 +134,10 @@ No. It is optimized with:
 
 
 == Changelog ==
+
+= Unreleased =
+* New: Contributor Photo Gallery block with live preview and sidebar controls (username or user ID, photos, columns).
+* New: Transform existing `[cp_gallery]` and `[wpcontrib_photos]` shortcodes into the block.
 
 = 2.6.1 - 2026-07-07 =
 * Security: Added ABSPATH guards to the API and Cache classes to block direct file access.

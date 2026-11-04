@@ -33,12 +33,14 @@ require_once CPGLRY_PLUGIN_PATH . 'includes/class-frontend.php';
 require_once CPGLRY_PLUGIN_PATH . 'includes/class-admin.php';
 require_once CPGLRY_PLUGIN_PATH . 'includes/class-cache.php';
 require_once CPGLRY_PLUGIN_PATH . 'includes/class-api.php';
+require_once CPGLRY_PLUGIN_PATH . 'includes/class-block.php';
 
 /*
  * Init
  */
 new CPGLRY_Frontend();
 new CPGLRY_Admin();
+new CPGLRY_Block();
 
 /*
  * Preserve legacy options on upgrade (safe migration)
