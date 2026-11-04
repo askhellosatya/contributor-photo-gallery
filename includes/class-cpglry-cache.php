@@ -1,9 +1,15 @@
 <?php
+/**
+ * Cache utilities for Contributor Photo Gallery.
+ *
+ * Handles clearing transient-based caches used by the plugin.
+ *
+ * @package ContributorPhotoGallery
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
 
 class CPGLRY_Cache {
 
@@ -26,19 +32,9 @@ class CPGLRY_Cache {
 		}
 
 		foreach ( $transient_names as $transient_name ) {
-			// stored names are like "_transient_cpglry_photos_<hash>"
+			// Stored names are like "_transient_cpglry_photos_<hash>".
 			$name = str_replace( '_transient_', '', $transient_name );
 			delete_transient( $name );
 		}
-	}
-}
-
-/**
- * Backwards-compatible procedural wrapper.
- * Some older code or external integrations might call cpglry_clear_photo_cache().
- */
-if ( ! function_exists( 'cpglry_clear_photo_cache' ) ) {
-	function cpglry_clear_photo_cache() {
-		cpglry_Cache::clear();
 	}
 }

@@ -23,10 +23,11 @@ tests
 
 phpunit.xml.dist
 
+composer.json
 composer.lock
 package-lock.json
 
-vendor/bin
+vendor
 
 .editorconfig
 .eslintrc
